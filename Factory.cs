@@ -2,7 +2,6 @@
 using LiveSplit.UI.Components;
 using System;
 using LiveSplit.Model;
-using LiveSplit.OriAndTheBlindForest;
 
 namespace LiveSplit.UI.Components
 {
