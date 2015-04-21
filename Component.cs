@@ -73,6 +73,7 @@ namespace LiveSplit.UI.Components
         public override void SetSettings(XmlNode settings) {
             Settings.SetSettings(settings);
             oriState.UpdateSplits(Settings.splitsState);
+            oriState.oriTriggers.OnSplit -= OnSplit;
             oriState.oriTriggers.OnSplit += OnSplit;
         }
 
