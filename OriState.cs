@@ -71,10 +71,15 @@ namespace Devil
 
         public OriState() {
             oriMemory = new OriMemory();
+            oriTriggers = new OriTriggers();
         }
 
-        public void InitializeTriggers(List<Split> splits, OriTriggers.OnSplitTriggered func) {
-            oriTriggers = new OriTriggers(splits, func);
+        public void Reset() {
+            oriTriggers.ResetAll();
+        }
+
+        public void UpdateSplits(List<Split> splits) {
+            oriTriggers.SetSplits(splits);
         }
 
         public void Loop() {
@@ -142,6 +147,8 @@ namespace Devil
             n["Soul Flame"]        = oriMemory.GetSeinHasSoulFlame();
             n["Ability Cells"]     = oriMemory.GetSeinInventory("Skill Points");
             n["Deaths"]            = oriMemory.GetDeathsCount();
+            n["Level"]             = oriMemory.GetSeinLevel("Current");
+            n["Key Stones"]        = oriMemory.GetSeinInventory("Keystones");
 
             //n["Soul Flames Cast"]  = oriMemory.GetSeinSoulFlame<Int32>("Number of Soul Flames Cast");
 
@@ -151,12 +158,10 @@ namespace Devil
             //n["Is Crouching"]      = oriMemory.GetSeinAbilityState<Boolean>("Is Crouching");
             //n["Is Bashing"]        = oriMemory.GetSeinAbilityState<Boolean>("Is Bashing");
 
-            //n["Key Stones"]        = oriMemory.GetSeinInventory("Keystones");
             //n["Map Stones"]        = oriMemory.GetSeinInventory("Map Stones");
 
             //n["Skill Points"]      = oriMemory.GetSeinLevel("Skill Points");
             //n["Experience"]        = oriMemory.GetSeinLevel("Experience");
-            //n["Level"]             = oriMemory.GetSeinLevel("Current");
 
             //n["Has Died"]          = oriMemory.GetSeinDamage<Boolean>("Died");
             //n["Immortal"]          = oriMemory.GetSeinDamage<Boolean>("Is Immortal");

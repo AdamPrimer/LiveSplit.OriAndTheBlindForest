@@ -14,31 +14,9 @@ namespace LiveSplit.UI.Components
 {
     public partial class OriAndTheBlindForestSettings : UserControl
     {
-        Dictionary<string, string> splits = new Dictionary<string, string>() 
-        {
-            {"Start",              "Boolean"},
-            {"Soul Flame",         "Boolean"},
-            {"Spirit Flame",       "Boolean"},
-            {"Wall Jump",          "Boolean"},
-            {"Charge Flame",       "Boolean"},
-            {"Double Jump",        "Boolean"},
-            {"Gumo Free",          "Boolean"},
-            {"Water Vein",         "Boolean"},
-            {"Ginso Tree Entered", "Boolean"},
-            {"Bash",               "Boolean"},
-            {"Clean Water",        "Boolean"},
-            {"Stomp",              "Boolean"},
-            {"Glide",              "Boolean"},
-            {"Sunstone",           "Boolean"},
-            {"Mount Horu Entered", "Boolean"},
-            {"Warmth Returned",    "Boolean"},
-            {"End",                "Boolean"},
-            {"Health Cells",       "Value"},
-        };
+        public List<Devil.Split> splitsState = new List<Devil.Split>();
 
-        public List<Devil.Split> SplitsState = new List<Devil.Split>();
-        public List<Devil.Split> tempSplitsState = new List<Devil.Split>();
-
+        private bool isLoading = false;
         public OriComponent parent;
 
         public OriAndTheBlindForestSettings(OriComponent component) {
@@ -46,26 +24,13 @@ namespace LiveSplit.UI.Components
             parent = component;
         }
 
-        private bool isLoading = false;
-
-        private void write(string str) {
-            StreamWriter wr = new StreamWriter("test.log", true);
-            wr.WriteLine("[" + DateTime.Now + "] " + str);
-            wr.Close();
-        }
-
         public void LoadSettings() {
-            write("LoadSettings();");
-            foreach (var split in SplitsState) {
-                write(split.name);
-            }
-
             isLoading = true;
             splitGrid.DataSource = null;
             splitGrid.Rows.Clear();
-            foreach (var split in SplitsState) {
+            foreach (var split in splitsState) {
                 string name = split.name;
-                string type = splits[name];
+                string type = Devil.OriTriggers.availableSplits[name];
                 string value = split.value;
 
                 int idx = splitGrid.Rows.Add(name);
@@ -81,9 +46,8 @@ namespace LiveSplit.UI.Components
 
         public void UpdateSettings() {
             if (isLoading) return;
-            write("UpdateSettings();");
 
-            SplitsState.Clear();
+            splitsState.Clear();
             foreach (DataGridViewRow row in splitGrid.Rows) {
                 if (row != null && row.Cells["SplitName"] != null && row.Cells["SplitName"].Value != null && row.Cells["Value"].Value != null) {
                     string name = row.Cells["SplitName"].Value.ToString();
@@ -93,11 +57,11 @@ namespace LiveSplit.UI.Components
                     split.name = name;
                     split.value = value;
 
-                    SplitsState.Add(split);
+                    splitsState.Add(split);
                 }
             }
-            
-            parent.oriState.InitializeTriggers(SplitsState, parent.OnSplit);
+
+            parent.oriState.UpdateSplits(splitsState);
         }
 
         public XmlNode GetSettings(XmlDocument document) {
@@ -106,7 +70,7 @@ namespace LiveSplit.UI.Components
             var splitsNode = document.CreateElement("Splits");
             settingsNode.AppendChild(splitsNode);
             
-            foreach (var split in SplitsState) {
+            foreach (var split in splitsState) {
                 string name = split.name;
                 string value = split.value;
 
@@ -129,7 +93,7 @@ namespace LiveSplit.UI.Components
             XmlNodeList splitNodes = settings.SelectNodes("//Splits/Split");
 
             write(splitNodes.Count.ToString());
-            SplitsState.Clear();
+            splitsState.Clear();
             foreach (XmlNode splitNode in splitNodes) {
                 string name = splitNode.InnerText;
                 string value = splitNode.Attributes["Value"].Value;
@@ -138,7 +102,7 @@ namespace LiveSplit.UI.Components
                 split.name = name;
                 split.value = value;
 
-                SplitsState.Add(split);
+                splitsState.Add(split);
             }
         }
 
@@ -146,14 +110,13 @@ namespace LiveSplit.UI.Components
             DataTable dt = new DataTable();
             dt.Columns.Add("SplitName", typeof(string));
             dt.Columns.Add("Type", typeof(string));
-            foreach (var pair in splits) {
+            foreach (var pair in Devil.OriTriggers.availableSplits) {
                 dt.Rows.Add(pair.Key, pair.Value);
             }
             return dt;
         }
 
         private void Settings_Load(object sender, EventArgs e) {
-            write("Settings_Load();");
             DataTable dt = SplitComboData();
 
             DataGridViewComboBoxColumn col = new DataGridViewComboBoxColumn() {
@@ -231,7 +194,7 @@ namespace LiveSplit.UI.Components
             if (splitGrid.CurrentCell != null && splitGrid.Columns[e.ColumnIndex].Name == "SplitName") {
                 try {
                     string name = splitGrid.CurrentCell.EditedFormattedValue.ToString();
-                    string type = splits[name];
+                    string type = Devil.OriTriggers.availableSplits[name];
                     int idx = splitGrid.CurrentRow.Index;
 
                     if (type == "Boolean") {
@@ -276,68 +239,11 @@ namespace LiveSplit.UI.Components
                 }
             }
         }
-    }
 
-    public static class DataGridViewHelper
-    {
-        public static void createInputBox(DataGridView grid, int colIdx, int rowIdx, string value) {
-            DataGridViewTextBoxCell TextBoxCell = new DataGridViewTextBoxCell() { };
-            grid[colIdx, rowIdx] = TextBoxCell;
-            grid[colIdx, rowIdx].Value = value;
+        private void write(string str) {
+            StreamWriter wr = new StreamWriter("test.log", true);
+            wr.WriteLine("[" + DateTime.Now + "] " + str);
+            wr.Close();
         }
-
-        public static void createBooleanComboBox(DataGridView grid, int colIdx, int rowIdx, string value) {
-            DataGridViewComboBoxCell ComboBoxCell = new DataGridViewComboBoxCell() {
-                FlatStyle = System.Windows.Forms.FlatStyle.Flat,
-            };
-            ComboBoxCell.Items.AddRange(new string[] {"True", "False"});
-            grid[colIdx, rowIdx] = ComboBoxCell;
-            grid[colIdx, rowIdx].Value = value;
-        }
-
-        public static void RemoveRow(DataGridView grid) {
-            try {
-                int totalRows = grid.Rows.Count;
-                int idx = grid.SelectedCells[0].OwningRow.Index;
-                DataGridViewRowCollection rows = grid.Rows;
-                DataGridViewRow row = rows[idx];
-                rows.Remove(row);
-                grid.ClearSelection();
-            } catch { }
-        }
-
-        public static void MoveRowUp(DataGridView grid) {
-            try {
-                int totalRows = grid.Rows.Count;
-                int idx = grid.SelectedCells[0].OwningRow.Index;
-                if (idx == 0)
-                    return;
-                int col = grid.SelectedCells[0].OwningColumn.Index;
-                DataGridViewRowCollection rows = grid.Rows;
-                DataGridViewRow row = rows[idx];
-                rows.Remove(row);
-                rows.Insert(idx - 1, row);
-                grid.ClearSelection();
-                grid.Rows[idx - 1].Cells[col].Selected = true;
-                grid.ClearSelection();
-            } catch { }
-        }
-
-        public static void MoveRowDown(DataGridView grid) {
-            try {
-                int totalRows = grid.Rows.Count;
-                int idx = grid.SelectedCells[0].OwningRow.Index;
-                if (idx == totalRows - 2)
-                    return;
-                int col = grid.SelectedCells[0].OwningColumn.Index;
-                DataGridViewRowCollection rows = grid.Rows;
-                DataGridViewRow row = rows[idx];
-                rows.Remove(row);
-                rows.Insert(idx + 1, row);
-                grid.ClearSelection();
-                grid.Rows[idx + 1].Cells[col].Selected = true;
-                grid.ClearSelection();
-            } catch { }
-        }   
     }
 }

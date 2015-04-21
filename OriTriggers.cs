@@ -9,58 +9,91 @@ namespace Devil
 {
     public class OriTriggers
     {
-        public delegate void OnSplitTriggered(string key);
+        public static Dictionary<string, string> availableSplits = new Dictionary<string, string>() 
+        {
+            {"Start",              "Boolean"},
+            {"Soul Flame",         "Boolean"},
+            {"Spirit Flame",       "Boolean"},
+            {"Wall Jump",          "Boolean"},
+            {"Charge Flame",       "Boolean"},
+            {"Double Jump",        "Boolean"},
+            {"Gumo Free",          "Boolean"},
+            {"Water Vein",         "Boolean"},
+            {"Ginso Tree Entered", "Boolean"},
+            {"Bash",               "Boolean"},
+            {"Clean Water",        "Boolean"},
+            {"Stomp",              "Boolean"},
+            {"Glide",              "Boolean"},
+            {"Sunstone",           "Boolean"},
+            {"Mount Horu Entered", "Boolean"},
+            {"Warmth Returned",    "Boolean"},
+            {"End",                "Boolean"},
+            {"Health Cells",       "Value"},
+            {"Energy Cells",       "Value"},
+            {"Ability Cells",      "Value"},
+            {"Level",              "Value"},
+            {"Key Stones",         "Value"},
+            {"Climb",              "Boolean"},
+            {"Charge Jump",        "Boolean"},
+            {"Gumon Seal",         "Boolean"},
+            {"Mist Lifted",        "Boolean"},
+            {"Wind Released",      "Boolean"},
+            {"Forlorn Restored",   "Boolean"},
+            {"Spirit Tree Reached","Boolean"},
+            {"Magnet",                   "Boolean"},
+            {"Ultra Magnet",             "Boolean"},
+            {"Rapid Fire",               "Boolean"},
+            {"Soul Efficiency",          "Boolean"},
+            {"Water Breath",             "Boolean"},
+            {"Charge Flame Blast",       "Boolean"},
+            {"Charge Flame Burn",        "Boolean"}, 
+            {"Double Jump Upgrade",      "Boolean"},
+            {"Bash Upgrade",             "Boolean"},
+            {"Ultra Defense",            "Boolean"},
+            {"Health Efficiency",        "Boolean"},
+            {"Sense",                    "Boolean"},
+            {"Stomp Upgrade",            "Boolean"},
+            {"Quick Flame",              "Boolean"},
+            {"Map Markers",              "Boolean"},
+            {"Energy Efficiency",        "Boolean"},
+            {"Health Markers",           "Boolean"},
+            {"Energy Markers",           "Boolean"},
+            {"Ability Markers",          "Boolean"},
+            {"Rekindle",                 "Boolean"}, 
+            {"Regroup",                  "Boolean"}, 
+            {"Charge Flame Efficiency",  "Boolean"},
+            {"Ultra Soul Flame",         "Boolean"},
+            {"Soul Flame Efficiency",    "Boolean"},
+            {"Split Flame",              "Boolean"},
+            {"Spark Flame",              "Boolean"},
+            {"Cinder Flame",             "Boolean"},
+            {"Ultra Split Flame",        "Boolean"},
+        };
+
+        public class SplitEventArgs : EventArgs
+        {
+            public string name { get; set; }
+            public string value { get; set; }
+        }
+
+        public delegate void OnSplitHandler(object sender, SplitEventArgs e);
 
         public Decimal mapCompletion = 0;
         public string inGameTime = "";
         public Dictionary<string, int> counters = new Dictionary<string, int>();
-        public Dictionary<string, bool> events = new Dictionary<string, bool>()
-        {
-            {"Start", false},
-            {"Soul Flame", false},
-            {"Spirit Flame", false},
-            {"Wall Jump", false},
-            {"Charge Flame", false},
-            {"Double Jump", false},
-            {"Gumo Free", false},
-            {"Water Vein", false},
-            {"Ginso Tree Entered", false},
-            {"Bash", false},
-            {"Clean Water", false},
-            {"Stomp", false},
-            {"Glide", false},
-            {"Sunstone", false},
-            {"Mount Horu Entered", false},
-            {"Warmth Returned", false},
-            {"End", false},
-
-            {"Charge Jump", false},
-            {"Climb", false},
-            {"Spirit Tree Reached", false},
-            {"Gumon Seal", false},
-            {"Mist Lifted", false},
-            {"Forlorn Restored", false},
-            {"Wind Released", false},
-            {"Double Jump Upgrade", false},
-        };
+        public Dictionary<string, bool> events = new Dictionary<string, bool>();
 
         public int currentSplitIdx = 0;
         public Split currentSplit;
         public Split[] sSplits;
 
-        public OnSplitTriggered triggerFunc;
+        public event OnSplitHandler OnSplit;
 
-        public OriTriggers(List<Split> splits, OnSplitTriggered func) {
-            write("Loaded Triggers");
+        public OriTriggers() {}
+
+        public void SetSplits(List<Split> splits) {
             sSplits = splits.ToArray();
-            if (sSplits.Length > 0) {
-                currentSplit = sSplits[currentSplitIdx];
-            }
-            foreach (var split in splits) {
-                write(split.name);
-            }
-
-            triggerFunc = func;
+            ResetAll();
         }
 
         public Split GoToNextSplit() {
@@ -70,6 +103,20 @@ namespace Devil
             currentSplit = sSplits[currentSplitIdx];
 
             return currentSplit;
+        }
+
+        public void SplitEventHandler(string name, string value) {
+            if (currentSplit.name == name && currentSplit.value == value) {
+                write("Trigger Function Called.");
+                if (OnSplit != null) { 
+                    SplitEventArgs e = new SplitEventArgs();
+                    e.name = name;
+                    e.value = value;
+
+                    OnSplit(this, e);
+                }
+                GoToNextSplit();
+            }
         }
 
         public bool HasSplit(string name) {
@@ -94,7 +141,10 @@ namespace Devil
                 events[key] = false;
             }
 
-            Console.WriteLine("All Triggers Reset.");
+            if (sSplits.Length > 0) {
+                currentSplitIdx = 0;
+                currentSplit = sSplits[currentSplitIdx];
+            }
         }
 
         public void OnStartGame(bool val) {
@@ -116,25 +166,12 @@ namespace Devil
         }
 
         public void OnAbilityChange(string key, bool val) {
-            switch (key) {
-                case "Bash":
-                case "Stomp":
-                case "Charge Jump":
-                case "Double Jump":
-                case "Charge Flame":
-                case "Wall Jump":
-                case "Climb":
-                case "Glide":
-                case "Spirit Flame":
-                case "Double Jump Upgrade":
-                    TriggerEvent(key, val);
-                    break;
-            }
+            TriggerEvent(key, val);
         }
 
         public void OnMapCompletionChange(Area[] val, Decimal sMapCompletion) {
             mapCompletion = sMapCompletion;
-            Console.WriteLine("Map: {0}%", sMapCompletion);
+            write(string.Format("Map: {0}%", sMapCompletion));
         }
 
         public void OnActiveScenesChange(Scene[] val, Scene[] old) {
@@ -164,7 +201,7 @@ namespace Devil
                         state = "Disabled";
                     }
 
-                    Console.WriteLine("{0} Scene: {1}", state, scene.name);
+                    write(string.Format("{0} Scene: {1}", state, scene.name));
                 }
             }
         }
@@ -173,23 +210,6 @@ namespace Devil
             switch (name) {
                 case "Soul Flame":
                     TriggerEvent("Soul Flame", (bool)val);
-                    break;
-
-                case "Is Gliding":
-                case "Is Grabbing Block":
-                case "Is Grabbing Wall":
-                case "Is Crouching":
-                case "Is Bashing":
-                    if ((bool)val == true) {
-                        int count = IncrementCounter(name);
-                    }
-                    break;
-
-                case "Soul Flames Cast":
-                case "Deaths":
-                    if ((int)val > (int)old) {
-                        int count = IncrementCounter(name);
-                    }
                     break;
 
                 case "Energy Max":
@@ -203,6 +223,7 @@ namespace Devil
                     break;
 
                 case "Ability Cells":
+                case "Key Stones":
                     SetCounter(name, (int)val);
                     break;
 
@@ -228,11 +249,27 @@ namespace Devil
 
                     break;
 
+                case "Is Gliding":
+                case "Is Grabbing Block":
+                case "Is Grabbing Wall":
+                case "Is Crouching":
+                case "Is Bashing":
+                    if ((bool)val == true) {
+                        int count = IncrementCounter(name);
+                    }
+                    break;
+
+                case "Soul Flames Cast":
+                case "Deaths":
+                    if ((int)val > (int)old) {
+                        int count = IncrementCounter(name);
+                    }
+                    break;
+
                 case "Energy Current":
                 case "Health Current":
                 case "Skill Points":
                 case "Experience":
-                case "Key Stones":
                 case "Map Stones":
                 case "Immortal":
                 case "Swim State":
@@ -248,11 +285,12 @@ namespace Devil
         }
 
         public int IncrementCounter(string name) {
-            if (!counters.ContainsKey(name)) {
-                counters[name] = 0;
-            }
+            if (!counters.ContainsKey(name)) counters[name] = 0;
+
             counters[name]++;
-            Console.WriteLine("Counter: {0} {1}", name, counters[name]);
+            write(string.Format("Counter: {0} {1}", name, counters[name]));
+            SplitEventHandler(name, counters[name].ToString());
+
             return counters[name];
         }
 
@@ -260,7 +298,9 @@ namespace Devil
             if (counters.ContainsKey(name) && counters[name] == val) return val;
 
             counters[name] = val;
-            Console.WriteLine("Counter: {0} {1}", name, counters[name]);
+            write(string.Format("Counter: {0} {1}", name, counters[name]));
+            SplitEventHandler(name, val.ToString());
+
             return counters[name];
         }
 
@@ -271,15 +311,10 @@ namespace Devil
         public void TriggerEvent(string name, bool val) {
             if (!WillTriggerEvent(name, val)) return;
 
-            if (currentSplit.name == name && currentSplit.value == val.ToString()) {
-                write("Splitable Event!");
-                triggerFunc(name);
-                GoToNextSplit();
-            }
-
             events[name] = val;
-            write(string.Format("Current Split: {0} {1}", currentSplit.name, currentSplit.value));
             write(string.Format("Event Trigger: {0} {1}", name, val));
+
+            SplitEventHandler(name, val.ToString());
         }
 
         private void write(string str) {
