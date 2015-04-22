@@ -32,6 +32,7 @@ namespace LiveSplit.UI.Components
         public OriComponent() {
             Settings = new OriAndTheBlindForestSettings(this);
             oriState = new Devil.OriState();
+            oriState.oriTriggers.OnSplit += OnSplit;
         }
 
         public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) {
@@ -73,8 +74,6 @@ namespace LiveSplit.UI.Components
         public override void SetSettings(XmlNode settings) {
             Settings.SetSettings(settings);
             oriState.UpdateSplits(Settings.splitsState);
-            oriState.oriTriggers.OnSplit -= OnSplit;
-            oriState.oriTriggers.OnSplit += OnSplit;
         }
 
         public override XmlNode GetSettings(XmlDocument document) {
