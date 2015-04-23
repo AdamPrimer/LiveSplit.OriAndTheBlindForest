@@ -85,6 +85,7 @@
 			this.Controls.Add(this.cboName);
 			this.Name = "SplitSettings";
 			this.Size = new System.Drawing.Size(298, 23);
+            this.Margin = new System.Windows.Forms.Padding(3,1,1,1);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
