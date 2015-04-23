@@ -36,13 +36,13 @@
 			this.cboName.FormattingEnabled = true;
 			this.cboName.Location = new System.Drawing.Point(0, 1);
 			this.cboName.Name = "cboName";
-			this.cboName.Size = new System.Drawing.Size(121, 21);
+			this.cboName.Size = new System.Drawing.Size(141, 21);
 			this.cboName.TabIndex = 1;
 			this.cboName.SelectedIndexChanged += new System.EventHandler(this.cboName_SelectedIndexChanged);
 			// 
 			// txtValue
 			// 
-			this.txtValue.Location = new System.Drawing.Point(127, 1);
+			this.txtValue.Location = new System.Drawing.Point(147, 1);
 			this.txtValue.Name = "txtValue";
 			this.txtValue.Size = new System.Drawing.Size(54, 20);
 			this.txtValue.TabIndex = 3;
@@ -50,7 +50,7 @@
 			// btnUp
 			// 
 			this.btnUp.Image = ((System.Drawing.Image)(resources.GetObject("btnUp.Image")));
-			this.btnUp.Location = new System.Drawing.Point(187, 0);
+			this.btnUp.Location = new System.Drawing.Point(207, 0);
 			this.btnUp.Name = "btnUp";
 			this.btnUp.Size = new System.Drawing.Size(26, 23);
 			this.btnUp.TabIndex = 4;
@@ -59,7 +59,7 @@
 			// btnDown
 			// 
 			this.btnDown.Image = ((System.Drawing.Image)(resources.GetObject("btnDown.Image")));
-			this.btnDown.Location = new System.Drawing.Point(219, 0);
+			this.btnDown.Location = new System.Drawing.Point(239, 0);
 			this.btnDown.Name = "btnDown";
 			this.btnDown.Size = new System.Drawing.Size(26, 23);
 			this.btnDown.TabIndex = 5;
@@ -68,7 +68,7 @@
 			// btnRemove
 			// 
 			this.btnRemove.Image = ((System.Drawing.Image)(resources.GetObject("btnRemove.Image")));
-			this.btnRemove.Location = new System.Drawing.Point(251, 0);
+			this.btnRemove.Location = new System.Drawing.Point(271, 0);
 			this.btnRemove.Name = "btnRemove";
 			this.btnRemove.Size = new System.Drawing.Size(26, 23);
 			this.btnRemove.TabIndex = 6;
@@ -84,7 +84,7 @@
 			this.Controls.Add(this.txtValue);
 			this.Controls.Add(this.cboName);
 			this.Name = "SplitSettings";
-			this.Size = new System.Drawing.Size(278, 23);
+			this.Size = new System.Drawing.Size(298, 23);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

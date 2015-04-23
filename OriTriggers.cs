@@ -43,6 +43,7 @@ namespace Devil
             {"Forlorn Ruins Entered", "Boolean"},
             {"Forlorn Restored",   "Boolean"},
             {"Spirit Tree Reached","Boolean"},
+            {"Into Horu Escape", "Boolean"},
             {"Magnet",                   "Boolean"},
             {"Ultra Magnet",             "Boolean"},
             {"Rapid Fire",               "Boolean"},
@@ -184,14 +185,14 @@ namespace Devil
                     if ((SceneState)scene.state == SceneState.Loaded) {
                         state = "Loaded";
                         switch (scene.name) {
-                            case "creditsScreen":
-                                TriggerEvent("End", true);
-                                break;
                             case "ginsoEntranceIntro":
                                 TriggerEvent("Ginso Tree Entered", true);
                                 break;
                             case "forlornRuinsGetNightberry":
                                 TriggerEvent("Forlorn Ruins Entered", true);
+                                break;
+                            case "catAndMouseMid":
+                                TriggerEvent("Into Horu Escape", true);
                                 break;
                             case "mountHoruHubBottom":
                                 TriggerEvent("Mount Horu Entered", true);
@@ -204,6 +205,11 @@ namespace Devil
                         state = "Disabling";
                     } else if ((SceneState)scene.state == SceneState.Loading) {
                         state = "Loading";
+                        switch (scene.name) {
+                            case "creditsScreen":
+                                TriggerEvent("End", true);
+                                break;
+                        }
                     } else if ((SceneState)scene.state == SceneState.LoadingCancelled) {
                         state = "Loading Cancelled";
                     } else if ((SceneState)scene.state == SceneState.Disabled) {
@@ -324,6 +330,10 @@ namespace Devil
         }
 
         public void TriggerEvent(string name, bool val) {
+            write(string.Format("TriggerEvent(): {0} {1}", name, val));
+            if (events.ContainsKey(name)) {
+                write(string.Format("Existing: {0} {1}", name, events[name]));
+            }
             if (!WillTriggerEvent(name, val)) return;
 
             events[name] = val;

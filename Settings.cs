@@ -67,6 +67,7 @@ namespace LiveSplit.OriAndTheBlindForest {
                 splitsState.Add(new Devil.Split("Charge Jump", "True"));
                 splitsState.Add(new Devil.Split("Sunstone", "True"));
                 splitsState.Add(new Devil.Split("Mount Horu Entered", "True"));
+                splitsState.Add(new Devil.Split("Into Horu Escape", "True"));
                 splitsState.Add(new Devil.Split("End", "True"));
                 LoadSettings();
             }
