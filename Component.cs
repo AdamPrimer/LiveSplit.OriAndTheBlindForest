@@ -15,7 +15,7 @@ using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace LiveSplit.UI.Components
+namespace LiveSplit.OriAndTheBlindForest
 {
     public class OriComponent : LogicComponent
     {

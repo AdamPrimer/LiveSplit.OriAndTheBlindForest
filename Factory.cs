@@ -3,7 +3,7 @@ using LiveSplit.UI.Components;
 using System;
 using LiveSplit.Model;
 
-namespace LiveSplit.UI.Components
+namespace LiveSplit.OriAndTheBlindForest
 {
     public class Factory : IComponentFactory
     {

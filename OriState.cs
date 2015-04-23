@@ -114,9 +114,11 @@ namespace Devil
 
             if (isInGameWorld) {
                 UpdateMap();
-                UpdateEvents();
-                UpdateAbilities();
-                UpdateSein();
+                if (oriMemory.GetSein() != 0) {
+                    UpdateEvents();
+                    UpdateAbilities();
+                    UpdateSein();
+                }
             }
 
             oriMemory.ClearPointerCache();

@@ -1,4 +1,5 @@
 ﻿using LiveSplit.UI.Components;
+using LiveSplit.OriAndTheBlindForest;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

@@ -1,4 +1,4 @@
-﻿namespace LiveSplit.UI.Components
+﻿namespace LiveSplit.OriAndTheBlindForest
 {
     partial class OriAndTheBlindForestSettings
     {
@@ -25,77 +25,117 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.Heading = new System.Windows.Forms.Label();
-            this.splitGrid = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.splitGrid)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // Heading
-            // 
-            this.Heading.AutoSize = true;
-            this.Heading.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Heading.Location = new System.Drawing.Point(119, 15);
-            this.Heading.Name = "Heading";
-            this.Heading.Size = new System.Drawing.Size(232, 24);
-            this.Heading.TabIndex = 2;
-            this.Heading.Text = "Ori and the Blind Forest";
-            // 
-            // splitGrid
-            // 
-            this.splitGrid.AllowUserToResizeColumns = false;
-            this.splitGrid.AllowUserToResizeRows = false;
-            this.splitGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.splitGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.splitGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.splitGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(3);
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.Desktop;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.splitGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.splitGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(2);
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.splitGrid.DefaultCellStyle = dataGridViewCellStyle4;
-            this.splitGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.splitGrid.Location = new System.Drawing.Point(16, 53);
-            this.splitGrid.Name = "splitGrid";
-            this.splitGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.splitGrid.RowHeadersVisible = false;
-            this.splitGrid.Size = new System.Drawing.Size(422, 423);
-            this.splitGrid.TabIndex = 3;
-            // 
-            // OriAndTheBlindForestSettings
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
-            this.Controls.Add(this.splitGrid);
-            this.Controls.Add(this.Heading);
-            this.Name = "OriAndTheBlindForestSettings";
-            this.Size = new System.Drawing.Size(462, 479);
-            this.Load += new System.EventHandler(this.Settings_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.splitGrid)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+			this.btn100Percent = new System.Windows.Forms.Button();
+			this.btnAllCells = new System.Windows.Forms.Button();
+			this.lblDefaults = new System.Windows.Forms.Label();
+			this.btnAnyPercent = new System.Windows.Forms.Button();
+			this.btnAddSplit = new System.Windows.Forms.Button();
+			this.flowMain = new System.Windows.Forms.FlowLayoutPanel();
+			this.flowDefaults = new System.Windows.Forms.FlowLayoutPanel();
+			this.flowMain.SuspendLayout();
+			this.flowDefaults.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// btn100Percent
+			// 
+			this.btn100Percent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.btn100Percent.Location = new System.Drawing.Point(184, 3);
+			this.btn100Percent.Name = "btn100Percent";
+			this.btn100Percent.Size = new System.Drawing.Size(57, 21);
+			this.btn100Percent.TabIndex = 2;
+			this.btn100Percent.Text = "100%";
+			this.btn100Percent.UseVisualStyleBackColor = true;
+			// 
+			// btnAllCells
+			// 
+			this.btnAllCells.Location = new System.Drawing.Point(121, 3);
+			this.btnAllCells.Name = "btnAllCells";
+			this.btnAllCells.Size = new System.Drawing.Size(57, 21);
+			this.btnAllCells.TabIndex = 1;
+			this.btnAllCells.Text = "All Cells";
+			this.btnAllCells.UseVisualStyleBackColor = true;
+			// 
+			// lblDefaults
+			// 
+			this.lblDefaults.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.lblDefaults.AutoSize = true;
+			this.lblDefaults.Location = new System.Drawing.Point(3, 7);
+			this.lblDefaults.Name = "lblDefaults";
+			this.lblDefaults.Size = new System.Drawing.Size(49, 13);
+			this.lblDefaults.TabIndex = 3;
+			this.lblDefaults.Text = "Defaults:";
+			// 
+			// btnAnyPercent
+			// 
+			this.btnAnyPercent.Location = new System.Drawing.Point(58, 3);
+			this.btnAnyPercent.Name = "btnAnyPercent";
+			this.btnAnyPercent.Size = new System.Drawing.Size(57, 21);
+			this.btnAnyPercent.TabIndex = 0;
+			this.btnAnyPercent.Text = "Any%";
+			this.btnAnyPercent.UseVisualStyleBackColor = true;
+			// 
+			// btnAddSplit
+			// 
+			this.btnAddSplit.Location = new System.Drawing.Point(3, 36);
+			this.btnAddSplit.Name = "btnAddSplit";
+			this.btnAddSplit.Size = new System.Drawing.Size(57, 21);
+			this.btnAddSplit.TabIndex = 0;
+			this.btnAddSplit.Text = "Add Split";
+			this.btnAddSplit.UseVisualStyleBackColor = true;
+			this.btnAddSplit.Click += new System.EventHandler(this.btnAddSplit_Click);
+			// 
+			// flowMain
+			// 
+			this.flowMain.AutoScroll = true;
+			this.flowMain.Controls.Add(this.flowDefaults);
+			this.flowMain.Controls.Add(this.btnAddSplit);
+			this.flowMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.flowMain.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.flowMain.Location = new System.Drawing.Point(0, 0);
+			this.flowMain.Name = "flowMain";
+			this.flowMain.Size = new System.Drawing.Size(462, 479);
+			this.flowMain.TabIndex = 1;
+			this.flowMain.WrapContents = false;
+			// 
+			// flowDefaults
+			// 
+			this.flowDefaults.AutoSize = true;
+			this.flowDefaults.Controls.Add(this.lblDefaults);
+			this.flowDefaults.Controls.Add(this.btnAnyPercent);
+			this.flowDefaults.Controls.Add(this.btnAllCells);
+			this.flowDefaults.Controls.Add(this.btn100Percent);
+			this.flowDefaults.Location = new System.Drawing.Point(3, 3);
+			this.flowDefaults.Name = "flowDefaults";
+			this.flowDefaults.Size = new System.Drawing.Size(244, 27);
+			this.flowDefaults.TabIndex = 0;
+			// 
+			// OriAndTheBlindForestSettings
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.SystemColors.Control;
+			this.Controls.Add(this.flowMain);
+			this.Name = "OriAndTheBlindForestSettings";
+			this.Size = new System.Drawing.Size(462, 479);
+			this.Load += new System.EventHandler(this.Settings_Load);
+			this.flowMain.ResumeLayout(false);
+			this.flowMain.PerformLayout();
+			this.flowDefaults.ResumeLayout(false);
+			this.flowDefaults.PerformLayout();
+			this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label Heading;
-        private System.Windows.Forms.DataGridView splitGrid;
-    }
+		private System.Windows.Forms.Button btn100Percent;
+		private System.Windows.Forms.Button btnAllCells;
+		private System.Windows.Forms.Button btnAnyPercent;
+		private System.Windows.Forms.Label lblDefaults;
+		private System.Windows.Forms.Button btnAddSplit;
+		private System.Windows.Forms.FlowLayoutPanel flowMain;
+		private System.Windows.Forms.FlowLayoutPanel flowDefaults;
+
+	}
 }

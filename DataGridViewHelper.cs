@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace LiveSplit.UI.Components
+namespace LiveSplit.OriAndTheBlindForest
 {
     public static class DataGridViewHelper
     {

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Devil
 {
@@ -161,7 +162,6 @@ namespace Devil
         public Dictionary<string, bool> GetAbilities(Dictionary<string, int> abilities) {
             int path0 = GetSein();
             int path1 = Memory.GetInt32(proc, path0 + 0x4C);                 // PlayerAbilities
-
             Dictionary<string, bool> results = new Dictionary<string, bool>();
             foreach (var pair in abilities) {
                 int path2 = Memory.GetInt32(proc, path1 + (pair.Value * 4)); // CharacterAbility
@@ -350,6 +350,12 @@ namespace Devil
             } else {
                 return (T)(object)Memory.GetInt32(proc, path1);
             }
+        }
+
+        private void write(string str) {
+            StreamWriter wr = new StreamWriter("test.log", true);
+            wr.WriteLine("[" + DateTime.Now + "] " + str);
+            wr.Close();
         }
 
         public static Dictionary<string, int> seinInventoryFields = new Dictionary<string, int>()

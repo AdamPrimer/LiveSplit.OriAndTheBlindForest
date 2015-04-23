@@ -312,6 +312,7 @@ namespace Devil
             if (!WillTriggerEvent(name, val)) return;
 
             events[name] = val;
+            write(string.Format("Current Split: {0} {1}", currentSplit.name, currentSplit.value));
             write(string.Format("Event Trigger: {0} {1}", name, val));
 
             SplitEventHandler(name, val.ToString());
