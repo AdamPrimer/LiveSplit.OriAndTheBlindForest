@@ -32,7 +32,7 @@ namespace LiveSplit.OriAndTheBlindForest {
                 splitsState.Add(new Devil.Split("Wall Jump", "True"));
                 splitsState.Add(new Devil.Split("Charge Flame", "True"));
                 splitsState.Add(new Devil.Split("Double Jump", "True"));
-                splitsState.Add(new Devil.Split("Gumo Free", "True"));
+                splitsState.Add(new Devil.Split("Water Vein", "True"));
                 splitsState.Add(new Devil.Split("Ginso Tree Entered", "True"));
                 splitsState.Add(new Devil.Split("Bash", "True"));
                 splitsState.Add(new Devil.Split("Clean Water", "True"));
@@ -57,7 +57,7 @@ namespace LiveSplit.OriAndTheBlindForest {
                 splitsState.Add(new Devil.Split("Wall Jump", "True"));
                 splitsState.Add(new Devil.Split("Charge Flame", "True"));
                 splitsState.Add(new Devil.Split("Double Jump", "True"));
-                splitsState.Add(new Devil.Split("Gumo Free", "True"));
+                splitsState.Add(new Devil.Split("Water Vein", "True"));
                 splitsState.Add(new Devil.Split("Ginso Tree Entered", "True"));
                 splitsState.Add(new Devil.Split("Bash", "True"));
                 splitsState.Add(new Devil.Split("Clean Water", "True"));
@@ -77,7 +77,32 @@ namespace LiveSplit.OriAndTheBlindForest {
         }
 
         private void btnAllCells_Click(object sender, EventArgs e) {
-            var confirmResult =  MessageBox.Show("Default splits for this category are not yet available", "Currently Unavailable.");
+            var confirmResult =  MessageBox.Show("Are you sure? This will overwrite your current settings.",
+                "Are you sure?", MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes) {
+                splitsState.Clear();
+                splitsState.Add(new Devil.Split("Start", "True"));
+                splitsState.Add(new Devil.Split("Soul Flame", "True"));
+                splitsState.Add(new Devil.Split("Spirit Flame", "True"));
+                splitsState.Add(new Devil.Split("Wall Jump", "True"));
+                splitsState.Add(new Devil.Split("Spirit Tree Reached", "True"));
+                splitsState.Add(new Devil.Split("Charge Flame", "True"));
+                splitsState.Add(new Devil.Split("Double Jump", "True"));
+                splitsState.Add(new Devil.Split("Water Vein", "True"));
+                splitsState.Add(new Devil.Split("Ginso Tree Entered", "True"));
+                splitsState.Add(new Devil.Split("Bash", "True"));
+                splitsState.Add(new Devil.Split("Clean Water", "True"));
+                splitsState.Add(new Devil.Split("Stomp", "True"));
+                splitsState.Add(new Devil.Split("Glide", "True"));
+                splitsState.Add(new Devil.Split("Climb", "True"));
+                splitsState.Add(new Devil.Split("Gumon Seal", "True"));
+                splitsState.Add(new Devil.Split("Charge Jump", "True"));
+                splitsState.Add(new Devil.Split("Sunstone", "True"));
+                splitsState.Add(new Devil.Split("Forlorn Ruins Entered", "True"));
+                splitsState.Add(new Devil.Split("Mount Horu Entered", "True"));
+                splitsState.Add(new Devil.Split("End", "True"));
+                LoadSettings();
+            }
         }
 
         private void btnLowPercent_Click(object sender, EventArgs e) {

@@ -17,7 +17,6 @@ namespace Devil
             {"Wall Jump",          "Boolean"},
             {"Charge Flame",       "Boolean"},
             {"Double Jump",        "Boolean"},
-            {"Gumo Free",          "Boolean"},
             {"Water Vein",         "Boolean"},
             {"Ginso Tree Entered", "Boolean"},
             {"Bash",               "Boolean"},
@@ -33,10 +32,13 @@ namespace Devil
             {"Ability Cells",      "Value"},
             {"Level",              "Value"},
             {"Key Stones",         "Value"},
+            //{"Gumo Fall Trap (Fall)", "Boolean"},
+            //{"Gumo Fall Trap (Land)", "Boolean"},
             {"Climb",              "Boolean"},
             {"Charge Jump",        "Boolean"},
             {"Gumon Seal",         "Boolean"},
             {"Mist Lifted",        "Boolean"},
+            {"Gumo Free",          "Boolean"},
             {"Wind Released",      "Boolean"},
             {"Forlorn Restored",   "Boolean"},
             {"Spirit Tree Reached","Boolean"},
@@ -187,8 +189,14 @@ namespace Devil
                             case "ginsoEntranceIntro":
                                 TriggerEvent("Ginso Tree Entered", true);
                                 break;
+                            case "forlornRuinsGetNightberry":
+                                TriggerEvent("Forlorn Ruins Entered", true);
+                                break;
                             case "mountHoruHubBottom":
                                 TriggerEvent("Mount Horu Entered", true);
+                                break;
+                            case "moonGrottoGumosLastTrap":
+                                TriggerEvent("Gumo Fall Trap (Fall)", true);
                                 break;
                         }
                     } else if ((SceneState)scene.state == SceneState.Disabling) {
@@ -199,6 +207,12 @@ namespace Devil
                         state = "Loading Cancelled";
                     } else if ((SceneState)scene.state == SceneState.Disabled) {
                         state = "Disabled";
+                        state = "Loaded";
+                        switch (scene.name) {
+                            case "moonGrottoRopeBridge":
+                                TriggerEvent("Gumo Fall Trap (Land)", true);
+                                break;
+                        }
                     }
 
                     write(string.Format("{0} Scene: {1} {2}", state, scene.name, scene.hasStartBeenCalled));
