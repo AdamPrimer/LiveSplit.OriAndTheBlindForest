@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.IO;
 
 namespace Devil
 {
@@ -59,6 +60,7 @@ namespace Devil
         public bool isOpen = false;
         public bool inGame = false;
 
+        public DateTime lostSein = DateTime.Now;
         public Decimal sMapCompletion = 0;
         public Scene[] sActiveScenes = new Scene[0];
         public Dictionary<string, object> sState = new Dictionary<string, object>();
@@ -114,10 +116,12 @@ namespace Devil
 
             if (isInGameWorld) {
                 UpdateMap();
-                if (oriMemory.GetSein() != 0) {
+                if (oriMemory.GetSein() != 0 && (DateTime.Now >= lostSein)) {
                     UpdateEvents();
                     UpdateAbilities();
                     UpdateSein();
+                } else {
+                    lostSein = DateTime.Now.AddMilliseconds(500);
                 }
             }
 
@@ -271,6 +275,12 @@ namespace Devil
         public bool CheckEnteringGame() {
             // One of these two flags will be true during the transition from the Save Slot menu into the actual game.
             return oriMemory.GetGameInfo("Is Loading Old") || oriMemory.GetGameInfo("Is Loading New");
+        }
+
+        private void write(string str) {
+            StreamWriter wr = new StreamWriter("test.log", true);
+            wr.WriteLine("[" + DateTime.Now + "] " + str);
+            wr.Close();
         }
     }
 }

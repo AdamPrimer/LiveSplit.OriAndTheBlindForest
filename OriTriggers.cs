@@ -176,7 +176,7 @@ namespace Devil
 
         public void OnActiveScenesChange(Scene[] val, Scene[] old) {
             foreach (var scene in val) {
-                if (old == null || !Array.Exists(old, delegate(Scene s) { return s.name.Equals(scene.name) && s.state == scene.state; })) {
+                if (old == null || !Array.Exists(old, delegate(Scene s) { return s.name.Equals(scene.name) && s.state == scene.state && s.hasStartBeenCalled == scene.hasStartBeenCalled; })) {
                     string state = "";
                     if ((SceneState)scene.state == SceneState.Loaded) {
                         state = "Loaded";
@@ -201,7 +201,7 @@ namespace Devil
                         state = "Disabled";
                     }
 
-                    write(string.Format("{0} Scene: {1}", state, scene.name));
+                    write(string.Format("{0} Scene: {1} {2}", state, scene.name, scene.hasStartBeenCalled));
                 }
             }
         }
