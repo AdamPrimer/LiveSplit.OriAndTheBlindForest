@@ -14,7 +14,75 @@ namespace LiveSplit.OriAndTheBlindForest {
 		public OriAndTheBlindForestSettings(OriComponent component) {
 			InitializeComponent();
 			parent = component;
+            btnAnyPercent.Click += btnAnyPercent_Click;
+            btnAnyPercentMisty.Click += btnAnyPercentMisty_Click;
+            btn100Percent.Click += btn100Percent_Click;
+            btnAllCells.Click += btnAllCells_Click;
+            btnLowPercent.Click += btnLowPercent_Click;
 		}
+
+        private void btnAnyPercent_Click(object sender, EventArgs e) {
+            var confirmResult =  MessageBox.Show("Are you sure? This will overwrite your current settings.",
+                "Are you sure?", MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes) {
+                splitsState.Clear();
+                splitsState.Add(new Devil.Split("Start", "True"));
+                splitsState.Add(new Devil.Split("Soul Flame", "True"));
+                splitsState.Add(new Devil.Split("Spirit Flame", "True"));
+                splitsState.Add(new Devil.Split("Wall Jump", "True"));
+                splitsState.Add(new Devil.Split("Charge Flame", "True"));
+                splitsState.Add(new Devil.Split("Double Jump", "True"));
+                splitsState.Add(new Devil.Split("Gumo Free", "True"));
+                splitsState.Add(new Devil.Split("Ginso Tree Entered", "True"));
+                splitsState.Add(new Devil.Split("Bash", "True"));
+                splitsState.Add(new Devil.Split("Clean Water", "True"));
+                splitsState.Add(new Devil.Split("Stomp", "True"));
+                splitsState.Add(new Devil.Split("Glide", "True"));
+                splitsState.Add(new Devil.Split("Sunstone", "True"));
+                splitsState.Add(new Devil.Split("Mount Horu Entered", "True"));
+                splitsState.Add(new Devil.Split("Warmth Returned", "True"));
+                splitsState.Add(new Devil.Split("End", "True"));
+                LoadSettings();
+            }
+        }
+
+        private void btnAnyPercentMisty_Click(object sender, EventArgs e) {
+            var confirmResult =  MessageBox.Show("Are you sure? This will overwrite your current settings.",
+                "Are you sure?", MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes) {
+                splitsState.Clear();
+                splitsState.Add(new Devil.Split("Start", "True"));
+                splitsState.Add(new Devil.Split("Soul Flame", "True"));
+                splitsState.Add(new Devil.Split("Spirit Flame", "True"));
+                splitsState.Add(new Devil.Split("Wall Jump", "True"));
+                splitsState.Add(new Devil.Split("Charge Flame", "True"));
+                splitsState.Add(new Devil.Split("Double Jump", "True"));
+                splitsState.Add(new Devil.Split("Gumo Free", "True"));
+                splitsState.Add(new Devil.Split("Ginso Tree Entered", "True"));
+                splitsState.Add(new Devil.Split("Bash", "True"));
+                splitsState.Add(new Devil.Split("Clean Water", "True"));
+                splitsState.Add(new Devil.Split("Stomp", "True"));
+                splitsState.Add(new Devil.Split("Glide", "True"));
+                splitsState.Add(new Devil.Split("Climb", "True"));
+                splitsState.Add(new Devil.Split("Charge Jump", "True"));
+                splitsState.Add(new Devil.Split("Sunstone", "True"));
+                splitsState.Add(new Devil.Split("Mount Horu Entered", "True"));
+                splitsState.Add(new Devil.Split("End", "True"));
+                LoadSettings();
+            }
+        }
+
+        private void btn100Percent_Click(object sender, EventArgs e) {
+            var confirmResult =  MessageBox.Show("Default splits for this category are not yet available", "Currently Unavailable.");
+        }
+
+        private void btnAllCells_Click(object sender, EventArgs e) {
+            var confirmResult =  MessageBox.Show("Default splits for this category are not yet available", "Currently Unavailable.");
+        }
+
+        private void btnLowPercent_Click(object sender, EventArgs e) {
+            var confirmResult =  MessageBox.Show("Default splits for this category are not yet available", "Currently Unavailable.");
+        }
 
 		private void btnAddSplit_Click(object sender, EventArgs e) {
 			SplitSettings setting = new SplitSettings();
@@ -28,6 +96,7 @@ namespace LiveSplit.OriAndTheBlindForest {
 			flowMain.Controls.Add(setting);
 			UpdateSettings();
 		}
+
 		public void LoadSettings() {
 			isLoading = true;
 

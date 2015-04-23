@@ -47,6 +47,10 @@ namespace Devil
     {
         public string name;
         public string value;
+        public Split(string name, string value) {
+            this.name = name;
+            this.value = value;
+        }
     }
 
     public class OriState
