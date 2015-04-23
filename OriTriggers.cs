@@ -40,6 +40,7 @@ namespace Devil
             {"Mist Lifted",        "Boolean"},
             {"Gumo Free",          "Boolean"},
             {"Wind Released",      "Boolean"},
+            {"Forlorn Ruins Entered", "Boolean"},
             {"Forlorn Restored",   "Boolean"},
             {"Spirit Tree Reached","Boolean"},
             {"Magnet",                   "Boolean"},
