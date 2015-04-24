@@ -127,16 +127,12 @@ namespace Devil
             return pCache[name];
         }
 
-        public float GetPosition(int axis_id) {
-            int pPosition = GetBasePointer("Position");
-            float result = Memory.ReadValue<float>(proc, pPosition, -0x1C, 0, 0x48 + (axis_id * 4));
-            return result;
-        }
         public bool IsInForeground() {
             if (!isHooked) { return false; }
 
             return (int)Memory.GetForegroundWindow() == (int)proc.MainWindowHandle;
         }
+
         public Vector2 GetPosition() {
             if (!isHooked) { return new Vector2(0, 0); }
 
@@ -145,6 +141,7 @@ namespace Devil
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x4C);
             return new Vector2(px, py);
         }
+
         public Vector2 GetScreenCenter() {
             if (!isHooked) { return new Vector2(0, 0); }
 
@@ -153,6 +150,7 @@ namespace Devil
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             return new Vector2(px, py);
         }
+
         public Vector2 ScreenToGame(Vector2 point) {
             if (!isHooked) { return new Vector2(0, 0); }
 
@@ -194,6 +192,7 @@ namespace Devil
 
             return new Vector4(gx + px, py - gy, gw - gx, gh - gy);
         }
+
         public Vector2 GameToScreen(Vector2 point) {
             if (!isHooked) { return new Vector2(0, 0); }
 
@@ -236,17 +235,13 @@ namespace Devil
 
             return new Vector4(gx, gy, gw, gh);
         }
-        public bool IsOn(Surface surface) {
-            if (!isHooked) { return false; }
 
-            int seinAddress = GetSein();
-            return Memory.ReadValue<bool>(proc, seinAddress, 0x48, 0x10, (int)surface, 0x09);
-        }
         public Vector4 GetWindowBounds() {
             if (!isHooked) { return new Vector4(0, 0, 0, 0); }
 
             return Memory.GetProcessRect(proc);
         }
+
         public Dictionary<string, bool> GetEvents(Dictionary<string, int> abilities) {
             int pEvents = GetBasePointer("WorldEvents");
             int start = Memory.ReadValue<int>(proc, pEvents) - 0x2;

@@ -12,14 +12,6 @@ namespace Devil
         Loaded
     }
 
-    public enum Surface
-    {
-        Ceiling = 0x14,
-        Ground = 0x18,
-        WallLeft = 0x1C,
-        WallRight = 0x20
-    }
-
     public enum GameState
     {
         Logos,
