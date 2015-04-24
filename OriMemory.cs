@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
-
+using LiveSplit.OriAndTheBlindForest;
 namespace Devil
 {
     public struct Scene
@@ -110,8 +111,7 @@ namespace Devil
         public int GetCachedPointer(string name) {
             if (!pCache.ContainsKey(name) || pCache[name] == 0) {
                 int pointer = GetBasePointer(name);
-                int start = Memory.GetInt32(proc, pointer);    // Pointer to Object
-                int result = Memory.GetInt32(proc, start);     // Head of Object
+                int result = Memory.ReadValue<int>(proc, pointer, 0, 0);    // Pointer to Object -> Head of Object
                 pCache[name] = result;
                 return result;
             }
@@ -120,7 +120,7 @@ namespace Devil
 
         public int GetCachedAddress(string name, int addr) {
             if (!pCache.ContainsKey(name) || pCache[name] == 0) {
-                int result = Memory.GetInt32(proc, addr);
+                int result = Memory.ReadValue<int>(proc, addr);
                 pCache[name] = result;
                 return result;
             }
@@ -128,44 +128,111 @@ namespace Devil
         }
 
         public float GetPosition(int axis_id) {
-            // Resolved mono + 0x001F42C4 [0x50, 0x688, 0x7F0, 0x478, 0x750]
-            // Found assembly that accessed it.
-
             int pPosition = GetBasePointer("Position");
-            int start = Memory.GetInt32(proc, pPosition - 0x1C);
-            int path0 = Memory.GetInt32(proc, start);
-            return Memory.GetFloat(proc, path0 + 0x48 + (axis_id * 4));
+            float result = Memory.ReadValue<float>(proc, pPosition, -0x1C, 0, 0x48 + (axis_id * 4));
+            return result;
         }
+        public bool IsInForeground() {
+            if (!isHooked) { return false; }
 
+            return (int)Memory.GetForegroundWindow() == (int)proc.MainWindowHandle;
+        }
+        public Vector2 GetPosition() {
+            if (!isHooked) { return new Vector2(0, 0); }
+
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x48);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x4C);
+            return new Vector2(px, py);
+        }
+        public Vector2 GetScreenCenter() {
+            if (!isHooked) { return new Vector2(0, 0); }
+
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x64);
+            return new Vector2(px, py);
+        }
+        public Vector2 ScreenToGame(Vector2 point) {
+            if (!isHooked) { return new Vector2(0, 0); }
+
+            Vector4 window = Memory.GetProcessRect(proc);
+            float height = window.W * 9f / 16f;
+            float top = (window.H - height) / 2f;
+            window.H = (int)height;
+            window.Y += (int)top;
+
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x74);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x78);
+            float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
+            float sy = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x64);
+
+            sx = (float)(point.X - window.X) * sx * 2f / (float)window.W - sx;
+            sy = (float)(point.Y - window.Y) * sy * 2 / (float)window.H - sy;
+            return new Vector2(sx + px, py - sy);
+        }
+        public Vector4 ScreenToGame(Vector4 rect) {
+            if (!isHooked) { return new Vector4(0, 0, 0, 0); }
+
+            Vector4 window = Memory.GetProcessRect(proc);
+            float height = window.W * 9f / 16f;
+            float top = (window.H - height) / 2f;
+            window.H = (int)height;
+            window.Y += (int)top;
+
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x74);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x78);
+            float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
+            float sy = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x64);
+
+            float gx = (float)(rect.X - window.X) * sx * 2f / (float)window.W - sx;
+            float gy = (float)(rect.Y - window.Y) * sy * 2 / (float)window.H - sy;
+            float gw = (float)(rect.X + rect.W - window.X) * sx * 2f / (float)window.W - sx;
+            float gh = (float)(rect.Y + rect.H - window.Y) * sy * 2 / (float)window.H - sy;
+
+            return new Vector4(gx + px, py - gy, gw - gx, gh - gy);
+        }
+        public bool IsOn(Surface surface) {
+            if (!isHooked) { return false; }
+
+            int seinAddress = GetSein();
+            return Memory.ReadValue<bool>(proc, seinAddress, 0x48, 0x10, (int)surface, 0x09);
+        }
+        public Vector4 GetWindowBounds() {
+            if (!isHooked) { return new Vector4(0, 0, 0, 0); }
+
+            return Memory.GetProcessRect(proc);
+        }
         public Dictionary<string, bool> GetEvents(Dictionary<string, int> abilities) {
             int pEvents = GetBasePointer("WorldEvents");
-            int start = Memory.GetInt32(proc, pEvents) - 0x2;
+            int start = Memory.ReadValue<int>(proc, pEvents) - 0x2;
 
             Dictionary<string, bool> results = new Dictionary<string, bool>();
             foreach (var pair in abilities) {
-                results[pair.Key] = Memory.GetBool(proc, start + pair.Value);
+                results[pair.Key] = Memory.ReadValue<bool>(proc, start + pair.Value);
             }
             return results;
         }
 
         public Dictionary<string, bool> GetKeys(Dictionary<string, int> abilities) {
             int pEvents = GetBasePointer("WorldEvents");
-            int start = Memory.GetInt32(proc, pEvents) - 0x2;
+            int start = Memory.ReadValue<int>(proc, pEvents) - 0x42;
 
             Dictionary<string, bool> results = new Dictionary<string, bool>();
             foreach (var pair in abilities) {
-                results[pair.Key] = Memory.GetBool(proc, start - 0x40 + pair.Value);
+                results[pair.Key] = Memory.ReadValue<bool>(proc, start + pair.Value);
             }
             return results;
         }
 
         public Dictionary<string, bool> GetAbilities(Dictionary<string, int> abilities) {
-            int path0 = GetSein();
-            int path1 = Memory.GetInt32(proc, path0 + 0x4C);                 // PlayerAbilities
+            int sein = GetSein();
+            int playerAbilities = Memory.ReadValue<int>(proc, sein, 0x4C);
             Dictionary<string, bool> results = new Dictionary<string, bool>();
             foreach (var pair in abilities) {
-                int path2 = Memory.GetInt32(proc, path1 + (pair.Value * 4)); // CharacterAbility
-                results[pair.Key] = Memory.GetBool(proc, path2 + 0x8);
+                results[pair.Key] = Memory.ReadValue<bool>(proc, playerAbilities, (pair.Value * 4), 0x08);
             }
             return results;
         }
@@ -196,35 +263,32 @@ namespace Devil
 
         public int GetGameState() {
             int path0 = GetGameStateMachine();
-            return Memory.GetInt32(proc, path0 + 0x14);    // GameStateMachine.CurrentState
+            return Memory.ReadValue<int>(proc, path0, 0x14);   // GameStateMachine.CurrentState
         }
 
         public int GetDeathsCount() {
             int start = GetDeathCounter();
-            return Memory.GetInt32(proc, start + 0x14);   // SeinDeathCounter.m_deathCounter
+            return Memory.ReadValue<int>(proc, start, 0x14);   // SeinDeathCounter.m_deathCounter
         }
 
         public Area[] GetMapCompletion() {
-            int start = GetGameWorld();
-            int path1 = Memory.GetInt32(proc, start + 0x18);   // Head of RuntimeAreas List`1
-            int path2 = Memory.GetInt32(proc, path1 + 0x08);   // Head of List`1._items
-            int size = Memory.GetInt32(proc, path1 + 0x0C);    // Size of the Array
+            int gameWorld = GetGameWorld();
+            int listHead = Memory.ReadValue<int>(proc, gameWorld, 0x18, 0x08);
+            int listSize = Memory.ReadValue<int>(proc, gameWorld, 0x18, 0x0C);
 
             List<Area> areas = new List<Area>();
-            for (var i = 0; i < size; i++) {
-                int path3 = Memory.GetInt32(proc, path2 + 0x10 + (i * 0x04)); // Head of RuntimeGameWorldArea
+            for (var i = 0; i < listSize; i++) {
+                int gameWorldAreaHead = Memory.ReadValue<int>(proc, listHead, 0x10 + (i * 4));
 
-                float completionAmount = Memory.GetFloat(proc, path3 + 0x14); // RuntimeGameWorldArea.m_completionAmount 
-                bool completionIsDirty = Memory.GetBool(proc, path3 + 0x18);  // RuntimeGameWorldArea.m_dirtyCompletionAmount
+                float completionAmount = Memory.ReadValue<float>(proc, gameWorldAreaHead, 0x14); // RuntimeGameWorldArea.m_completionAmount 
+                bool completionIsDirty = Memory.ReadValue<bool>(proc, gameWorldAreaHead, 0x18);  // RuntimeGameWorldArea.m_dirtyCompletionAmount
 
-                int path4 = Memory.GetInt32(proc, path3 + 0x08);              // Head of RuntimeGameWorldArea
-                int path5 = Memory.GetInt32(proc, path4 + 0x1C);              // Head of String object
-                int len = Memory.GetInt32(proc, path5 + 0x08);                // Length of String
+                int gameAreaNameHead = Memory.ReadValue<int>(proc, gameWorldAreaHead, 0x08, 0x1C);
+                int nameLength = Memory.ReadValue<int>(proc, gameAreaNameHead, 0x08);
 
-                string areaName = System.Text.Encoding.Unicode.GetString(
-                    Memory.GetBytes(proc, path5 + 0x0C, 2 * len));            // RuntimeGameWorldArea.AreaNameString
+                string areaName = Encoding.Unicode.GetString(Memory.GetBytes(proc, gameAreaNameHead + 0x0C, 2 * nameLength)); // RuntimeGameWorldArea.AreaNameString
 
-                Decimal completionRounded = Math.Round((Decimal)completionAmount * 100, 2, MidpointRounding.AwayFromZero);
+                decimal completionRounded = Math.Round((decimal)completionAmount * 100, 2, MidpointRounding.AwayFromZero);
 
                 Area area = new Area();
                 area.name = areaName;
@@ -236,24 +300,22 @@ namespace Devil
         }
 
         public Scene[] GetScenes() {
-            int start = GetScenesManager();
-            int path1 = Memory.GetInt32(proc, start + 0x14);   // Head of ActiveScenes List`1
-            int path2 = Memory.GetInt32(proc, path1 + 0x08);   // Head of List`1._items
-            int size = Memory.GetInt32(proc, path1 + 0x0C);    // Size of the Array
+            int sceneManager = GetScenesManager();
+            int activeScenesHead = Memory.ReadValue<int>(proc, sceneManager, 0x14);
+            int listSize = Memory.ReadValue<int>(proc, activeScenesHead, 0x0C);
 
             List<Scene> scenes = new List<Scene>();
-            for (var i = 0; i < size; i++) {
-                int path3 = Memory.GetInt32(proc, path2 + 0x10 + (i * 0x04)); // Head of SceneManagerScene
+            for (var i = 0; i < listSize; i++) {
+                int sceneManagerHead = Memory.ReadValue<int>(proc, activeScenesHead, 0x08, 0x10 + (i * 4)); // Head of SceneManagerScene
 
-                bool hasStartBeenCalled = Memory.GetBool(proc, path3 + 0x10); // SceneManagetScene.HasStartBeenCalled
-                int currentState = Memory.GetInt32(proc, path3 + 0x14);       // SceneManagerScene.CurrentState
+                bool hasStartBeenCalled = Memory.ReadValue<bool>(proc, sceneManagerHead, 0x10);  // SceneManagetScene.HasStartBeenCalled
+                int currentState = Memory.ReadValue<int>(proc, sceneManagerHead, 0x14);          // SceneManagerScene.CurrentState
 
-                int path4 = Memory.GetInt32(proc, path3 + 0x0C);              // Head of RuntimeSceneMetadata
-                int path5 = Memory.GetInt32(proc, path4 + 0x08);              // Head of String object
-                int len = Memory.GetInt32(proc, path5 + 0x08);                // Length of String
+                int runtimeSceneHead = Memory.ReadValue<int>(proc, sceneManagerHead, 0x0C, 0x08);// Head of RuntimeSceneMetadata
+                int runtimeLength = Memory.ReadValue<int>(proc, runtimeSceneHead, 0x08);         // Length of String
 
-                string sceneName = System.Text.Encoding.Unicode.GetString(
-                    Memory.GetBytes(proc, path5 + 0x0C, 2 * len));            // RuntimeSceneMetadata.Scene
+                string sceneName = Encoding.Unicode.GetString(
+                    Memory.GetBytes(proc, runtimeSceneHead + 0x0C, 2 * runtimeLength));            // RuntimeSceneMetadata.Scene
 
                 Scene scene = new Scene();
                 scene.name = sceneName;
@@ -267,61 +329,51 @@ namespace Devil
 
         public bool GetGameInfo(string field) {
             int start = GetGame();
-            return Memory.GetBool(proc, start + gameControllerFields[field]);
+            return Memory.ReadValue<bool>(proc, start, gameControllerFields[field]);
         }
 
         public float GetGameTime() {
             int start = GetGame();
             int path0 = GetCachedAddress("GameTimer", start + 0x14); // GameTimer
-            return Memory.GetFloat(proc, path0 + 0x1c);              // GameTimer.CurrentTime
+            return Memory.ReadValue<float>(proc, path0, 0x1c);       // GameTimer.CurrentTime
         }
 
         public bool GetSeinHasSoulFlame() {
-            return (GetSeinEnergy("Max") > 0);
+            return GetSeinEnergy("Max") > 0;
         }
 
         public int GetSeinInventory(string field) {
             int start = GetSein();
             int path0 = GetCachedAddress("SeinInventory", start + 0x2C); // SeinInventory
-            return Memory.GetInt32(proc, path0 + seinInventoryFields[field]);
+            return Memory.ReadValue<int>(proc, path0, seinInventoryFields[field]);
         }
 
-        public float GetSeinLevel(string field) {
+        public int GetSeinLevel(string field) {
             int start = GetSein();
             int path0 = GetCachedAddress("SeinLevel", start + 0x38); // SeinLevel
-            return Memory.GetInt32(proc, path0 + seinLevelFields[field]);
+            return Memory.ReadValue<int>(proc, path0, seinLevelFields[field]);
         }
 
         public float GetSeinEnergy(string field) {
             int start = GetSein();
             int path0 = GetCachedAddress("SeinEnergy", start + 0x3C); // SeinEnergy
-            return Memory.GetFloat(proc, path0 + seinEnergyFields[field]);
+            return Memory.ReadValue<float>(proc, path0, seinEnergyFields[field]);
         }
 
         public T GetSeinDamage<T>(string field) {
             int start = GetSein();
             int path0 = GetCachedAddress("SeinMortality", start + 0x40);      // SeinMortality
             int path1 = GetCachedAddress("SeinDamageReciever", path0 + 0x08); // SeinDamageReciever
-            int path2 = path1 + seinDamageFields[field];
 
-            if (typeof(T) == typeof(Boolean)) {
-                return (T)(object)Memory.GetBool(proc, path2);
-            } else {
-                return (T)(object)Memory.GetFloat(proc, path2);
-            }
+            return Memory.ReadValue<T>(proc, path1, seinDamageFields[field]);
         }
 
         public T GetSeinHealth<T>(string field) {
             int start = GetSein();
             int path0 = GetCachedAddress("SeinMortality", start + 0x40);        // SeinMortality
             int path1 = GetCachedAddress("SeinHealthController", path0 + 0x0C); // SeinHealthController
-            int path2 = path1 + seinHealthFields[field];
 
-            if (typeof(T) == typeof(Single)) {
-                return (T)(object)Memory.GetFloat(proc, path2);
-            } else {
-                return (T)(object)Memory.GetInt32(proc, path2);
-            }
+            return Memory.ReadValue<T>(proc, path1, seinHealthFields[field]);
         }
 
         public T GetSeinAbilityState<T>(string field) {
@@ -329,27 +381,14 @@ namespace Devil
             int path0 = GetCachedAddress("SeinAbilities", start + 0x10); // SeinAbilities
             int[] path = seinAbilityStateFields[field];
 
-            int path1 = Memory.GetInt32(proc, path0 + path[0]);
-
-            if (typeof(T) == typeof(Boolean)) {
-                return (T)(object)Memory.GetBool(proc, path1 + path[1]);
-            } else {
-                return (T)(object)Memory.GetInt32(proc, path1 + path[1]);
-            }
+            return Memory.ReadValue<T>(proc, path0, path[0], path[1]);
         }
 
         public T GetSeinSoulFlame<T>(string field) {
             int start = GetSein();
             int path0 = GetCachedAddress("SeinSoulFlame", start + 0x28); // SeinSoulFlame
-            int path1 = path0 + seinSoulFlameFields[field];
 
-            if (typeof(T) == typeof(Single)) {
-                return (T)(object)Memory.GetFloat(proc, path1);
-            } else if (typeof(T) == typeof(Boolean)) {
-                return (T)(object)Memory.GetBool(proc, path1);
-            } else {
-                return (T)(object)Memory.GetInt32(proc, path1);
-            }
+            return Memory.ReadValue<T>(proc, path0, seinSoulFlameFields[field]);
         }
 
         private void write(string str) {

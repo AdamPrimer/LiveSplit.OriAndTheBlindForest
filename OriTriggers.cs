@@ -93,7 +93,7 @@ namespace Devil
 
         public event OnSplitHandler OnSplit;
 
-        public OriTriggers() {}
+        public OriTriggers() { }
 
         public void SetSplits(List<Split> splits) {
             sSplits = splits.ToArray();
@@ -112,7 +112,7 @@ namespace Devil
         public void SplitEventHandler(string name, string value) {
             if (currentSplit.name == name && currentSplit.value == value) {
                 write("Trigger Function Called.");
-                if (OnSplit != null) { 
+                if (OnSplit != null) {
                     SplitEventArgs e = new SplitEventArgs();
                     e.name = name;
                     e.value = value;
@@ -249,7 +249,7 @@ namespace Devil
                     break;
 
                 case "Level":
-                    SetCounter(name, (int)Math.Floor((float)val));
+                    SetCounter(name, (int)val);
                     break;
 
                 case "In Game Time":

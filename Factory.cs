@@ -7,43 +7,35 @@ namespace LiveSplit.OriAndTheBlindForest
 {
     public class Factory : IComponentFactory
     {
-        public string ComponentName
-        {
+        public string ComponentName {
             get { return "Ori and the Blind Forest Autosplitter"; }
         }
 
-        public string Description
-        {
+        public string Description {
             get { return "Autosplitter for Ori and the Blind Forest"; }
         }
 
-        public ComponentCategory Category
-        {
+        public ComponentCategory Category {
             get { return ComponentCategory.Control; }
         }
 
-        public IComponent Create(LiveSplitState state)
-        {
+        public IComponent Create(LiveSplitState state) {
             return new OriComponent();
         }
 
-        public string UpdateName
-        {
+        public string UpdateName {
             get { return ""; }
         }
 
-        public string UpdateURL
-        {
+        public string UpdateURL {
             get { return "http://livesplit.org/update/"; }
         }
 
-        public Version Version
-        {
+        public Version Version {
             get { return new Version(); }
         }
 
-        public string XMLURL
-        {
+        public string XMLURL {
             get { return "http://livesplit.org/update/Components/noupdates.xml"; }
         }
     }

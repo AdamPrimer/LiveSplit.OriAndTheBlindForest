@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.IO;
-
 namespace Devil
 {
     public enum SceneState
@@ -15,7 +10,15 @@ namespace Devil
         Loading,
         LoadingCancelled,
         Loaded
-    };
+    }
+
+    public enum Surface
+    {
+        Ceiling = 0x14,
+        Ground = 0x18,
+        WallLeft = 0x1C,
+        WallRight = 0x20
+    }
 
     public enum GameState
     {
@@ -120,11 +123,12 @@ namespace Devil
 
             if (isInGameWorld) {
                 UpdateMap();
-                if (oriMemory.GetSein() != 0 && (DateTime.Now >= lostSein)) {
+                int pSein = oriMemory.GetSein();
+                if (pSein != 0 && (DateTime.Now >= lostSein)) {
                     UpdateEvents();
                     UpdateAbilities();
                     UpdateSein();
-                } else {
+                } else if (pSein == 0) {
                     lostSein = DateTime.Now.AddMilliseconds(500);
                 }
             }
@@ -152,13 +156,13 @@ namespace Devil
         public void UpdateSein() {
             Dictionary<string, object> n = new Dictionary<string, object>() { };
 
-            n["Energy Max"]        = oriMemory.GetSeinEnergy("Max");
-            n["Health Max"]        = oriMemory.GetSeinHealth<Int32>("Max");
-            n["Soul Flame"]        = oriMemory.GetSeinHasSoulFlame();
-            n["Ability Cells"]     = oriMemory.GetSeinInventory("Skill Points");
-            n["Deaths"]            = oriMemory.GetDeathsCount();
-            n["Level"]             = oriMemory.GetSeinLevel("Current");
-            n["Key Stones"]        = oriMemory.GetSeinInventory("Keystones");
+            n["Energy Max"] = oriMemory.GetSeinEnergy("Max");
+            n["Health Max"] = oriMemory.GetSeinHealth<int>("Max");
+            n["Soul Flame"] = oriMemory.GetSeinHasSoulFlame();
+            n["Ability Cells"] = oriMemory.GetSeinInventory("Skill Points");
+            n["Deaths"] = oriMemory.GetDeathsCount();
+            n["Level"] = oriMemory.GetSeinLevel("Current");
+            n["Key Stones"] = oriMemory.GetSeinInventory("Keystones");
 
             //n["Soul Flames Cast"]  = oriMemory.GetSeinSoulFlame<Int32>("Number of Soul Flames Cast");
 
@@ -221,13 +225,13 @@ namespace Devil
         public void UpdateMap() {
             Area[] areas = oriMemory.GetMapCompletion();
             if (areas.Length == 0) return;
-            
-            Decimal mapCompletion = 0;
+
+            decimal mapCompletion = 0;
             foreach (var area in areas) {
                 mapCompletion += area.progress;
             }
-            mapCompletion = Math.Round((Decimal)mapCompletion / areas.Length, 2, MidpointRounding.AwayFromZero);
-            
+            mapCompletion = Math.Round((decimal)mapCompletion / areas.Length, 2, MidpointRounding.AwayFromZero);
+
             if (mapCompletion != sMapCompletion) {
                 oriTriggers.OnMapCompletionChange(areas, sMapCompletion);
                 sMapCompletion = mapCompletion;

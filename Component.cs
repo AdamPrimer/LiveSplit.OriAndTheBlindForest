@@ -1,20 +1,11 @@
-﻿using LiveSplit.Model;
+﻿using Devil;
+using LiveSplit.Model;
 using LiveSplit.UI;
 using LiveSplit.UI.Components;
-using LiveSplit.TimeFormatters;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.IO;
-using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
-
 namespace LiveSplit.OriAndTheBlindForest
 {
     public class OriComponent : LogicComponent
@@ -25,13 +16,13 @@ namespace LiveSplit.OriAndTheBlindForest
             get { return "Ori and the Blind Forest Auto Splitter"; }
         }
 
-        public Devil.OriState oriState;
+        public OriState oriState;
 
         protected TimerModel Model { get; set; }
 
         public OriComponent() {
+            oriState = new OriState();
             Settings = new OriAndTheBlindForestSettings(this);
-            oriState = new Devil.OriState();
             oriState.oriTriggers.OnSplit += OnSplit;
         }
 
@@ -51,7 +42,7 @@ namespace LiveSplit.OriAndTheBlindForest
 
         // if (Model.CurrentState.CurrentPhase == TimerPhase.Running && !useInGame || inGame)
 
-        public void OnSplit(object sender, Devil.OriTriggers.SplitEventArgs e) {
+        public void OnSplit(object sender, OriTriggers.SplitEventArgs e) {
             if (e.name == "Start") {
                 write("[OriSplitter] Start.");
                 Model.Start();
@@ -64,7 +55,9 @@ namespace LiveSplit.OriAndTheBlindForest
             }
         }
 
-        public override void Dispose() { }
+        public override void Dispose() {
+            Settings.CloseDisplay();
+        }
 
         public override Control GetSettingsControl(LayoutMode mode) {
             write("GetSettingsControl();");
