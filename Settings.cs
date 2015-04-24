@@ -38,10 +38,10 @@ namespace LiveSplit.OriAndTheBlindForest
         private void txtHitbox_LostFocus(object sender, EventArgs e) {
             SplitSettings splitSetting = (SplitSettings)((TextBox)sender).Parent;
             if (splitSetting.ControlType != "Hitbox") return;
-            write("No Focus");
             display.Hide();
             display.OnNewHitbox -= txtHitbox_OnNewHitbox;
             display.UndrawRectangle();
+            UpdateSettings();
         }
 
         private void txtHitbox_TextChanged(object sender, EventArgs e) {
@@ -321,13 +321,6 @@ namespace LiveSplit.OriAndTheBlindForest
             wr.Close();
         }
 
-        private void btnDebug_Click(object sender, EventArgs e) {
-            if (display.Visibility == System.Windows.Visibility.Hidden) {
-                display.Show();
-            } else {
-                display.Hide();
-            }
-        }
         public void CloseDisplay() {
             display.Hide();
         }

@@ -122,7 +122,7 @@ namespace LiveSplit.OriAndTheBlindForest
             double fontSize = Math.Max((double)Height / 50, (double)6);
             double fontSizeSmall = Math.Max((double)Height / 70, (double)6);
             Vector4 hitbox = new Vector4(0, 0, 0, 0);
-            
+
             var mouse = System.Windows.Forms.Form.MousePosition;
             if (mouse.X >= Left && mouse.X < Left + Width && mouse.Y >= Top && mouse.Y < Top + Height && System.Windows.Forms.Form.MouseButtons == System.Windows.Forms.MouseButtons.Right) {
                 if (isDragging == false) {
@@ -151,6 +151,9 @@ namespace LiveSplit.OriAndTheBlindForest
                 }
             } else {
                 isDragging = false;
+                if (rect != null) {
+                    DrawRectangle(lastHitbox);
+                }
             }
 
             GamesPlayed.FontSize = fontSize;

@@ -78,6 +78,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnDown);
             this.Controls.Add(this.btnUp);
@@ -85,7 +86,7 @@
             this.Controls.Add(this.cboName);
             this.Margin = new System.Windows.Forms.Padding(3, 1, 1, 1);
             this.Name = "SplitSettings";
-            this.Size = new System.Drawing.Size(450, 23);
+            this.Size = new System.Drawing.Size(429, 26);
             this.ResumeLayout(false);
             this.PerformLayout();
 

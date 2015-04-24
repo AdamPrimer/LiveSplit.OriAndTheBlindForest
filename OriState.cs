@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using LiveSplit.OriAndTheBlindForest;
+
 namespace Devil
 {
     public enum SceneState
@@ -117,6 +119,7 @@ namespace Devil
                 UpdateMap();
                 int pSein = oriMemory.GetSein();
                 if (pSein != 0 && (DateTime.Now >= lostSein)) {
+                    UpdatePosition();
                     UpdateEvents();
                     UpdateAbilities();
                     UpdateSein();
@@ -239,11 +242,12 @@ namespace Devil
             UpdateGeneric(OriMemory.abilities, sAbilities, oriMemory.GetAbilities, oriTriggers.OnAbilityChange);
         }
 
-        public void UpdatePosition(float x, float y) {
-            if (x != posX || y != posY) {
-                posX = x;
-                posY = y;
-                oriTriggers.OnPositionChange(posX, posY);
+        public void UpdatePosition() {
+            Vector2 pos = oriMemory.GetCameraTargetPosition();
+            if (pos.X != posX || pos.Y != posY) {
+                posX = pos.X;
+                posY = pos.Y;
+                oriTriggers.OnPositionChange(pos);
             }
         }
 

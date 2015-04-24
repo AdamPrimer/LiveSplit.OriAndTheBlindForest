@@ -36,6 +36,9 @@
         public bool Within(float x, float y, float width, float height) {
             return X >= x && Y >= y && X <= x + width && Y <= y + height;
         }
+        public bool Within(Vector4 pos) {
+            return X >= pos.X && Y >= pos.Y && X <= pos.X + pos.W && Y <= pos.Y + pos.H;
+        }
         public override string ToString() {
             return string.Concat(X.ToString("0.000"), ", ", Y.ToString("0.000"));
         }
@@ -119,6 +122,10 @@
 
         public Vector2 GetCenter() {
             return new Vector2(X + (W / 2), Y - (H / 2), Origin.Center);
+        }
+
+        public bool Intersects(Vector4 other) {
+            return X + W >= other.X && other.X + other.W >= X && Y - H <= other.Y && other.Y - other.H <= Y;
         }
 
         public override string ToString() {

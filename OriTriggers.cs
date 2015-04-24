@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
+using LiveSplit.OriAndTheBlindForest;
 
 namespace Devil
 {
@@ -160,7 +161,16 @@ namespace Devil
         }
 
         public void OnInGameChange(bool val) { }
-        public void OnPositionChange(float posX, float posY) { }
+
+        public void OnPositionChange(Vector2 pos) { 
+            if (!availableSplits.ContainsKey(currentSplit.name) || availableSplits[currentSplit.name] != "Hitbox") {
+                return;
+            }
+
+            if (new Vector4(pos, 0.68f, 1.15f).Intersects(new Vector4(currentSplit.value))) {
+                TriggerEvent(currentSplit.name, true);
+            }
+        }
 
         public void OnKeyChange(string key, bool val) {
             TriggerEvent(key, val);
