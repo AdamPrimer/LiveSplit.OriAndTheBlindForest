@@ -10,7 +10,7 @@ namespace LiveSplit.OriAndTheBlindForest
     public partial class OriAndTheBlindForestSettings : UserControl
     {
         public List<Split> splitsState = new List<Split>();
-        public static MainWindow display;
+        public MainWindow display;
 
         private bool isLoading = false;
         public OriComponent parent;

@@ -149,8 +149,8 @@ namespace Devil
             if (!isHooked) { return new Vector2(0, 0); }
 
             int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
-            float px = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
-            float py = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x64);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             return new Vector2(px, py);
         }
         public Vector2 ScreenToGame(Vector2 point) {
@@ -163,8 +163,8 @@ namespace Devil
             window.Y += (int)top;
 
             int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
-            float px = Memory.ReadValue<float>(proc, positionAddress, 0x74);
-            float py = Memory.ReadValue<float>(proc, positionAddress, 0x78);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
             float sy = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x64);
 
@@ -182,8 +182,8 @@ namespace Devil
             window.Y += (int)top;
 
             int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
-            float px = Memory.ReadValue<float>(proc, positionAddress, 0x74);
-            float py = Memory.ReadValue<float>(proc, positionAddress, 0x78);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
             float sy = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x64);
 
@@ -193,6 +193,48 @@ namespace Devil
             float gh = (float)(rect.Y + rect.H - window.Y) * sy * 2 / (float)window.H - sy;
 
             return new Vector4(gx + px, py - gy, gw - gx, gh - gy);
+        }
+        public Vector2 GameToScreen(Vector2 point) {
+            if (!isHooked) { return new Vector2(0, 0); }
+
+            Vector4 window = Memory.GetProcessRect(proc);
+            float height = window.W * 9f / 16f;
+            float top = (window.H - height) / 2f;
+            window.H = (int)height;
+            window.Y += (int)top;
+
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
+            float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
+            float sy = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x64);
+
+            sx = (point.X - px + sx) * (float)window.W / (sx * 2f) + window.X;
+            sy = (sy - point.Y + py) * (float)window.H / (sy * 2f) + window.Y;
+
+            return new Vector2(sx, sy);
+        }
+        public Vector4 GameToScreen(Vector4 rect) {
+            if (!isHooked) { return new Vector4(0, 0, 0, 0); }
+
+            Vector4 window = Memory.GetProcessRect(proc);
+            float height = window.W * 9f / 16f;
+            float top = (window.H - height) / 2f;
+            window.H = (int)height;
+            window.Y += (int)top;
+
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
+            float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
+            float sy = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x64);
+
+            float gx = (rect.X - px + sx) * (float)window.W / (sx * 2f) + window.X;
+            float gy = (sy - rect.Y + py) * (float)window.H / (sy * 2f) + window.Y;
+            float gw = (rect.X + rect.W - px + sx) * (float)window.W / (sx * 2f) + window.X - gx;
+            float gh = gy - ((sy - rect.Y - rect.H + py) * (float)window.H / (sy * 2f) + window.Y);
+
+            return new Vector4(gx, gy, gw, gh);
         }
         public bool IsOn(Surface surface) {
             if (!isHooked) { return false; }
