@@ -17,6 +17,7 @@ namespace LiveSplit.OriAndTheBlindForest
         private Rectangle rect;
         private Vector2 start;
         public Vector4 lastHitbox;
+        private bool isDragging;
 
         public delegate void OnNewHitboxHandler(object sender, EventArgs e);
         public event OnNewHitboxHandler OnNewHitbox;
@@ -67,6 +68,7 @@ namespace LiveSplit.OriAndTheBlindForest
 
             SetRect((int)rect.Y, (int)rect.X, (int)rect.W, (int)rect.H);
         }
+
         private bool PointInsideControl(System.Windows.Point pos, double actualWidth, double actualHeight) {
             return PointInsideControl(pos, actualWidth, actualHeight, new Thickness(0));
         }
@@ -77,6 +79,7 @@ namespace LiveSplit.OriAndTheBlindForest
             }
             return false;
         }
+
         public void ShowOverlay(bool enable) {
             if (!enable) {
                 Topmost = false;
@@ -86,57 +89,78 @@ namespace LiveSplit.OriAndTheBlindForest
                 GamesPlayed.Visibility = Visibility.Visible;
             }
         }
+
+        public void DrawRectangle(Vector4 pos) {
+            if (pos.W == 0 || pos.H == 0) return;
+
+            pos = reader.GameToScreen(pos);
+
+            if (rect == null) {
+                rect = new Rectangle {
+                    Stroke = Brushes.Red,
+                    StrokeThickness = 4
+                };
+                CanvasInfo.Children.Add(rect);
+            }
+
+            Canvas.SetLeft(rect, pos.X - Left);
+            Canvas.SetTop(rect, pos.Y - Top);
+
+            rect.Width = pos.W;
+            rect.Height =  pos.H;
+        }
+
+        public void UndrawRectangle() {
+            if (rect != null) {
+                CanvasInfo.Children.Remove(rect);
+                rect = null;
+            }
+        }
+
         public void Update() {
             UpdatePosition();
             double fontSize = Math.Max((double)Height / 50, (double)6);
             double fontSizeSmall = Math.Max((double)Height / 70, (double)6);
             Vector4 hitbox = new Vector4(0, 0, 0, 0);
+            
             var mouse = System.Windows.Forms.Form.MousePosition;
             if (mouse.X >= Left && mouse.X < Left + Width && mouse.Y >= Top && mouse.Y < Top + Height && System.Windows.Forms.Form.MouseButtons == System.Windows.Forms.MouseButtons.Right) {
-                if (rect == null) {
-                    rect = new Rectangle {
-                        Stroke = Brushes.Red,
-                        StrokeThickness = 4
-                    };
-                    CanvasInfo.Children.Add(rect);
+                if (isDragging == false) {
                     start = reader.ScreenToGame(new Vector2(mouse.X, mouse.Y));
                 }
+                isDragging = true;
 
                 Vector2 startScreen = reader.GameToScreen(start);
                 if (mouse.X < startScreen.X) {
-                    Canvas.SetLeft(rect, mouse.X - Left);
                     hitbox.X = mouse.X;
                 } else {
-                    Canvas.SetLeft(rect, startScreen.X - Left);
                     hitbox.X = startScreen.X;
                 }
                 if (mouse.Y < startScreen.Y) {
-                    Canvas.SetTop(rect, mouse.Y - Top);
                     hitbox.Y = mouse.Y;
                 } else {
-                    Canvas.SetTop(rect, startScreen.Y - Top);
                     hitbox.Y = startScreen.Y;
                 }
-                rect.Width = Math.Abs(mouse.X - startScreen.X);
-                rect.Height = Math.Abs(mouse.Y - startScreen.Y);
-                hitbox.W = (float)rect.Width;
-                hitbox.H = (float)rect.Height;
-            } else if (rect != null) {
-                CanvasInfo.Children.Remove(rect);
-                rect = null;
+
+                hitbox.W = (float)Math.Abs(mouse.X - startScreen.X);
+                hitbox.H = (float)Math.Abs(mouse.Y - startScreen.Y);
+
+                lastHitbox = reader.ScreenToGame(hitbox);
+                if (OnNewHitbox != null) {
+                    OnNewHitbox(this, new EventArgs());
+                }
+            } else {
+                isDragging = false;
             }
+
             GamesPlayed.FontSize = fontSize;
             Vector2 pos = reader.ScreenToGame(new Vector2(mouse.X, mouse.Y));
             Vector2 oripos = reader.GetCameraTargetPosition();
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Ori: " + oripos.ToString()).AppendLine("Mouse: " + pos.ToString());
+
             if (rect != null) {
-                Vector4 gameHitbox = reader.ScreenToGame(hitbox);
-                sb.AppendLine("Hitbox: " + gameHitbox.ToString());
-                lastHitbox = gameHitbox;
-                if (OnNewHitbox != null) {
-                    OnNewHitbox(this, new EventArgs());
-                }
+                sb.AppendLine("Hitbox: " + lastHitbox.ToString());
             }
 
             GamesPlayed.Text = sb.ToString();
@@ -144,6 +168,7 @@ namespace LiveSplit.OriAndTheBlindForest
             Canvas.SetLeft(GamesPlayed, Width - GamesPlayed.ActualWidth * 1.2);
             Canvas.SetTop(GamesPlayed, Height - GamesPlayed.ActualHeight * 1.3);
         }
+
         private void SetRect(int top, int left, int width, int height) {
             Top = top;
             Left = left;

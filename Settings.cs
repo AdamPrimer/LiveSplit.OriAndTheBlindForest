@@ -32,6 +32,7 @@ namespace LiveSplit.OriAndTheBlindForest
             if (splitSetting.ControlType != "Hitbox") return;
             display.Show();
             display.OnNewHitbox += txtHitbox_OnNewHitbox;
+            display.DrawRectangle(new Vector4(splitSetting.txtValue.Text));
         }
 
         private void txtHitbox_LostFocus(object sender, EventArgs e) {
@@ -40,6 +41,13 @@ namespace LiveSplit.OriAndTheBlindForest
             write("No Focus");
             display.Hide();
             display.OnNewHitbox -= txtHitbox_OnNewHitbox;
+            display.UndrawRectangle();
+        }
+
+        private void txtHitbox_TextChanged(object sender, EventArgs e) {
+            SplitSettings splitSetting = (SplitSettings)((TextBox)sender).Parent;
+            if (splitSetting.ControlType != "Hitbox") return;
+            display.DrawRectangle(new Vector4(splitSetting.txtValue.Text));
         }
 
         private void txtHitbox_OnNewHitbox(object sender, EventArgs e) {
@@ -177,6 +185,7 @@ namespace LiveSplit.OriAndTheBlindForest
         private void AddHandlers(SplitSettings setting) {
             setting.txtValue.Enter += txtHitbox_GotFocus;
             setting.txtValue.Leave += txtHitbox_LostFocus;
+            setting.txtValue.TextChanged += txtHitbox_TextChanged;
             setting.cboName.SelectedIndexChanged += cboName_SelectedIndexChanged;
             setting.btnRemove.Click += btnRemove_Click;
             setting.btnUp.Click += btnUp_Click;
@@ -185,6 +194,7 @@ namespace LiveSplit.OriAndTheBlindForest
         private void RemoveHandlers(SplitSettings setting) {
             setting.txtValue.Enter -= txtHitbox_GotFocus;
             setting.txtValue.Leave -= txtHitbox_LostFocus;
+            setting.txtValue.TextChanged += txtHitbox_TextChanged;
             setting.cboName.SelectedIndexChanged -= cboName_SelectedIndexChanged;
             setting.btnRemove.Click -= btnRemove_Click;
             setting.btnUp.Click -= btnUp_Click;

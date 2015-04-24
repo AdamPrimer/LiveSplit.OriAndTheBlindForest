@@ -97,6 +97,11 @@
                 this.W = temp;
                 float.TryParse(cords[3], out temp);
                 this.H = temp;
+            } else {
+                this.X = 0;
+                this.Y = 0;
+                this.W = 0;
+                this.H = 0;
             }
         }
         public Vector4(Vector2 pos, float w, float h) {
