@@ -55,7 +55,7 @@ namespace LiveSplit.OriAndTheBlindForest
         }
 
         public void UpdatePosition() {
-            var rect = reader.GetWindowBounds();
+            var rect = reader.GetGameWindowBounds();
             ShowOverlay(reader.IsGameInForeground());
 
             //hs window has height 0 if it just launched, screwing things up if the tracker is started before hs is. 

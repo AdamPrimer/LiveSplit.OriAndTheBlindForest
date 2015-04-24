@@ -101,8 +101,8 @@
         }
         public Vector4(Vector2 pos, float w, float h) {
             if (pos.origin == Origin.Center) {
-                this.X = pos.X - w / 2;
-                this.Y = pos.Y + h / 2;
+                this.X = pos.X - (w / 2);
+                this.Y = pos.Y + (h / 2);
             } else {
                 this.X = pos.X;
                 this.Y = pos.Y;
@@ -110,6 +110,10 @@
 
             this.W = w;
             this.H = h;
+        }
+
+        public Vector2 GetCenter() {
+            return new Vector2(X + (W / 2), Y - (H / 2), Origin.Center);
         }
 
         public override string ToString() {
