@@ -48,8 +48,9 @@ namespace Devil
             // Hooked to get death counter, for some reason this is a global singleton...
             {"SeinDeathCounter",      "83C41085C0740433C0EB098B05????????8B4014C9C3|-9"},
             
+            // GameplayCamera()
             // Hooked to know Ori's position, used to trigger splits based on location.
-            {"Position",              "05480000008B08894DE88B4804894DEC8B40088945F08B05"},
+            {"Position",              "05480000008B08894DE88B4804894DEC8B40088945F08B05|-28"},
 
             // Hooked to get Map%
             {"GameWorld",             "558BEC53575683EC0C8B7D08B8????????89388B47|-8"},
@@ -136,16 +137,16 @@ namespace Devil
         public Vector2 GetPosition() {
             if (!isHooked) { return new Vector2(0, 0); }
 
-            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
-            float px = Memory.ReadValue<float>(proc, positionAddress, 0x48);
-            float py = Memory.ReadValue<float>(proc, positionAddress, 0x4C);
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), 0);
+            float px = Memory.ReadValue<float>(proc, positionAddress, 0x14, 0x10);
+            float py = Memory.ReadValue<float>(proc, positionAddress, 0x14, 0x14);
             return new Vector2(px, py);
         }
 
         public Vector2 GetScreenCenter() {
             if (!isHooked) { return new Vector2(0, 0); }
 
-            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             return new Vector2(px, py);
@@ -160,7 +161,7 @@ namespace Devil
             window.H = (int)height;
             window.Y += (int)top;
 
-            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
@@ -179,7 +180,7 @@ namespace Devil
             window.H = (int)height;
             window.Y += (int)top;
 
-            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
@@ -202,7 +203,7 @@ namespace Devil
             window.H = (int)height;
             window.Y += (int)top;
 
-            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
@@ -222,7 +223,7 @@ namespace Devil
             window.H = (int)height;
             window.Y += (int)top;
 
-            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), -0x1C, 0);
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("Position"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
