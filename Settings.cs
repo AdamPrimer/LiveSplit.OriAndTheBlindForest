@@ -10,7 +10,7 @@ namespace LiveSplit.OriAndTheBlindForest
     public partial class OriAndTheBlindForestSettings : UserControl
     {
         public List<Split> splitsState = new List<Split>();
-        private MainWindow display;
+        public static MainWindow display;
 
         private bool isLoading = false;
         public OriComponent parent;
@@ -25,6 +25,27 @@ namespace LiveSplit.OriAndTheBlindForest
             btn100Percent.Click += btn100Percent_Click;
             btnAllCells.Click += btnAllCells_Click;
             btnLowPercent.Click += btnLowPercent_Click;
+        }
+
+        private void txtHitbox_GotFocus(object sender, EventArgs e) {
+            SplitSettings splitSetting = (SplitSettings)((TextBox)sender).Parent;
+            if (splitSetting.ControlType != "Hitbox") return;
+            display.Show();
+            display.OnNewHitbox += txtHitbox_OnNewHitbox;
+        }
+
+        private void txtHitbox_LostFocus(object sender, EventArgs e) {
+            SplitSettings splitSetting = (SplitSettings)((TextBox)sender).Parent;
+            if (splitSetting.ControlType != "Hitbox") return;
+            write("No Focus");
+            display.Hide();
+            display.OnNewHitbox -= txtHitbox_OnNewHitbox;
+        }
+
+        private void txtHitbox_OnNewHitbox(object sender, EventArgs e) {
+            SplitSettings splitSetting = (SplitSettings)this.ActiveControl;
+            if (splitSetting.ControlType != "Hitbox") return;
+            splitSetting.txtValue.Text = display.lastHitbox.ToString();
         }
 
         private void btnAnyPercent_Click(object sender, EventArgs e) {
@@ -154,12 +175,16 @@ namespace LiveSplit.OriAndTheBlindForest
         }
 
         private void AddHandlers(SplitSettings setting) {
+            setting.txtValue.Enter += txtHitbox_GotFocus;
+            setting.txtValue.Leave += txtHitbox_LostFocus;
             setting.cboName.SelectedIndexChanged += cboName_SelectedIndexChanged;
             setting.btnRemove.Click += btnRemove_Click;
             setting.btnUp.Click += btnUp_Click;
             setting.btnDown.Click += btnDown_Click;
         }
         private void RemoveHandlers(SplitSettings setting) {
+            setting.txtValue.Enter -= txtHitbox_GotFocus;
+            setting.txtValue.Leave -= txtHitbox_LostFocus;
             setting.cboName.SelectedIndexChanged -= cboName_SelectedIndexChanged;
             setting.btnRemove.Click -= btnRemove_Click;
             setting.btnUp.Click -= btnUp_Click;

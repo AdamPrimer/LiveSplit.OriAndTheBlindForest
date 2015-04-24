@@ -27,6 +27,7 @@ namespace Devil
             {"Mount Horu Entered", "Boolean"},
             {"Warmth Returned",    "Boolean"},
             {"End",                "Boolean"},
+            {"Hitbox",             "Hitbox"}, 
             {"Health Cells",       "Value"},
             {"Energy Cells",       "Value"},
             {"Ability Cells",      "Value"},
