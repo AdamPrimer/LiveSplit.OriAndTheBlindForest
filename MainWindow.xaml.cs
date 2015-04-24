@@ -56,7 +56,7 @@ namespace LiveSplit.OriAndTheBlindForest
 
         public void UpdatePosition() {
             var rect = reader.GetWindowBounds();
-            ShowOverlay(reader.IsInForeground());
+            ShowOverlay(reader.IsGameInForeground());
 
             //hs window has height 0 if it just launched, screwing things up if the tracker is started before hs is. 
             //this prevents that from happening. 
@@ -127,7 +127,7 @@ namespace LiveSplit.OriAndTheBlindForest
             }
             GamesPlayed.FontSize = fontSize;
             Vector2 pos = reader.ScreenToGame(new Vector2(mouse.X, mouse.Y));
-            Vector2 oripos = reader.GetPosition();
+            Vector2 oripos = reader.GetCameraTargetPosition();
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Ori: " + oripos.ToString()).AppendLine("Mouse: " + pos.ToString());
             if (rect != null) {

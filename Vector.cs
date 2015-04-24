@@ -1,6 +1,6 @@
 ﻿namespace LiveSplit.OriAndTheBlindForest
 {
-    enum Origin
+    public enum Origin
     {
         Center,
         BottomLeft

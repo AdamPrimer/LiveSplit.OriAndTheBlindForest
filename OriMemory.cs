@@ -128,19 +128,25 @@ namespace Devil
             return pCache[name];
         }
 
-        public bool IsInForeground() {
-            if (!isHooked) { return false; }
-
-            return (int)Memory.GetForegroundWindow() == (int)proc.MainWindowHandle;
-        }
-
-        public Vector2 GetPosition() {
+        public Vector2 GetCameraTargetPosition() {
             if (!isHooked) { return new Vector2(0, 0); }
 
             int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("GameplayCamera"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x14, 0x10);
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x14, 0x14);
-            return new Vector2(px, py);
+            return new Vector2(px, py, Origin.Center);
+        }
+
+        public bool IsGameInForeground() {
+            if (!isHooked) { return false; }
+
+            return (int)Memory.GetForegroundWindow() == (int)proc.MainWindowHandle;
+        }
+
+        public Vector4 GetWindowBounds() {
+            if (!isHooked) { return new Vector4(0, 0, 0, 0); }
+
+            return Memory.GetProcessRect(proc);
         }
 
         public Vector2 GetScreenCenter() {
@@ -152,14 +158,19 @@ namespace Devil
             return new Vector2(px, py);
         }
 
-        public Vector2 ScreenToGame(Vector2 point) {
-            if (!isHooked) { return new Vector2(0, 0); }
-
+        public Vector4 GetWindow() {
             Vector4 window = Memory.GetProcessRect(proc);
             float height = window.W * 9f / 16f;
             float top = (window.H - height) / 2f;
             window.H = (int)height;
             window.Y += (int)top;
+
+            return window;
+        }
+
+        public Vector2 ScreenToGame(Vector2 point) {
+            if (!isHooked) { return new Vector2(0, 0); }
+            Vector4 window = GetWindow();
 
             int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("GameplayCamera"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
@@ -174,11 +185,7 @@ namespace Devil
         public Vector4 ScreenToGame(Vector4 rect) {
             if (!isHooked) { return new Vector4(0, 0, 0, 0); }
 
-            Vector4 window = Memory.GetProcessRect(proc);
-            float height = window.W * 9f / 16f;
-            float top = (window.H - height) / 2f;
-            window.H = (int)height;
-            window.Y += (int)top;
+            Vector4 window = GetWindow();
 
             int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("GameplayCamera"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
@@ -197,13 +204,9 @@ namespace Devil
         public Vector2 GameToScreen(Vector2 point) {
             if (!isHooked) { return new Vector2(0, 0); }
 
-            Vector4 window = Memory.GetProcessRect(proc);
-            float height = window.W * 9f / 16f;
-            float top = (window.H - height) / 2f;
-            window.H = (int)height;
-            window.Y += (int)top;
+            Vector4 window = GetWindow();
 
-            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer(), 0);
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("GameplayCamera"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
@@ -217,13 +220,9 @@ namespace Devil
         public Vector4 GameToScreen(Vector4 rect) {
             if (!isHooked) { return new Vector4(0, 0, 0, 0); }
 
-            Vector4 window = Memory.GetProcessRect(proc);
-            float height = window.W * 9f / 16f;
-            float top = (window.H - height) / 2f;
-            window.H = (int)height;
-            window.Y += (int)top;
+            Vector4 window = GetWindow();
 
-            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer(), 0);
+            int positionAddress = Memory.ReadValue<int>(proc, GetBasePointer("GameplayCamera"), 0);
             float px = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x50);
             float py = Memory.ReadValue<float>(proc, positionAddress, 0x10, 0x54);
             float sx = Memory.ReadValue<float>(proc, positionAddress, 0x18, 0x60);
@@ -235,12 +234,6 @@ namespace Devil
             float gh = gy - ((sy - rect.Y - rect.H + py) * (float)window.H / (sy * 2f) + window.Y);
 
             return new Vector4(gx, gy, gw, gh);
-        }
-
-        public Vector4 GetWindowBounds() {
-            if (!isHooked) { return new Vector4(0, 0, 0, 0); }
-
-            return Memory.GetProcessRect(proc);
         }
 
         public Dictionary<string, bool> GetEvents(Dictionary<string, int> abilities) {
