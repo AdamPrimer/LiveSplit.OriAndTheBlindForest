@@ -78,6 +78,7 @@ namespace LiveSplit.OriAndTheBlindForest
                 splitsState.Add(new Split("Warmth Returned", "True"));
                 splitsState.Add(new Split("End", "True"));
                 LoadSettings();
+                UpdateSettings();
             }
         }
 
@@ -105,6 +106,7 @@ namespace LiveSplit.OriAndTheBlindForest
                 splitsState.Add(new Split("Into Horu Escape", "True"));
                 splitsState.Add(new Split("End", "True"));
                 LoadSettings();
+                UpdateSettings();
             }
         }
 
@@ -138,6 +140,7 @@ namespace LiveSplit.OriAndTheBlindForest
                 splitsState.Add(new Split("Mount Horu Entered", "True"));
                 splitsState.Add(new Split("End", "True"));
                 LoadSettings();
+                UpdateSettings();
             }
         }
 
@@ -316,14 +319,16 @@ namespace LiveSplit.OriAndTheBlindForest
             LoadSettings();
         }
 
-        private void write(string str) {
-            StreamWriter wr = new StreamWriter("test.log", true);
-            wr.WriteLine("[" + DateTime.Now + "] " + str);
-            wr.Close();
-        }
-
         public void CloseDisplay() {
             display.Hide();
+        }
+
+        private void write(string str) {
+            #if DEBUG
+            StreamWriter wr = new StreamWriter("_oriauto.log", true);
+            wr.WriteLine("[" + DateTime.Now + "] " + str);
+            wr.Close();
+            #endif
         }
     }
 }

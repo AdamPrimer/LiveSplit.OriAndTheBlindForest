@@ -282,9 +282,11 @@ namespace Devil
         }
 
         private void write(string str) {
-            StreamWriter wr = new StreamWriter("test.log", true);
+            #if DEBUG
+            StreamWriter wr = new StreamWriter("_oriauto.log", true);
             wr.WriteLine("[" + DateTime.Now + "] " + str);
             wr.Close();
+            #endif
         }
     }
 }
