@@ -32,10 +32,7 @@ namespace LiveSplit.OriAndTheBlindForest
             if (splitSetting.ControlType != "Hitbox") return;
             display.Show();
             display.OnNewHitbox += txtHitbox_OnNewHitbox;
-
-            Vector4 hitbox = new Vector4(splitSetting.txtValue.Text);
-            display.lastHitbox = hitbox;
-            display.DrawRectangle(hitbox);
+            display.lastHitbox = new Vector4(splitSetting.txtValue.Text);
         }
 
         private void txtHitbox_LostFocus(object sender, EventArgs e) {
@@ -50,7 +47,7 @@ namespace LiveSplit.OriAndTheBlindForest
         private void txtHitbox_TextChanged(object sender, EventArgs e) {
             SplitSettings splitSetting = (SplitSettings)((TextBox)sender).Parent;
             if (splitSetting.ControlType != "Hitbox") return;
-            display.DrawRectangle(new Vector4(splitSetting.txtValue.Text));
+            display.lastHitbox = new Vector4(splitSetting.txtValue.Text);
         }
 
         private void txtHitbox_OnNewHitbox(object sender, EventArgs e) {
@@ -163,10 +160,12 @@ namespace LiveSplit.OriAndTheBlindForest
 
         public void LoadSettings() {
             isLoading = true;
+            this.flowMain.SuspendLayout();
 
             for (int i = flowMain.Controls.Count - 1; i > 1; i--) {
                 flowMain.Controls.RemoveAt(i);
             }
+
             foreach (var split in splitsState) {
                 string name = split.name;
                 string type = OriTriggers.availableSplits[name];
@@ -182,7 +181,10 @@ namespace LiveSplit.OriAndTheBlindForest
 
                 flowMain.Controls.Add(setting);
             }
+
             isLoading = false;
+            this.flowMain.ResumeLayout(false);
+            this.flowMain.PerformLayout();
         }
 
         private void AddHandlers(SplitSettings setting) {

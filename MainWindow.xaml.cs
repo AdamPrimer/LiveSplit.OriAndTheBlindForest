@@ -84,11 +84,9 @@ namespace LiveSplit.OriAndTheBlindForest
             if (!enable) {
                 Topmost = false;
                 GamesPlayed.Visibility = Visibility.Hidden;
-                if (rect != null) rect.Visibility = Visibility.Hidden;
             } else if (enable && !Topmost) {
                 Topmost = true;
                 GamesPlayed.Visibility = Visibility.Visible;
-                if (rect != null) rect.Visibility = Visibility.Visible;
             }
         }
 
@@ -100,10 +98,12 @@ namespace LiveSplit.OriAndTheBlindForest
             if (rect == null) {
                 rect = new Rectangle {
                     Stroke = Brushes.Red,
-                    StrokeThickness = 4
+                    StrokeThickness = 3
                 };
                 CanvasInfo.Children.Add(rect);
             }
+
+            rect.Visibility = GamesPlayed.Visibility;
 
             Canvas.SetLeft(rect, pos.X - Left);
             Canvas.SetTop(rect, pos.Y - Top);
@@ -154,10 +154,9 @@ namespace LiveSplit.OriAndTheBlindForest
                 }
             } else {
                 isDragging = false;
-                if (rect != null) {
-                    DrawRectangle(lastHitbox);
-                }
             }
+
+            DrawRectangle(lastHitbox);
 
             GamesPlayed.FontSize = fontSize;
             Vector2 pos = reader.ScreenToGame(new Vector2(mouse.X, mouse.Y));
