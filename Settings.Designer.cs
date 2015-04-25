@@ -91,7 +91,6 @@
             // 
             // flowMain
             // 
-            this.flowMain.AutoScroll = true;
             this.flowMain.AutoSize = true;
             this.flowMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowMain.Controls.Add(this.flowDefaults);
@@ -150,6 +149,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;

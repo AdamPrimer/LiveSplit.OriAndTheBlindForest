@@ -60,7 +60,6 @@ namespace LiveSplit.OriAndTheBlindForest
         }
 
         public override Control GetSettingsControl(LayoutMode mode) {
-            write("GetSettingsControl();");
             return Settings;
         }
 

@@ -183,8 +183,7 @@ namespace LiveSplit.OriAndTheBlindForest
             }
 
             isLoading = false;
-            this.flowMain.ResumeLayout(false);
-            this.flowMain.PerformLayout();
+            this.flowMain.ResumeLayout(true);
         }
 
         private void AddHandlers(SplitSettings setting) {
@@ -288,11 +287,8 @@ namespace LiveSplit.OriAndTheBlindForest
         }
 
         public void SetSettings(XmlNode settings) {
-            write(settings.FirstChild.Name);
-
             XmlNodeList splitNodes = settings.SelectNodes("//Splits/Split");
 
-            write(splitNodes.Count.ToString());
             splitsState.Clear();
             foreach (XmlNode splitNode in splitNodes) {
                 string name = splitNode.InnerText;
