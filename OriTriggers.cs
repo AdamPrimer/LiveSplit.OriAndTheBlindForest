@@ -17,7 +17,7 @@ namespace Devil
             {"Gumo Fall Trap (Land)",    "469.506, -388.384, 17.010, 0.937"},
             {"Kuro Cutscene",            "297.528, -110.975, 9.909, 14.488"},
             {"End of Forlorn Escape",    "-1162.265, -221.822, 7.031, 3.334"},
-            {"Enter Wind Valley",        "-488.513, 181.235, 11.032, 4.961"},
+            {"Enter Wind Valley",        "-490.097, 181.214, 13.063, 5.933"},
             {"End of Horu Escape",       "162.890, 577.337, 5.216, 14.574"},
         };
 
