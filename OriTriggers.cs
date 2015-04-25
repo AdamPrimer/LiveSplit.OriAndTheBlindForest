@@ -15,47 +15,52 @@ namespace Devil
             {"Iceless",                  "345.559, -109.268, 2.260, 4.781"},
             {"Gumo Fall Trap (Fall)",    "480.171, -241.454, 3.206, 4.153"},
             {"Gumo Fall Trap (Land)",    "469.506, -388.384, 17.010, 0.937"},
+            {"End of Forlorn Escape",    "-1162.265, -221.822, 7.031, 3.334"},
             {"End of Horu Escape",       "162.890, 577.337, 5.216, 14.574"},
         };
 
         public static Dictionary<string, string> availableSplits = new Dictionary<string, string>() 
         {
-            {"Start",              "Boolean"},
-            {"Soul Flame",         "Boolean"},
-            {"Spirit Flame",       "Boolean"},
-            {"Wall Jump",          "Boolean"},
-            {"Iceless",            "Hitbox"},
-            {"Charge Flame",       "Boolean"},
-            {"Double Jump",        "Boolean"},
-            {"Water Vein",         "Boolean"},
-            {"Ginso Tree Entered", "Boolean"},
-            {"Bash",               "Boolean"},
-            {"Clean Water",        "Boolean"},
-            {"Stomp",              "Boolean"},
-            {"Glide",              "Boolean"},
-            {"Sunstone",           "Boolean"},
-            {"Mount Horu Entered", "Boolean"},
-            {"Warmth Returned",    "Boolean"},
-            {"End",                "Boolean"},
-            {"Hitbox",             "Hitbox"}, 
-            {"Health Cells",       "Value"},
-            {"Energy Cells",       "Value"},
-            {"Ability Cells",      "Value"},
-            {"Level",              "Value"},
-            {"Key Stones",         "Value"},
-            {"Gumo Fall Trap (Fall)", "Hitbox"},
-            {"Gumo Fall Trap (Land)", "Hitbox"},
-            {"Climb",                    "Boolean"},
-            {"Charge Jump",              "Boolean"},
-            {"Gumon Seal",               "Boolean"},
-            {"Mist Lifted",              "Boolean"},
-            {"Gumo Free",                "Boolean"},
-            {"Wind Released",            "Boolean"},
-            {"Forlorn Ruins Entered",    "Boolean"},
-            {"Forlorn Restored",         "Boolean"},
+            {"Hitbox",                   "Hitbox"}, 
+            {"Start",                    "Boolean"},
+            {"Soul Flame",               "Boolean"},
+            {"Spirit Flame",             "Boolean"},
+            {"Wall Jump",                "Boolean"},
             {"Spirit Tree Reached",      "Boolean"},
-            {"Into Horu Escape",         "Boolean"},
-            {"End of Horu Escape",       "Hitbox"},
+            {"Iceless",                  "Hitbox"},
+            {"Charge Flame",             "Boolean"},
+            {"Gumo Fall Trap (Fall)",    "Hitbox"},
+            {"Gumo Fall Trap (Land)",    "Hitbox"},
+            {"Double Jump",              "Boolean"},
+            {"Water Vein",               "Boolean"},
+            {"Ginso Tree Entered",       "Boolean"},
+            {"Bash",                     "Boolean"},
+            {"Clean Water",              "Boolean"}, // End of Escape
+            {"Stomp",                    "Boolean"},
+            {"Glide",                    "Boolean"}, // Kuro's Feather
+            {"Climb",                    "Boolean"},
+            {"Mist Lifted",              "Boolean"}, // After Seal Reveal Cutscene
+            {"Gumon Seal",               "Boolean"}, // Picked Up Seal
+            {"Forlorn Ruins Entered",    "Boolean"},
+            {"Forlorn Restored",         "Boolean"}, // Deposit Nightberry
+            {"Wind Released",            "Boolean"}, // Start of Escape
+            {"End of Forlorn Escape",    "Hitbox"},  // End of Escape
+            {"Charge Jump",              "Boolean"},
+            {"Sunstone",                 "Boolean"},
+            {"Mount Horu Entered",       "Boolean"},
+            {"R1 Into Horu Escape",      "Boolean"},
+            {"Warmth Returned",          "Boolean"}, // Start of Escape
+            {"End of Horu Escape",       "Hitbox"},  // End of Escape
+            {"End",                      "Boolean"},
+
+            //{"Gumo Free",                "Boolean"},
+
+            {"Health Cells",             "Value"},
+            {"Energy Cells",             "Value"},
+            {"Ability Cells",            "Value"},
+            {"Level",                    "Value"},
+            {"Key Stones",               "Value"},
+
             {"Magnet",                   "Boolean"},
             {"Ultra Magnet",             "Boolean"},
             {"Rapid Fire",               "Boolean"},
@@ -212,11 +217,11 @@ namespace Devil
                             case "forlornRuinsGetNightberry":
                                 TriggerEvent("Forlorn Ruins Entered", true);
                                 break;
-                            case "catAndMouseMid":
-                                TriggerEvent("Into Horu Escape", true);
-                                break;
                             case "mountHoruHubBottom":
                                 TriggerEvent("Mount Horu Entered", true);
+                                break;
+                            case "catAndMouseMid":
+                                TriggerEvent("R1 Into Horu Escape", true);
                                 break;
                         }
                     } else if ((SceneState)scene.state == SceneState.Disabling) {
