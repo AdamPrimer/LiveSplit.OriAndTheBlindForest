@@ -103,7 +103,7 @@ namespace LiveSplit.OriAndTheBlindForest
                 splitsState.Add(new Split("Charge Jump", "True"));
                 splitsState.Add(new Split("Sunstone", "True"));
                 splitsState.Add(new Split("Mount Horu Entered", "True"));
-                splitsState.Add(new Split("Into Horu Escape", "True"));
+                splitsState.Add(new Split("R1 Into Horu Escape", "True"));
                 splitsState.Add(new Split("End", "True"));
                 LoadSettings();
                 UpdateSettings();

@@ -1,4 +1,6 @@
-﻿namespace LiveSplit.OriAndTheBlindForest
+﻿using System.Globalization;
+
+namespace LiveSplit.OriAndTheBlindForest
 {
     public enum Origin
     {
@@ -27,9 +29,9 @@
             string[] cords = cordinates.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
             if (cords.Length == 2) {
                 float temp = 0;
-                float.TryParse(cords[0], out temp);
+                float.TryParse(cords[0], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.X = temp;
-                float.TryParse(cords[1], out temp);
+                float.TryParse(cords[1], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.Y = temp;
             }
         }
@@ -40,7 +42,7 @@
             return X >= pos.X && Y >= pos.Y && X <= pos.X + pos.W && Y <= pos.Y + pos.H;
         }
         public override string ToString() {
-            return string.Concat(X.ToString("0.000"), ", ", Y.ToString("0.000"));
+            return string.Concat(X.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", Y.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")));
         }
     }
 
@@ -59,11 +61,11 @@
             string[] cords = cordinates.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
             if (cords.Length == 3) {
                 float temp = 0;
-                float.TryParse(cords[0], out temp);
+                float.TryParse(cords[0], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.X = temp;
-                float.TryParse(cords[1], out temp);
+                float.TryParse(cords[1], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.Y = temp;
-                float.TryParse(cords[2], out temp);
+                float.TryParse(cords[2], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.Z = temp;
             }
         }
@@ -71,7 +73,7 @@
             return X >= x && Y >= y && Z >= z && X <= x + width && Y <= y + height && Z <= z + depth;
         }
         public override string ToString() {
-            return string.Concat(X.ToString("0.000"), ", ", Y.ToString("0.000"), ", ", Z.ToString("0.000"));
+            return string.Concat(X.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", Y.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", Z.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")));
         }
     }
 
@@ -92,13 +94,13 @@
             string[] cords = cordinates.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
             if (cords.Length == 4) {
                 float temp = 0;
-                float.TryParse(cords[0], out temp);
+                float.TryParse(cords[0], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.X = temp;
-                float.TryParse(cords[1], out temp);
+                float.TryParse(cords[1], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.Y = temp;
-                float.TryParse(cords[2], out temp);
+                float.TryParse(cords[2], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.W = temp;
-                float.TryParse(cords[3], out temp);
+                float.TryParse(cords[3], NumberStyles.Number, CultureInfo.GetCultureInfo("en-US"), out temp);
                 this.H = temp;
             } else {
                 this.X = 0;
@@ -129,7 +131,7 @@
         }
 
         public override string ToString() {
-            return string.Concat(X.ToString("0.000"), ", ", Y.ToString("0.000"), ", ", W.ToString("0.000"), ", ", H.ToString("0.000"));
+            return string.Concat(X.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", Y.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", W.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")), ", ", H.ToString("0.000", CultureInfo.CreateSpecificCulture("en-US")));
         }
     }
 }
