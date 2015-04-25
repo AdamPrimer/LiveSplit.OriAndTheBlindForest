@@ -5,7 +5,9 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Windows.Forms;
+using Devil;
 
 namespace LiveSplit.OriAndTheBlindForest
 {
@@ -44,6 +46,10 @@ namespace LiveSplit.OriAndTheBlindForest
                 btnUp.Left += hitboxTextWidth;
             } else { 
                 txtValue.Text = "True";
+            }
+
+            if (OriTriggers.defaultSplits.ContainsKey(cboName.Text)) {
+                txtValue.Text = OriTriggers.defaultSplits[cboName.Text];
             }
         }
     }

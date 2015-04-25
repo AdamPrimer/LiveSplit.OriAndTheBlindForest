@@ -32,7 +32,10 @@ namespace LiveSplit.OriAndTheBlindForest
             if (splitSetting.ControlType != "Hitbox") return;
             display.Show();
             display.OnNewHitbox += txtHitbox_OnNewHitbox;
-            display.DrawRectangle(new Vector4(splitSetting.txtValue.Text));
+
+            Vector4 hitbox = new Vector4(splitSetting.txtValue.Text);
+            display.lastHitbox = hitbox;
+            display.DrawRectangle(hitbox);
         }
 
         private void txtHitbox_LostFocus(object sender, EventArgs e) {

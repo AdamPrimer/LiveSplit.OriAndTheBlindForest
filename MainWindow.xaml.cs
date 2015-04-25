@@ -16,7 +16,7 @@ namespace LiveSplit.OriAndTheBlindForest
         private OriMemory reader;
         private Rectangle rect;
         private Vector2 start;
-        public Vector4 lastHitbox;
+        public Vector4 lastHitbox = null;
         private bool isDragging;
 
         public delegate void OnNewHitboxHandler(object sender, EventArgs e);
@@ -84,9 +84,11 @@ namespace LiveSplit.OriAndTheBlindForest
             if (!enable) {
                 Topmost = false;
                 GamesPlayed.Visibility = Visibility.Hidden;
+                if (rect != null) rect.Visibility = Visibility.Hidden;
             } else if (enable && !Topmost) {
                 Topmost = true;
                 GamesPlayed.Visibility = Visibility.Visible;
+                if (rect != null) rect.Visibility = Visibility.Visible;
             }
         }
 
@@ -124,7 +126,8 @@ namespace LiveSplit.OriAndTheBlindForest
             Vector4 hitbox = new Vector4(0, 0, 0, 0);
 
             var mouse = System.Windows.Forms.Form.MousePosition;
-            if (mouse.X >= Left && mouse.X < Left + Width && mouse.Y >= Top && mouse.Y < Top + Height && System.Windows.Forms.Form.MouseButtons == System.Windows.Forms.MouseButtons.Right) {
+            if (mouse.X >= Left && mouse.X < Left + Width && mouse.Y >= Top && mouse.Y < Top + Height && 
+                    System.Windows.Forms.Form.MouseButtons == System.Windows.Forms.MouseButtons.Middle) {
                 if (isDragging == false) {
                     start = reader.ScreenToGame(new Vector2(mouse.X, mouse.Y));
                 }

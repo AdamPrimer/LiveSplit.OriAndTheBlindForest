@@ -10,12 +10,21 @@ namespace Devil
 {
     public class OriTriggers
     {
+        public static Dictionary<string, string> defaultSplits = new Dictionary<string, string>() 
+        {
+            {"Iceless",                  "345.559, -109.268, 2.260, 4.781"},
+            {"Gumo Fall Trap (Fall)",    "480.171, -241.454, 3.206, 4.153"},
+            {"Gumo Fall Trap (Land)",    "469.506, -388.384, 17.010, 0.937"},
+            {"End of Horu Escape",       "162.890, 577.337, 5.216, 14.574"},
+        };
+
         public static Dictionary<string, string> availableSplits = new Dictionary<string, string>() 
         {
             {"Start",              "Boolean"},
             {"Soul Flame",         "Boolean"},
             {"Spirit Flame",       "Boolean"},
             {"Wall Jump",          "Boolean"},
+            {"Iceless",            "Hitbox"},
             {"Charge Flame",       "Boolean"},
             {"Double Jump",        "Boolean"},
             {"Water Vein",         "Boolean"},
@@ -34,18 +43,19 @@ namespace Devil
             {"Ability Cells",      "Value"},
             {"Level",              "Value"},
             {"Key Stones",         "Value"},
-            //{"Gumo Fall Trap (Fall)", "Boolean"},
-            //{"Gumo Fall Trap (Land)", "Boolean"},
-            {"Climb",              "Boolean"},
-            {"Charge Jump",        "Boolean"},
-            {"Gumon Seal",         "Boolean"},
-            {"Mist Lifted",        "Boolean"},
-            {"Gumo Free",          "Boolean"},
-            {"Wind Released",      "Boolean"},
-            {"Forlorn Ruins Entered", "Boolean"},
-            {"Forlorn Restored",   "Boolean"},
-            {"Spirit Tree Reached","Boolean"},
-            {"Into Horu Escape", "Boolean"},
+            {"Gumo Fall Trap (Fall)", "Hitbox"},
+            {"Gumo Fall Trap (Land)", "Hitbox"},
+            {"Climb",                    "Boolean"},
+            {"Charge Jump",              "Boolean"},
+            {"Gumon Seal",               "Boolean"},
+            {"Mist Lifted",              "Boolean"},
+            {"Gumo Free",                "Boolean"},
+            {"Wind Released",            "Boolean"},
+            {"Forlorn Ruins Entered",    "Boolean"},
+            {"Forlorn Restored",         "Boolean"},
+            {"Spirit Tree Reached",      "Boolean"},
+            {"Into Horu Escape",         "Boolean"},
+            {"End of Horu Escape",       "Hitbox"},
             {"Magnet",                   "Boolean"},
             {"Ultra Magnet",             "Boolean"},
             {"Rapid Fire",               "Boolean"},
@@ -168,7 +178,7 @@ namespace Devil
             }
 
             if (new Vector4(pos, 0.68f, 1.15f).Intersects(new Vector4(currentSplit.value))) {
-                TriggerEvent(currentSplit.name, true);
+                TriggerHitbox(currentSplit.name, currentSplit.value);
             }
         }
 
@@ -208,9 +218,6 @@ namespace Devil
                             case "mountHoruHubBottom":
                                 TriggerEvent("Mount Horu Entered", true);
                                 break;
-                            case "moonGrottoGumosLastTrap":
-                                TriggerEvent("Gumo Fall Trap (Fall)", true);
-                                break;
                         }
                     } else if ((SceneState)scene.state == SceneState.Disabling) {
                         state = "Disabling";
@@ -225,12 +232,6 @@ namespace Devil
                         state = "Loading Cancelled";
                     } else if ((SceneState)scene.state == SceneState.Disabled) {
                         state = "Disabled";
-                        state = "Loaded";
-                        switch (scene.name) {
-                            case "moonGrottoRopeBridge":
-                                TriggerEvent("Gumo Fall Trap (Land)", true);
-                                break;
-                        }
                     }
 
                     write(string.Format("{0} Scene: {1} {2}", state, scene.name, scene.hasStartBeenCalled));
@@ -334,6 +335,20 @@ namespace Devil
             SplitEventHandler(name, val.ToString());
 
             return counters[name];
+        }
+
+        public void TriggerHitbox(string name, string val) {
+            write(string.Format("TriggerHitbox(): {0} {1}", name, val));
+            if (events.ContainsKey(name)) {
+                write(string.Format("Existing: {0} {1}", name, events[name]));
+                if (events[name]) return;
+            }
+
+            events[name] = true;
+            write(string.Format("Current Split: {0} {1}", currentSplit.name, currentSplit.value));
+            write(string.Format("Hitbox Trigger: {0} {1}", name, val));
+
+            SplitEventHandler(name, val.ToString());
         }
 
         public bool WillTriggerEvent(string name, bool val) {

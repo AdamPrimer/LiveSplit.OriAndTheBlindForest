@@ -92,13 +92,15 @@
             // flowMain
             // 
             this.flowMain.AutoScroll = true;
+            this.flowMain.AutoSize = true;
+            this.flowMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowMain.Controls.Add(this.flowDefaults);
             this.flowMain.Controls.Add(this.flowLayoutPanel1);
             this.flowMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowMain.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowMain.Location = new System.Drawing.Point(0, 0);
             this.flowMain.Name = "flowMain";
-            this.flowMain.Size = new System.Drawing.Size(462, 479);
+            this.flowMain.Size = new System.Drawing.Size(373, 66);
             this.flowMain.TabIndex = 1;
             this.flowMain.WrapContents = false;
             // 
@@ -115,6 +117,7 @@
             this.flowDefaults.Name = "flowDefaults";
             this.flowDefaults.Size = new System.Drawing.Size(367, 27);
             this.flowDefaults.TabIndex = 0;
+            this.flowDefaults.WrapContents = false;
             // 
             // btnAnyPercentMisty
             // 
@@ -147,10 +150,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.flowMain);
             this.Name = "OriAndTheBlindForestSettings";
-            this.Size = new System.Drawing.Size(462, 479);
+            this.Size = new System.Drawing.Size(373, 66);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.flowMain.ResumeLayout(false);
             this.flowMain.PerformLayout();
@@ -158,6 +163,7 @@
             this.flowDefaults.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
