@@ -15,7 +15,9 @@ namespace Devil
             {"Iceless",                  "345.559, -109.268, 2.260, 4.781"},
             {"Gumo Fall Trap (Fall)",    "480.171, -241.454, 3.206, 4.153"},
             {"Gumo Fall Trap (Land)",    "469.506, -388.384, 17.010, 0.937"},
+            {"Kuro Cutscene",            "297.528, -110.975, 9.909, 14.488"},
             {"End of Forlorn Escape",    "-1162.265, -221.822, 7.031, 3.334"},
+            {"Enter Wind Valley",        "-488.513, 181.235, 11.032, 4.961"},
             {"End of Horu Escape",       "162.890, 577.337, 5.216, 14.574"},
         };
 
@@ -37,6 +39,7 @@ namespace Devil
             {"Bash",                     "Boolean"},
             {"Clean Water",              "Boolean"}, // End of Escape
             {"Stomp",                    "Boolean"},
+            {"Kuro Cutscene",            "Hitbox"},  // Skippable cutscene near Iceless 
             {"Glide",                    "Boolean"}, // Kuro's Feather
             {"Climb",                    "Boolean"},
             {"Mist Lifted",              "Boolean"}, // After Seal Reveal Cutscene
@@ -45,6 +48,7 @@ namespace Devil
             {"Forlorn Restored",         "Boolean"}, // Deposit Nightberry
             {"Wind Released",            "Boolean"}, // Start of Escape
             {"End of Forlorn Escape",    "Hitbox"},  // End of Escape
+            {"Enter Wind Valley",        "Hitbox"},  // Entering Wind Valley
             {"Charge Jump",              "Boolean"},
             {"Sunstone",                 "Boolean"},
             {"Mount Horu Entered",       "Boolean"},
