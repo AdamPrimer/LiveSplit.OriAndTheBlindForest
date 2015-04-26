@@ -85,9 +85,8 @@ namespace LiveSplit.OriAndTheBlindForest
                         Model.Reset();
                     }
                     Model.Start();
-                } else {
-                    Model.Split();
                 }
+                Model.Split();
             }
         }
 

@@ -53,10 +53,10 @@
   <ItemGroup>
     <Compile Include="Component.cs" />
     <Compile Include="Factory.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Memory.cs" />
+    <Compile Include="OriHitboxDisplay.xaml.cs">
+      <DependentUpon>OriHitboxDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OriMemory.cs" />
     <Compile Include="OriState.cs" />
     <Compile Include="OriTriggers.cs" />
@@ -85,7 +85,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="MainWindow.xaml">
+    <Page Include="OriHitboxDisplay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

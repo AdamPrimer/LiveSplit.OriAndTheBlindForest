@@ -1,4 +1,4 @@
-﻿<Window x:Class="LiveSplit.OriAndTheBlindForest.MainWindow"
+﻿<Window x:Class="LiveSplit.OriAndTheBlindForest.OriHitboxDisplay"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:local="clr-namespace:LiveSplit.OriAndTheBlindForest"
@@ -7,7 +7,7 @@
         WindowStyle="None" Topmost="True">
 	<Grid>
 		<Canvas Name="CanvasInfo" HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="300">
-			<local:OutlinedTextBlock x:Name="GamesPlayed" NormalText="true" Visibility="Hidden" Fill="White" FontSize="14" Canvas.Left="206" Canvas.Top="54"></local:OutlinedTextBlock>
+			<local:OutlinedTextBlock x:Name="OriInfo" NormalText="true" Visibility="Hidden" Fill="White" FontSize="14" Canvas.Left="206" Canvas.Top="54"></local:OutlinedTextBlock>
 		</Canvas>
 	</Grid>
 </Window>

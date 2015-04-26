@@ -13,7 +13,7 @@ namespace LiveSplit.OriAndTheBlindForest
         public bool autoStart = false;
         public bool autoReset = false;
 
-        public MainWindow display;
+        public OriHitboxDisplay display;
 
         private bool isLoading = false;
         public OriComponent parent;
@@ -21,7 +21,7 @@ namespace LiveSplit.OriAndTheBlindForest
         public OriAndTheBlindForestSettings(OriComponent component) {
             InitializeComponent();
             parent = component;
-            display = new MainWindow(component.oriState);
+            display = new OriHitboxDisplay(component.oriState);
             display.Hide();
             btnAnyPercent.Click += btnAnyPercent_Click;
             btnAnyPercentMisty.Click += btnAnyPercentMisty_Click;
