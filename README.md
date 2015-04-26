@@ -82,7 +82,7 @@ skips, or Gumo's trap, or all manner of custom events.
 - Drag the mouse while holding middle-mouse to draw a hitbox.
 - Congratulations, you just made a hitbox!
 
-## Values ## 
+## Values ##
 
 Some split types allow you to provide a value, such as `Keystones` and `Health
 Cells`. A split will trigger when the value of that is equal to what you

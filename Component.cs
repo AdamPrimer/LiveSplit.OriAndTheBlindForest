@@ -80,13 +80,14 @@ namespace LiveSplit.OriAndTheBlindForest
                 Model.Split();
             } else {
                 write("[OriSplitter] Split.");
-                if (oriState.oriTriggers.autoStart) {
-                    if (!oriState.oriTriggers.timerRunning && oriState.oriTriggers.autoReset) {
+                if (oriState.oriTriggers.autoStart && !oriState.oriTriggers.timerRunning) {
+                    if (oriState.oriTriggers.autoReset) {
                         Model.Reset();
                     }
                     Model.Start();
+                } else { 
+                    Model.Split();
                 }
-                Model.Split();
             }
         }
 
