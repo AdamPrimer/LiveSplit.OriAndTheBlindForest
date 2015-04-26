@@ -221,7 +221,7 @@ namespace Devil
                             case "forlornRuinsGetNightberry":
                                 TriggerEvent("Forlorn Ruins Entered", true);
                                 break;
-                            case "mountHoruHubBottom":
+                            case "mountHoruHubMid":
                                 TriggerEvent("Mount Horu Entered", true);
                                 break;
                             case "catAndMouseMid":
@@ -349,11 +349,11 @@ namespace Devil
         public void TriggerHitbox(string name, string val) {
             write(string.Format("TriggerHitbox(): {0} {1}", name, val));
             if (events.ContainsKey(name)) {
-                write(string.Format("Existing: {0} {1}", name, events[name]));
-                if (events[name]) return;
+                write(string.Format("Existing: {0} {1}", val, events[val]));
+                if (events[val]) return;
             }
 
-            events[name] = true;
+            events[val] = true;
             write(string.Format("Current Split: {0} {1}", currentSplit.name, currentSplit.value));
             write(string.Format("Hitbox Trigger: {0} {1}", name, val));
 
