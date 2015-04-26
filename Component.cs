@@ -40,7 +40,7 @@ namespace LiveSplit.OriAndTheBlindForest
             oriState.Reset();
         }
 
-        // if (Model.CurrentState.CurrentPhase == TimerPhase.Running && !useInGame || inGame)
+        //  && !useInGame || inGame)
 
         public void OnSplit(object sender, OriTriggers.SplitEventArgs e) {
             if (e.name == "Start") {
@@ -51,7 +51,11 @@ namespace LiveSplit.OriAndTheBlindForest
                 Model.Split();
             } else {
                 write("[OriSplitter] Split.");
-                Model.Split();
+                if (oriState.oriTriggers.autoStart && Model.CurrentState.CurrentPhase != TimerPhase.Running) {
+                    Model.Start();
+                } else {
+                    Model.Split();
+                }
             }
         }
 

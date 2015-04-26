@@ -10,6 +10,8 @@ namespace LiveSplit.OriAndTheBlindForest
     public partial class OriAndTheBlindForestSettings : UserControl
     {
         public List<Split> splitsState = new List<Split>();
+        public bool autoStart = false;
+
         public MainWindow display;
 
         private bool isLoading = false;
@@ -190,6 +192,8 @@ namespace LiveSplit.OriAndTheBlindForest
                 flowMain.Controls.Add(setting);
             }
 
+            this.chkAutoStart.Checked = this.autoStart;
+
             isLoading = false;
             this.flowMain.ResumeLayout(true);
         }
@@ -268,11 +272,18 @@ namespace LiveSplit.OriAndTheBlindForest
                 }
             }
 
-            parent.oriState.UpdateSplits(splitsState);
+            this.autoStart = chkAutoStart.Checked;
+
+            parent.oriState.UpdateAutoStart(this.autoStart);
+            parent.oriState.UpdateSplits(this.splitsState);
         }
 
         public XmlNode GetSettings(XmlDocument document) {
             var settingsNode = document.CreateElement("Settings");
+
+            var autostartNode = document.CreateElement("Autostart");
+            autostartNode.InnerText = this.autoStart.ToString();
+            settingsNode.AppendChild(autostartNode);
 
             var splitsNode = document.CreateElement("Splits");
             settingsNode.AppendChild(splitsNode);
@@ -297,6 +308,13 @@ namespace LiveSplit.OriAndTheBlindForest
         public void SetSettings(XmlNode settings) {
             XmlNodeList splitNodes = settings.SelectNodes("//Splits/Split");
 
+            XmlNode autostartNode = settings.SelectSingleNode("//Autostart");
+            if (autostartNode != null) {
+                this.autoStart = bool.Parse(autostartNode.InnerText);
+            } else {
+                this.autoStart = false;
+            }
+
             splitsState.Clear();
             foreach (XmlNode splitNode in splitNodes) {
                 string name = splitNode.InnerText;
@@ -308,6 +326,9 @@ namespace LiveSplit.OriAndTheBlindForest
 
                 splitsState.Add(split);
             }
+
+            parent.oriState.UpdateAutoStart(this.autoStart);
+            parent.oriState.UpdateSplits(this.splitsState);
         }
 
         public DataTable SplitComboData() {
@@ -318,6 +339,10 @@ namespace LiveSplit.OriAndTheBlindForest
                 dt.Rows.Add(pair.Key, pair.Value);
             }
             return dt;
+        }
+
+        private void chkAutoStart_CheckedChanged(object sender, EventArgs e) {
+            UpdateSettings();
         }
 
         private void Settings_Load(object sender, EventArgs e) {

@@ -35,6 +35,7 @@
             this.btnAnyPercentMisty = new System.Windows.Forms.Button();
             this.btnLowPercent = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.chkAutoStart = new System.Windows.Forms.CheckBox();
             this.flowMain.SuspendLayout();
             this.flowDefaults.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -140,10 +141,22 @@
             // 
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.Controls.Add(this.btnAddSplit);
+            this.flowLayoutPanel1.Controls.Add(this.chkAutoStart);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 36);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(63, 27);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(172, 27);
             this.flowLayoutPanel1.TabIndex = 7;
+            // 
+            // chkAutoStart
+            // 
+            this.chkAutoStart.AutoSize = true;
+            this.chkAutoStart.Location = new System.Drawing.Point(66, 3);
+            this.chkAutoStart.Name = "chkAutoStart";
+            this.chkAutoStart.Size = new System.Drawing.Size(103, 17);
+            this.chkAutoStart.TabIndex = 1;
+            this.chkAutoStart.Text = "Start on 1st Split";
+            this.chkAutoStart.UseVisualStyleBackColor = true;
+            this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkAutoStart_CheckedChanged);
             // 
             // OriAndTheBlindForestSettings
             // 
@@ -162,6 +175,7 @@
             this.flowDefaults.ResumeLayout(false);
             this.flowDefaults.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,16 +183,17 @@
 
         #endregion
 
-		private System.Windows.Forms.Button btn100Percent;
-		private System.Windows.Forms.Button btnAllCells;
-		private System.Windows.Forms.Button btnAnyPercent;
-		private System.Windows.Forms.Label lblDefaults;
-		private System.Windows.Forms.Button btnAddSplit;
-		private System.Windows.Forms.FlowLayoutPanel flowMain;
-		private System.Windows.Forms.FlowLayoutPanel flowDefaults;
+        private System.Windows.Forms.Button btn100Percent;
+        private System.Windows.Forms.Button btnAllCells;
+        private System.Windows.Forms.Button btnAnyPercent;
+        private System.Windows.Forms.Label lblDefaults;
+        private System.Windows.Forms.Button btnAddSplit;
+        private System.Windows.Forms.FlowLayoutPanel flowMain;
+        private System.Windows.Forms.FlowLayoutPanel flowDefaults;
         private System.Windows.Forms.Button btnAnyPercentMisty;
         private System.Windows.Forms.Button btnLowPercent;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.CheckBox chkAutoStart;
 
-	}
+    }
 }

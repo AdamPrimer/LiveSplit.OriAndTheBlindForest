@@ -108,6 +108,7 @@ namespace Devil
         public Dictionary<string, int> counters = new Dictionary<string, int>();
         public Dictionary<string, bool> events = new Dictionary<string, bool>();
 
+        public bool autoStart = false;
         public int currentSplitIdx = 0;
         public Split currentSplit;
         public Split[] sSplits;
@@ -119,6 +120,10 @@ namespace Devil
         public void SetSplits(List<Split> splits) {
             sSplits = splits.ToArray();
             ResetAll();
+        }
+
+        public void SetAutoStart(bool autoStart) {
+            this.autoStart = autoStart;
         }
 
         public Split GoToNextSplit() {
