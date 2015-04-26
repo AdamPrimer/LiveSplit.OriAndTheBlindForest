@@ -36,6 +36,7 @@
             this.btnLowPercent = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
+            this.chkAutoReset = new System.Windows.Forms.CheckBox();
             this.flowMain.SuspendLayout();
             this.flowDefaults.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -142,9 +143,10 @@
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.Controls.Add(this.btnAddSplit);
             this.flowLayoutPanel1.Controls.Add(this.chkAutoStart);
+            this.flowLayoutPanel1.Controls.Add(this.chkAutoReset);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 36);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(172, 27);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(300, 27);
             this.flowLayoutPanel1.TabIndex = 7;
             // 
             // chkAutoStart
@@ -157,6 +159,17 @@
             this.chkAutoStart.Text = "Start on 1st Split";
             this.chkAutoStart.UseVisualStyleBackColor = true;
             this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkAutoStart_CheckedChanged);
+            // 
+            // chkAutoReset
+            // 
+            this.chkAutoReset.AutoSize = true;
+            this.chkAutoReset.Location = new System.Drawing.Point(175, 3);
+            this.chkAutoReset.Name = "chkAutoReset";
+            this.chkAutoReset.Size = new System.Drawing.Size(122, 17);
+            this.chkAutoReset.TabIndex = 2;
+            this.chkAutoReset.Text = "Reset Splits on Start";
+            this.chkAutoReset.UseVisualStyleBackColor = true;
+            this.chkAutoReset.CheckedChanged += new System.EventHandler(this.chkAutoReset_CheckedChanged);
             // 
             // OriAndTheBlindForestSettings
             // 
@@ -194,6 +207,7 @@
         private System.Windows.Forms.Button btnLowPercent;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.CheckBox chkAutoStart;
+        private System.Windows.Forms.CheckBox chkAutoReset;
 
     }
 }

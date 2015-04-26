@@ -89,6 +89,10 @@ namespace Devil
             oriTriggers.SetAutoStart(autoStart);
         }
 
+        public void UpdateAutoReset(bool autoReset) {
+            oriTriggers.SetAutoReset(autoReset);
+        }
+
         public void Loop() {
             bool isNowOpen = (oriMemory.HookProcess() && !oriMemory.proc.HasExited);
 

@@ -11,6 +11,7 @@ namespace LiveSplit.OriAndTheBlindForest
     {
         public List<Split> splitsState = new List<Split>();
         public bool autoStart = false;
+        public bool autoReset = false;
 
         public MainWindow display;
 
@@ -193,6 +194,7 @@ namespace LiveSplit.OriAndTheBlindForest
             }
 
             this.chkAutoStart.Checked = this.autoStart;
+            this.chkAutoReset.Checked = this.autoReset;
 
             isLoading = false;
             this.flowMain.ResumeLayout(true);
@@ -273,8 +275,10 @@ namespace LiveSplit.OriAndTheBlindForest
             }
 
             this.autoStart = chkAutoStart.Checked;
+            this.autoReset = chkAutoReset.Checked;
 
             parent.oriState.UpdateAutoStart(this.autoStart);
+            parent.oriState.UpdateAutoReset(this.autoReset);
             parent.oriState.UpdateSplits(this.splitsState);
         }
 
@@ -284,6 +288,10 @@ namespace LiveSplit.OriAndTheBlindForest
             var autostartNode = document.CreateElement("Autostart");
             autostartNode.InnerText = this.autoStart.ToString();
             settingsNode.AppendChild(autostartNode);
+
+            var autoresetNode = document.CreateElement("Autoreset");
+            autoresetNode.InnerText = this.autoReset.ToString();
+            settingsNode.AppendChild(autoresetNode);
 
             var splitsNode = document.CreateElement("Splits");
             settingsNode.AppendChild(splitsNode);
@@ -309,10 +317,17 @@ namespace LiveSplit.OriAndTheBlindForest
             XmlNodeList splitNodes = settings.SelectNodes("//Splits/Split");
 
             XmlNode autostartNode = settings.SelectSingleNode("//Autostart");
-            if (autostartNode != null) {
+            if (autostartNode != null && autostartNode.InnerText != "") {
                 this.autoStart = bool.Parse(autostartNode.InnerText);
             } else {
                 this.autoStart = false;
+            }
+
+            XmlNode autoresetNode = settings.SelectSingleNode("//Autoreset");
+            if (autoresetNode != null && autoresetNode.InnerText != "") {
+                this.autoReset = bool.Parse(autoresetNode.InnerText);
+            } else {
+                this.autoReset = false;
             }
 
             splitsState.Clear();
@@ -328,6 +343,7 @@ namespace LiveSplit.OriAndTheBlindForest
             }
 
             parent.oriState.UpdateAutoStart(this.autoStart);
+            parent.oriState.UpdateAutoReset(this.autoReset);
             parent.oriState.UpdateSplits(this.splitsState);
         }
 
@@ -342,6 +358,10 @@ namespace LiveSplit.OriAndTheBlindForest
         }
 
         private void chkAutoStart_CheckedChanged(object sender, EventArgs e) {
+            UpdateSettings();
+        }
+
+        private void chkAutoReset_CheckedChanged(object sender, EventArgs e) {
             UpdateSettings();
         }
 

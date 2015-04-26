@@ -30,20 +30,49 @@ namespace LiveSplit.OriAndTheBlindForest
             if (Model == null) {
                 Model = new TimerModel() { CurrentState = state };
                 state.OnReset += OnReset;
+                state.OnPause += OnPause;
+                state.OnResume += OnResume;
+                state.OnStart += OnStart;
+                state.OnSkipSplit += OnSkipSplit;
             }
 
             oriState.Loop();
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
+        }
+
+        public void OnSkipSplit(object sender, EventArgs e) {
+            write("[LiveSplit] Skip Split.");
+            oriState.oriTriggers.GoToNextSplit();
+        }
+
+        public void OnResume(object sender, EventArgs e) {
+            write("[LiveSplit] Resume.");
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
+        }
+
+        public void OnPause(object sender, EventArgs e) {
+            write("[LiveSplit] Pause.");
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
+        }
+
+        public void OnStart(object sender, EventArgs e) {
+            write("[LiveSplit] Start.");
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
         }
 
         public void OnReset(object sender, TimerPhase e) {
             write("[LiveSplit] Reset.");
             oriState.Reset();
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
         }
 
         //  && !useInGame || inGame)
 
         public void OnSplit(object sender, OriTriggers.SplitEventArgs e) {
             if (e.name == "Start") {
+                if (!oriState.oriTriggers.timerRunning && oriState.oriTriggers.autoReset) {
+                    Model.Reset();
+                }
                 write("[OriSplitter] Start.");
                 Model.Start();
             } else if (e.name == "End") {
@@ -51,7 +80,10 @@ namespace LiveSplit.OriAndTheBlindForest
                 Model.Split();
             } else {
                 write("[OriSplitter] Split.");
-                if (oriState.oriTriggers.autoStart && Model.CurrentState.CurrentPhase != TimerPhase.Running) {
+                if (oriState.oriTriggers.autoStart) {
+                    if (!oriState.oriTriggers.timerRunning && oriState.oriTriggers.autoReset) {
+                        Model.Reset();
+                    }
                     Model.Start();
                 } else {
                     Model.Split();

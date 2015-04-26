@@ -109,6 +109,8 @@ namespace Devil
         public Dictionary<string, bool> events = new Dictionary<string, bool>();
 
         public bool autoStart = false;
+        public bool autoReset = false;
+        public bool timerRunning = false;
         public int currentSplitIdx = 0;
         public Split currentSplit;
         public Split[] sSplits;
@@ -126,6 +128,10 @@ namespace Devil
             this.autoStart = autoStart;
         }
 
+        public void SetAutoReset(bool autoReset) {
+            this.autoReset = autoReset;
+        }
+
         public Split GoToNextSplit() {
             if (currentSplitIdx + 1 >= sSplits.Length) return currentSplit;
 
@@ -136,7 +142,10 @@ namespace Devil
         }
 
         public void SplitEventHandler(string name, string value) {
-            if (currentSplit.name == name && currentSplit.value == value) {
+            if ((currentSplit.name == name && currentSplit.value == value) ||
+                    (this.autoReset &&  !this.timerRunning && 
+                    sSplits.Length > 0 && 
+                    sSplits[0].name == name && sSplits[0].value == value)) {
                 write("Trigger Function Called.");
                 if (OnSplit != null) {
                     SplitEventArgs e = new SplitEventArgs();
@@ -366,7 +375,9 @@ namespace Devil
         }
 
         public bool WillTriggerEvent(string name, bool val) {
-            return (!(events.ContainsKey(name) && events[name] == val));
+            return (!(events.ContainsKey(name) && events[name] == val) ||
+                    (this.autoReset &&  !this.timerRunning &&
+                     sSplits.Length > 0 && sSplits[0].name == name));
         }
 
         public void TriggerEvent(string name, bool val) {
