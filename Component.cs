@@ -23,7 +23,7 @@ namespace LiveSplit.OriAndTheBlindForest
         public OriComponent() {
             oriState = new OriState();
             Settings = new OriAndTheBlindForestSettings(this);
-            oriState.oriTriggers.OnSplit += OnSplit;
+            oriState.oriTriggers.OnSplit += OnSplitTriggered;
         }
 
         public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode) {
@@ -33,6 +33,8 @@ namespace LiveSplit.OriAndTheBlindForest
                 state.OnPause += OnPause;
                 state.OnResume += OnResume;
                 state.OnStart += OnStart;
+                state.OnSplit += OnSplit;
+                state.OnUndoSplit += OnUndoSplit;
                 state.OnSkipSplit += OnSkipSplit;
             }
 
@@ -40,33 +42,11 @@ namespace LiveSplit.OriAndTheBlindForest
             oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
         }
 
-        public void OnSkipSplit(object sender, EventArgs e) {
-            write("[LiveSplit] Skip Split.");
-            oriState.oriTriggers.GoToNextSplit();
+        public override void Dispose() {
+            Settings.CloseDisplay();
         }
 
-        public void OnResume(object sender, EventArgs e) {
-            write("[LiveSplit] Resume.");
-            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
-        }
-
-        public void OnPause(object sender, EventArgs e) {
-            write("[LiveSplit] Pause.");
-            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
-        }
-
-        public void OnStart(object sender, EventArgs e) {
-            write("[LiveSplit] Start.");
-            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
-        }
-
-        public void OnReset(object sender, TimerPhase e) {
-            write("[LiveSplit] Reset.");
-            oriState.Reset();
-            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
-        }
-
-        public void OnSplit(object sender, OriTriggers.SplitEventArgs e) {
+        public void OnSplitTriggered(object sender, OriTriggers.SplitEventArgs e) {
             if (e.name == "Start") {
                 if (!oriState.oriTriggers.timerRunning && oriState.oriTriggers.autoReset) {
                     Model.Reset();
@@ -89,8 +69,37 @@ namespace LiveSplit.OriAndTheBlindForest
             }
         }
 
-        public override void Dispose() {
-            Settings.CloseDisplay();
+        public void OnReset(object sender, TimerPhase e) {
+            write("[LiveSplit] Reset.");
+            oriState.Reset();
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
+        }
+
+        public void OnResume(object sender, EventArgs e) {
+            write("[LiveSplit] Resume.");
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
+        }
+
+        public void OnPause(object sender, EventArgs e) {
+            write("[LiveSplit] Pause.");
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
+        }
+
+        public void OnStart(object sender, EventArgs e) {
+            write("[LiveSplit] Start.");
+            oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
+        }
+
+        public void OnUndoSplit(object sender, EventArgs e) {
+            write("[LiveSplit] Undo Split.");
+        }
+
+        public void OnSkipSplit(object sender, EventArgs e) {
+            write("[LiveSplit] Skip Split.");
+        }
+
+        public void OnSplit(object sender, EventArgs e) {
+            write("[LiveSplit] Split.");
         }
 
         public override Control GetSettingsControl(LayoutMode mode) {
