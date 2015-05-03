@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using LiveSplit.OriAndTheBlindForest;
+using LiveSplit.OriAndTheBlindForest.Memory;
+using LiveSplit.OriAndTheBlindForest.Debugging;
 
-namespace Devil
+namespace LiveSplit.OriAndTheBlindForest.State
 {
     public enum SceneState
     {
@@ -48,6 +50,19 @@ namespace Devil
             this.name = name;
             this.value = value;
         }
+    }
+
+    public struct Scene
+    {
+        public string name { get; set; }
+        public bool hasStartBeenCalled { get; set; }
+        public int state { get; set; }
+    }
+
+    public struct Area
+    {
+        public string name { get; set; }
+        public Decimal progress { get; set; }
     }
 
     public class OriState
@@ -109,7 +124,7 @@ namespace Devil
 
                 if (isOpen) Pulse();
             } catch (Exception e) {
-                write(e.ToString());
+                LogWriter.WriteLine(e.ToString());
             }
         }
 
@@ -288,14 +303,6 @@ namespace Devil
         public bool CheckEnteringGame() {
             // One of these two flags will be true during the transition from the Save Slot menu into the actual game.
             return oriMemory.GetGameInfo("Is Loading Old") || oriMemory.GetGameInfo("Is Loading New");
-        }
-
-        private void write(string str) {
-            #if DEBUG
-            StreamWriter wr = new StreamWriter("_oriauto.log", true);
-            wr.WriteLine("[" + DateTime.Now + "] " + str);
-            wr.Close();
-            #endif
         }
     }
 }

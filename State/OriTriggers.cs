@@ -5,8 +5,9 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using LiveSplit.OriAndTheBlindForest;
+using LiveSplit.OriAndTheBlindForest.Debugging;
 
-namespace Devil
+namespace LiveSplit.OriAndTheBlindForest.State
 {
     public class OriTriggers
     {
@@ -146,7 +147,7 @@ namespace Devil
                     (this.autoReset &&  !this.timerRunning && 
                     sSplits.Length > 0 && 
                     sSplits[0].name == name && sSplits[0].value == value)) {
-                write("Trigger Function Called.");
+                LogWriter.WriteLine("Trigger Function Called.");
                 if (OnSplit != null) {
                     SplitEventArgs e = new SplitEventArgs();
                     e.name = name;
@@ -219,7 +220,7 @@ namespace Devil
 
         public void OnMapCompletionChange(Area[] val, Decimal sMapCompletion) {
             mapCompletion = sMapCompletion;
-            write(string.Format("Map: {0}%", sMapCompletion));
+            LogWriter.WriteLine("Map: {0}%", sMapCompletion);
         }
 
         public void OnActiveScenesChange(Scene[] val, Scene[] old) {
@@ -257,7 +258,7 @@ namespace Devil
                         state = "Disabled";
                     }
 
-                    write(string.Format("{0} Scene: {1} {2}", state, scene.name, scene.hasStartBeenCalled));
+                    LogWriter.WriteLine("{0} Scene: {1} {2}", state, scene.name, scene.hasStartBeenCalled);
                 }
             }
         }
@@ -299,7 +300,7 @@ namespace Devil
                     string IGT = string.Format("{0}:{1}:{2}", sHours, sMinutes, sSeconds);
 
                     if (IGT != inGameTime) {
-                        //Console.WriteLine("{0}: {1}", name, IGT);
+                        //LogWriter.WriteLine("{0}: {1}", name, IGT);
                         inGameTime = IGT;
                     }
 
@@ -344,7 +345,7 @@ namespace Devil
             if (!counters.ContainsKey(name)) counters[name] = 0;
 
             counters[name]++;
-            write(string.Format("Counter: {0} {1}", name, counters[name]));
+            LogWriter.WriteLine("Counter: {0} {1}", name, counters[name]);
             SplitEventHandler(name, counters[name].ToString());
 
             return counters[name];
@@ -354,22 +355,22 @@ namespace Devil
             if (counters.ContainsKey(name) && counters[name] == val) return val;
 
             counters[name] = val;
-            write(string.Format("Counter: {0} {1}", name, counters[name]));
+            LogWriter.WriteLine("Counter: {0} {1}", name, counters[name]);
             SplitEventHandler(name, val.ToString());
 
             return counters[name];
         }
 
         public void TriggerHitbox(string name, string val) {
-            write(string.Format("TriggerHitbox(): {0} {1}", name, val));
+            LogWriter.WriteLine("TriggerHitbox(): {0} {1}", name, val);
             if (events.ContainsKey(name)) {
-                write(string.Format("Existing: {0} {1}", val, events[val]));
+                LogWriter.WriteLine("Existing: {0} {1}", val, events[val]);
                 if (events[val]) return;
             }
 
             events[val] = true;
-            write(string.Format("Current Split: {0} {1}", currentSplit.name, currentSplit.value));
-            write(string.Format("Hitbox Trigger: {0} {1}", name, val));
+            LogWriter.WriteLine("Current Split: {0} {1}", currentSplit.name, currentSplit.value);
+            LogWriter.WriteLine("Hitbox Trigger: {0} {1}", name, val);
 
             SplitEventHandler(name, val.ToString());
         }
@@ -381,25 +382,17 @@ namespace Devil
         }
 
         public void TriggerEvent(string name, bool val) {
-            write(string.Format("TriggerEvent(): {0} {1}", name, val));
+            LogWriter.WriteLine("TriggerEvent(): {0} {1}", name, val);
             if (events.ContainsKey(name)) {
-                write(string.Format("Existing: {0} {1}", name, events[name]));
+                LogWriter.WriteLine("Existing: {0} {1}", name, events[name]);
             }
             if (!WillTriggerEvent(name, val)) return;
 
             events[name] = val;
-            write(string.Format("Current Split: {0} {1}", currentSplit.name, currentSplit.value));
-            write(string.Format("Event Trigger: {0} {1}", name, val));
+            LogWriter.WriteLine("Current Split: {0} {1}", currentSplit.name, currentSplit.value);
+            LogWriter.WriteLine("Event Trigger: {0} {1}", name, val);
 
             SplitEventHandler(name, val.ToString());
-        }
-
-        private void write(string str) {
-            #if DEBUG
-            StreamWriter wr = new StreamWriter("_oriauto.log", true);
-            wr.WriteLine("[" + DateTime.Now + "] " + str);
-            wr.Close();
-            #endif
         }
     }
 }

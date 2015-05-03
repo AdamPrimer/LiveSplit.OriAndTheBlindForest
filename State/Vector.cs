@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace LiveSplit.OriAndTheBlindForest
+namespace LiveSplit.OriAndTheBlindForest.State
 {
     public enum Origin
     {

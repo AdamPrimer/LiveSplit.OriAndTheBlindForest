@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using LiveSplit.OriAndTheBlindForest;
-namespace Devil
+using LiveSplit.OriAndTheBlindForest.State;
+
+namespace LiveSplit.OriAndTheBlindForest.Memory
 {
     public class Memory
     {

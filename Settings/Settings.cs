@@ -1,11 +1,13 @@
-﻿using Devil;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
-namespace LiveSplit.OriAndTheBlindForest
+using LiveSplit.OriAndTheBlindForest;
+using LiveSplit.OriAndTheBlindForest.State;
+
+namespace LiveSplit.OriAndTheBlindForest.Settings
 {
     public partial class OriAndTheBlindForestSettings : UserControl
     {
@@ -371,14 +373,6 @@ namespace LiveSplit.OriAndTheBlindForest
 
         public void CloseDisplay() {
             display.Hide();
-        }
-
-        private void write(string str) {
-            #if DEBUG
-            StreamWriter wr = new StreamWriter("_oriauto.log", true);
-            wr.WriteLine("[" + DateTime.Now + "] " + str);
-            wr.Close();
-            #endif
         }
     }
 }

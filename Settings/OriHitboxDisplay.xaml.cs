@@ -8,8 +8,11 @@ using System.Windows.Interop;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using System.Windows.Media;
-using Devil;
-namespace LiveSplit.OriAndTheBlindForest {
+using LiveSplit.OriAndTheBlindForest;
+using LiveSplit.OriAndTheBlindForest.State;
+using LiveSplit.OriAndTheBlindForest.Memory;
+
+namespace LiveSplit.OriAndTheBlindForest.Settings {
     public partial class OriHitboxDisplay : Window {
         private OriMemory reader;
         private Rectangle hitboxUI;

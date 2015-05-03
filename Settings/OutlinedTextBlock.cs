@@ -5,7 +5,9 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
-namespace LiveSplit.OriAndTheBlindForest
+using LiveSplit.OriAndTheBlindForest;
+
+namespace LiveSplit.OriAndTheBlindForest.Settings
 {
     [ContentProperty("Text")]
     public class OutlinedTextBlock : FrameworkElement

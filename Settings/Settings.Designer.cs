@@ -1,4 +1,4 @@
-﻿namespace LiveSplit.OriAndTheBlindForest
+﻿namespace LiveSplit.OriAndTheBlindForest.Settings
 {
     partial class OriAndTheBlindForestSettings
     {

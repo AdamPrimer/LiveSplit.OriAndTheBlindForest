@@ -5,21 +5,11 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
 using LiveSplit.OriAndTheBlindForest;
-namespace Devil
+using LiveSplit.OriAndTheBlindForest.State;
+using LiveSplit.OriAndTheBlindForest.Debugging;
+
+namespace LiveSplit.OriAndTheBlindForest.Memory
 {
-    public struct Scene
-    {
-        public string name { get; set; }
-        public bool hasStartBeenCalled { get; set; }
-        public int state { get; set; }
-    }
-
-    public struct Area
-    {
-        public string name { get; set; }
-        public Decimal progress { get; set; }
-    }
-
     public class OriMemory
     {
         // These are checked in order, so they should be in reverse release order
@@ -106,7 +96,6 @@ namespace Devil
         }
 
         public int GetVersionedFunctionPointer(string name) {
-            write(name);
             // If we haven't already worked out what version is needed for this function signature, 
             // then iterate the versions checking each until we get a positive result. Store the
             // version so we don't need to search again in the future, and return the address.
@@ -116,7 +105,7 @@ namespace Devil
                         int[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
                         if (addrs[0] != 0) {
                             versionedFuncPatterns[name] = version;
-                            write(string.Format("{0} {1}", version, name));
+                            LogWriter.WriteLine("{0} {1}", version, name);
                             return addrs[0];
                         }
                     }
@@ -128,7 +117,7 @@ namespace Devil
             else {
                 string version = versionedFuncPatterns[name];
                 int[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
-                write(string.Format("{0} {1}", version, name));
+                LogWriter.WriteLine("{0} {1}", version, name);
                 return addrs[0];
             }
 
@@ -467,14 +456,6 @@ namespace Devil
             int path0 = GetCachedAddress("SeinSoulFlame", start + 0x28); // SeinSoulFlame
 
             return Memory.ReadValue<T>(proc, path0, seinSoulFlameFields[field]);
-        }
-
-        private void write(string str) {
-            #if DEBUG
-            StreamWriter wr = new StreamWriter("_oriauto.log", true);
-            wr.WriteLine("[" + DateTime.Now + "] " + str);
-            wr.Close();
-            #endif
         }
 
         public static Dictionary<string, int> seinInventoryFields = new Dictionary<string, int>()

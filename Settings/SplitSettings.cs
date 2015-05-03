@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
-using Devil;
+using LiveSplit.OriAndTheBlindForest;
+using LiveSplit.OriAndTheBlindForest.State;
 
-namespace LiveSplit.OriAndTheBlindForest
+namespace LiveSplit.OriAndTheBlindForest.Settings
 {
     public partial class SplitSettings : UserControl
     {
