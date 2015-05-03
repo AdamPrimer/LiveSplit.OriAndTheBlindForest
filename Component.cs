@@ -13,7 +13,7 @@ namespace LiveSplit.OriAndTheBlindForest
         public OriAndTheBlindForestSettings Settings { get; set; }
 
         public override string ComponentName {
-            get { return "Ori and the Blind Forest Auto Splitter"; }
+            get { return "Ori and the Blind Forest Autosplitter"; }
         }
 
         public OriState oriState;

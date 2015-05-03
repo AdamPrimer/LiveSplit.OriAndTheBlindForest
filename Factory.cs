@@ -8,7 +8,7 @@ namespace LiveSplit.OriAndTheBlindForest
     public class Factory : IComponentFactory
     {
         public string ComponentName {
-            get { return "Ori and the Blind Forest Autosplitter"; }
+            get { return "Ori and the Blind Forest Autosplitter v" + this.Version.ToString(); }
         }
 
         public string Description {
@@ -24,19 +24,19 @@ namespace LiveSplit.OriAndTheBlindForest
         }
 
         public string UpdateName {
-            get { return ""; }
+            get { return this.ComponentName; }
         }
 
         public string UpdateURL {
-            get { return "http://livesplit.org/update/"; }
+            get { return "https://raw.githubusercontent.com/AdamPrimer/LiveSplit.OriAndTheBlindForest/master/"; }
         }
 
         public Version Version {
-            get { return new Version(); }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         public string XMLURL {
-            get { return "http://livesplit.org/update/Components/noupdates.xml"; }
+            get { return this.UpdateURL + "Components/LiveSplit.OriAndTheBlindForest.Updates.xml"; }
         }
     }
 }

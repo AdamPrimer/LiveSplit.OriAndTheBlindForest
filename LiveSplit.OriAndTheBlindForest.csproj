@@ -93,9 +93,13 @@
   <ItemGroup>
     <None Include="README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Components\LiveSplit.OriAndTheBlindForest.Updates.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if exist "C:\Users\Adam\Downloads\LiveSplit_1.5.5\Components\" copy $(TargetPath) "C:\Users\Adam\Downloads\LiveSplit_1.5.5\Components\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) "$(SolutionDir)Components\$(TargetFileName)"
+if exist "C:\Users\Adam\Downloads\LiveSplit_1.5.5\Components\" copy $(TargetPath) "C:\Users\Adam\Downloads\LiveSplit_1.5.5\Components\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

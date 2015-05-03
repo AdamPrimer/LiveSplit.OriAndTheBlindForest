@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<updates>
+  <update version="1.1.2">
+    <files>
+      <file path="Components/LiveSplit.OriAndTheBlindForest.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Added support for LiveSplit updates.
+      </change>
+    </changelog>
+  </update>
+  <update version="1.1.1">
+    <files>
+      <file path="Components/LiveSplit.OriAndTheBlindForest.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Ignore skip split commands from LiveSplit. Previously it tried to advance its internal 
+        state to allow skipping buggy splits, however, due to stability this now is 
+        often the wrong behavior.
+      </change>
+    </changelog>
+  </update>
+</updates>
