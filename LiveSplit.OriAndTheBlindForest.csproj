@@ -53,46 +53,49 @@
   <ItemGroup>
     <Compile Include="Component.cs" />
     <Compile Include="Factory.cs" />
-    <Compile Include="Memory.cs" />
-    <Compile Include="OriHitboxDisplay.xaml.cs">
+    <Compile Include="Memory\Memory.cs" />
+    <Compile Include="Settings\OriHitboxDisplay.xaml.cs">
       <DependentUpon>OriHitboxDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OriMemory.cs" />
-    <Compile Include="OriState.cs" />
-    <Compile Include="OriTriggers.cs" />
-    <Compile Include="OutlinedTextBlock.cs" />
+    <Compile Include="Memory\OriMemory.cs" />
+    <Compile Include="State\OriState.cs" />
+    <Compile Include="State\OriTriggers.cs" />
+    <Compile Include="Settings\OutlinedTextBlock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs">
+    <Compile Include="Settings\Settings.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Settings.Designer.cs">
+    <Compile Include="Settings\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="SplitSettings.cs">
+    <Compile Include="Settings\SplitSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SplitSettings.Designer.cs">
+    <Compile Include="Settings\SplitSettings.Designer.cs">
       <DependentUpon>SplitSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Vector.cs" />
+    <Compile Include="State\Vector.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Settings.resx">
+    <EmbeddedResource Include="Settings\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplitSettings.resx">
+    <EmbeddedResource Include="Settings\SplitSettings.resx">
       <DependentUpon>SplitSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="OriHitboxDisplay.xaml">
+    <Page Include="Settings\OriHitboxDisplay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if exist "$(SolutionDir)..\Downloads\LiveSplit_1.5.5\Components\" copy $(TargetPath) "$(SolutionDir)..\Downloads\LiveSplit_1.5.5\Components\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>if exist "C:\Users\Adam\Downloads\LiveSplit_1.5.5\Components\" copy $(TargetPath) "C:\Users\Adam\Downloads\LiveSplit_1.5.5\Components\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -66,8 +66,6 @@ namespace LiveSplit.OriAndTheBlindForest
             oriState.oriTriggers.timerRunning = (Model.CurrentState.CurrentPhase == TimerPhase.Running);
         }
 
-        //  && !useInGame || inGame)
-
         public void OnSplit(object sender, OriTriggers.SplitEventArgs e) {
             if (e.name == "Start") {
                 if (!oriState.oriTriggers.timerRunning && oriState.oriTriggers.autoReset) {

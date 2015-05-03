@@ -22,39 +22,54 @@ namespace Devil
 
     public class OriMemory
     {
-        private Dictionary<string, string> funcPatterns = new Dictionary<string, string>()
-        {
-            // GameStateMachine::Awake()
-            // Hooked to enable knowing when the player is in the game, essential to know when other memory is available to access
-            {"GameStateMachine",      "558BEC5783EC048B7D08B8????????8938E8????????83EC0868????????50E8????????83C41085C0740CC7471400000000E94D000000E8????????83EC0868????????50E8????????|-63"},
-            
-            // GameController::Awake(): Unavailable until in actual game.
-            // Hooked to enable differentiation between transitioning into a game from the save screen, and actually being in a game.
-            {"GameController",        "83EC74C745AC00000000C745B000000000C745B400000000C745B8????????C745BC00000000C745A800000000C745A4000000008B05????????83EC086A0050|-10"},
-            
-            // Found This By Watching Accesses: Unavailable until in actual game.
-            // Hooked to obtain information about World Events and Keys
-            {"WorldEvents",           "57568B7D088B771083FE0D0F83F10000008BCEC1E102B8????????03C18B00FFE00FB605????????0FB64F143BC10F94C00FB6C0E9CB0000000FB605????????0FB64F143BC10F94C00FB6C0E9B30000000FB605????????0FB64F143BC10F94C00FB6C0E99B0000000FB605????????0FB64F143BC1|-82"},
-            
-            // SeinCharacter::Awake(): Unavailable until in actual game.
-            // Hooked to know everything about Ori (internally named Sein, don't ask)
-            {"SeinCharacter",         "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68????????E8????????83C41083EC08578945F850E8????????83C4108B45F889473483EC0C57E8????????83C41083EC085057E8????????83C4108D65FC5FC9C3|-82"},
-            
-            // ScenesManager::Awake()
-            // Hooked to know what scenes are loaded
-            {"ScenesManager",         "558BEC535783EC208B7D08B8????????893883EC0C57E8????????83C4108B05????????8B40208945F48B40308945E485FF|-38"},
-            
-            // SeinDeathCounter::get_Count()
-            // Hooked to get death counter, for some reason this is a global singleton...
-            {"SeinDeathCounter",      "83C41085C0740433C0EB098B05????????8B4014C9C3|-9"},
-            
-            // GameplayCamera()
-            // Hooked to know Ori's position, used to trigger splits based on location.
-            {"GameplayCamera",        "05480000008B08894DE88B4804894DEC8B40088945F08B05|-28"},
+        // These are checked in order, so they should be in reverse release order
+        public string[] versions = new string[2] { "v1.1", "v1.0" };
 
-            // Hooked to get Map%
-            {"GameWorld",             "558BEC53575683EC0C8B7D08B8????????89388B47|-8"},
+        private Dictionary<string, Dictionary<string, string>> funcPatterns = new Dictionary<string, Dictionary<string, string>>() 
+        {
+            {"v1.0", new Dictionary<string, string>()
+                {
+                    // GameStateMachine::Awake()
+                    // Hooked to enable knowing when the player is in the game, essential to know when other memory is available to access
+                    {"GameStateMachine",      "558BEC5783EC048B7D08B8????????8938E8????????83EC0868????????50E8????????83C41085C0740CC7471400000000E94D000000E8????????83EC0868????????50E8????????|-63"},
+            
+                    // GameController::Awake(): Unavailable until in actual game. Version 1.0
+                    // Hooked to enable differentiation between transitioning into a game from the save screen, and actually being in a game.
+                    {"GameController",        "83EC74C745AC00000000C745B000000000C745B400000000C745B8????????C745BC00000000C745A800000000C745A4000000008B05????????83EC086A0050|-10"},
+            
+                    // Found This By Watching Accesses: Unavailable until in actual game.
+                    // Hooked to obtain information about World Events and Keys
+                    {"WorldEvents",           "57568B7D088B771083FE0D0F83F10000008BCEC1E102B8????????03C18B00FFE00FB605????????0FB64F143BC10F94C00FB6C0E9CB0000000FB605????????0FB64F143BC10F94C00FB6C0E9B30000000FB605????????0FB64F143BC10F94C00FB6C0E99B0000000FB605????????0FB64F143BC1|-82"},
+            
+                    // SeinCharacter::Awake(): Unavailable until in actual game.
+                    // Hooked to know everything about Ori (internally named Sein, don't ask)
+                    {"SeinCharacter",         "558BEC5783EC048B7D08B8????????8938B8????????893883EC0C68????????E8????????83C41083EC08578945F850E8????????83C4108B45F889473483EC0C57E8????????83C41083EC085057E8????????83C4108D65FC5FC9C3|-82"},
+            
+                    // ScenesManager::Awake() Version 1.0
+                    // Hooked to know what scenes are loaded
+                    {"ScenesManager",         "558BEC535783EC208B7D08B8????????893883EC0C57E8????????83C4108B05????????8B40208945F48B40308945E485FF|-38"},
+
+                    // SeinDeathCounter::get_Count()
+                    // Hooked to get death counter, for some reason this is a global singleton...
+                    {"SeinDeathCounter",      "83C41085C0740433C0EB098B05????????8B4014C9C3|-9"},
+            
+                    // GameplayCamera()
+                    // Hooked to know Ori's position, used to trigger splits based on location.
+                    {"GameplayCamera",        "05480000008B08894DE88B4804894DEC8B40088945F08B05|-28"},
+
+                    // Hooked to get Map%
+                    {"GameWorld",             "558BEC53575683EC0C8B7D08B8????????89388B47|-8"},
+                }
+            },
+            {"v1.1", new Dictionary<string, string>()
+                {
+                    {"GameController",        "83EC78C745B000000000C745B400000000C745B800000000C745BC00000000C745C000000000C745AC00000000C745A8000000008B05????????83EC086A0050|-10"},
+                    {"ScenesManager",         "558BEC5783EC148B7D08B8????????893883EC0C57E8????????83C4108B05????????8B40208B40308945F085FF0F84F5|-38"},
+                }
+            },
         };
+
+        public Dictionary<string, string> versionedFuncPatterns = new Dictionary<string, string>();
 
         public Dictionary<string, int> funcPointers = new Dictionary<string, int>() { };
         public Dictionary<string, int> pCache = new Dictionary<string, int>() { };
@@ -66,8 +81,9 @@ namespace Devil
         public bool HookProcess() {
             if (proc == null || proc.HasExited) {
                 // Initialize/Reset all the pointers to 0
-                foreach (var pair in funcPatterns) {
-                    funcPointers[pair.Key] = 0;
+                List<string> keys = new List<string>(funcPointers.Keys);
+                foreach (var key in keys) {
+                    funcPointers[key] = 0;
                 }
 
                 Process[] processes = Process.GetProcessesByName("ori");
@@ -89,14 +105,39 @@ namespace Devil
             return isHooked;
         }
 
-        public int GetBasePointer(string name) {
-            if (!funcPointers.ContainsKey(name) || !funcPatterns.ContainsKey(name)) {
-                return 0;
+        public int GetVersionedFunctionPointer(string name) {
+            write(name);
+            // If we haven't already worked out what version is needed for this function signature, 
+            // then iterate the versions checking each until we get a positive result. Store the
+            // version so we don't need to search again in the future, and return the address.
+            if (!versionedFuncPatterns.ContainsKey(name)) {
+                foreach (string version in this.versions) {
+                    if (funcPatterns[version].ContainsKey(name)) {
+                        int[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
+                        if (addrs[0] != 0) {
+                            versionedFuncPatterns[name] = version;
+                            write(string.Format("{0} {1}", version, name));
+                            return addrs[0];
+                        }
+                    }
+                }
+            } 
+            
+            // If we have a cached version for this function signature, then just find the current
+            // value of the address at the signature.
+            else {
+                string version = versionedFuncPatterns[name];
+                int[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
+                write(string.Format("{0} {1}", version, name));
+                return addrs[0];
             }
 
-            if (funcPointers[name] == 0) {
-                int[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[name]);
-                funcPointers[name] = addrs[0];
+            return 0;
+        }
+
+        public int GetBasePointer(string name) {
+            if (!funcPointers.ContainsKey(name) || funcPointers[name] == 0) {
+                funcPointers[name] = GetVersionedFunctionPointer(name);
             }
 
             return funcPointers[name];

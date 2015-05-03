@@ -94,21 +94,22 @@ namespace Devil
         }
 
         public void Loop() {
-            bool isNowOpen = (oriMemory.HookProcess() && !oriMemory.proc.HasExited);
+            try { 
+                bool isNowOpen = (oriMemory.HookProcess() && !oriMemory.proc.HasExited);
 
-            if (isNowOpen != isOpen) {
-                if (!isNowOpen) {
-                    inGame = false;
-                    Console.WriteLine("ori.exe is unavailable.");
-                } else {
-                    Console.WriteLine("ori.exe is available.");
+                if (isNowOpen != isOpen) {
+                    if (!isNowOpen) {
+                        inGame = false;
+                        Console.WriteLine("ori.exe is unavailable.");
+                    } else {
+                        Console.WriteLine("ori.exe is available.");
+                    }
+                    isOpen = isNowOpen;
                 }
-                isOpen = isNowOpen;
-            }
-            if (isOpen) {
-                //Memory.Counter(true);
-                Pulse();
-                //Console.WriteLine("ReadProcessMemory Count: {0}", Memory.Counter(false));
+
+                if (isOpen) Pulse();
+            } catch (Exception e) {
+                write(e.ToString());
             }
         }
 
