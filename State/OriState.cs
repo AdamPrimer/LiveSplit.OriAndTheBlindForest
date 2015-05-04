@@ -87,13 +87,39 @@ namespace LiveSplit.OriAndTheBlindForest.State
         public delegate Dictionary<string, bool> GetGeneric(Dictionary<string, int> inbound);
         public delegate void OnChangeGeneric(string key, bool val);
 
+        public int exceptionsCaught = 0;
+        public int totalExceptionsCaught = 0;
+
         public OriState() {
             oriMemory = new OriMemory();
             oriTriggers = new OriTriggers();
         }
 
         public void Reset() {
+            List<string> keys;
+
+            this.posX = 0;
+            this.posY = 0;
+            this.sMapCompletion = 0;
+            this.exceptionsCaught = 0;
+            this.totalExceptionsCaught = 0;
+
+            this.lostSein = DateTime.Now;
+            this.sActiveScenes = new Scene[0];
+
+            keys = new List<string>(sKeys.Keys);
+            foreach (var key in keys) { sKeys[key] = false; }
+            keys = new List<string>(sEvents.Keys);
+            foreach (var key in keys) { sEvents[key] = false; }
+            keys = new List<string>(sAbilities.Keys);
+            foreach (var key in keys) { sAbilities[key] = false; }
+
             oriTriggers.ResetAll();
+        }
+
+        public void Dispose() {
+            // Unhook from reading the game memory
+            oriMemory.Dispose();
         }
 
         public void UpdateSplits(List<Split> splits) {
@@ -124,7 +150,19 @@ namespace LiveSplit.OriAndTheBlindForest.State
 
                 if (isOpen) Pulse();
             } catch (Exception e) {
-                LogWriter.WriteLine(e.ToString());
+                if (this.exceptionsCaught < 10 && this.totalExceptionsCaught < 30) {
+                    this.exceptionsCaught++;
+                    this.totalExceptionsCaught++;
+                    LogWriter.WriteLine("Exception #{0}: {1}", this.exceptionsCaught, e.ToString());
+                } else if (this.totalExceptionsCaught < 30) {
+                    LogWriter.WriteLine("Too many exceptions, rebooting autosplitter.");
+                    this.oriMemory.Dispose();
+                    this.oriMemory = new OriMemory();
+                    this.exceptionsCaught = 0;
+                } else if (this.totalExceptionsCaught == 30) {
+                    LogWriter.WriteLine("Too many total exceptions, no longer logging them.");
+                    this.totalExceptionsCaught++;
+                }
             }
         }
 

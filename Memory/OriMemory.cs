@@ -95,6 +95,12 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
             return isHooked;
         }
 
+        public void Dispose() {
+            // We want to appropriately dispose of the `Process` that is attached 
+            // to the process to avoid being unable to close LiveSplit.
+            if (proc != null) this.proc.Dispose();
+        }
+
         public int GetVersionedFunctionPointer(string name) {
             // If we haven't already worked out what version is needed for this function signature, 
             // then iterate the versions checking each until we get a positive result. Store the
