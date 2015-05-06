@@ -13,7 +13,7 @@ namespace LiveSplit.OriAndTheBlindForest.State
     {
         public static Dictionary<string, string> defaultSplits = new Dictionary<string, string>() 
         {
-            {"Iceless",                  "345.559, -109.268, 2.260, 4.781"},
+            {"Iceless",                  "344.752, -109.065, 3.981, 4.363"},
             {"Gumo Fall Trap (Fall)",    "480.171, -241.454, 3.206, 4.153"},
             {"Gumo Fall Trap (Land)",    "469.506, -388.384, 17.010, 0.937"},
             {"Kuro Cutscene",            "297.528, -110.975, 9.909, 14.488"},
