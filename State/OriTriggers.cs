@@ -20,10 +20,29 @@ namespace LiveSplit.OriAndTheBlindForest.State
             {"End of Forlorn Escape",    "-1162.265, -221.822, 7.031, 3.334"},
             {"Enter Wind Valley",        "-490.097, 181.214, 13.063, 5.933"},
             {"End of Horu Escape",       "162.890, 577.337, 5.216, 14.574"},
+            {"Valley All Cells",         "-324.301, -156.883, 6.507, 7.570"},
+            {"Glades All Cells",         "126.987, -195.261, 9.002, 7.149"},
+            {"Grotto All Cells",         "540.557, -186.335, 6.818, 6.410"},
+            {"Swamp All Cells",          "405.508, -30.681, 8.459, 7.104"},
+            {"Valley 100%",              "-324.301, -156.883, 6.507, 7.570"},
+            {"Glades 100%",              "270.133, -210.397, 9.559, 7.444"},
+            {"Grotto 100%",              "417.221, -102.266, 18.204, 9.143"},
+            {"Swamp 100%",               "398.133, -54.553, 17.584, 13.973"},
+            {"L1 Switch",                "-95.843, 380.564, 6.184, 5.030"},
+            {"L1 Entrance",              "14.055, 376.350, 12.762, 7.139"},
+            {"L2 Rock",                  "-50.096, 279.890, 37.405, 5.431"},
+            {"L2 Entrance",              "9.486, 298.079, 9.761, 6.807"},
+            {"R3 Rock",                  "295.834, 311.853, 11.000, 9.193"},
+            {"Horu Entrance",            "59.881, 175.917, 15.222, 8.895"},
+            {"R4 Lasers",                "257.678, 187.658, 12.156, 16.600"},
+            {"R4 Entrance",              "118.095, 202.512, 11.743, 8.431"},
         };
 
         public static Dictionary<string, string> availableSplits = new Dictionary<string, string>() 
         {
+            {"In Game",                  "Boolean"},
+            {"In Menu",                  "Boolean"},
+            {"Map %",                     "Value"},
             {"Hitbox",                   "Hitbox"}, 
             {"Start",                    "Boolean"},
             {"Soul Flame",               "Boolean"},
@@ -57,8 +76,6 @@ namespace LiveSplit.OriAndTheBlindForest.State
             {"Warmth Returned",          "Boolean"}, // Start of Escape
             {"End of Horu Escape",       "Hitbox"},  // End of Escape
             {"End",                      "Boolean"},
-
-            //{"Gumo Free",                "Boolean"},
 
             {"Health Cells",             "Value"},
             {"Energy Cells",             "Value"},
@@ -94,6 +111,22 @@ namespace LiveSplit.OriAndTheBlindForest.State
             {"Spark Flame",              "Boolean"},
             {"Cinder Flame",             "Boolean"},
             {"Ultra Split Flame",        "Boolean"},
+            {"Valley All Cells",         "Hitbox"},
+            {"Glades All Cells",         "Hitbox"},
+            {"Grotto All Cells",         "Hitbox"},
+            {"Swamp All Cells",          "Hitbox"},
+            {"Valley 100%",              "Hitbox"},
+            {"Glades 100%",              "Hitbox"},
+            {"Grotto 100%",              "Hitbox"},
+            {"Swamp 100%",               "Hitbox"},
+            {"L1 Switch",                "Hitbox"},
+            {"L1 Entrance",              "Hitbox"},
+            {"L2 Rock",                  "Hitbox"},
+            {"L2 Entrance",              "Hitbox"},
+            {"R3 Rock",                  "Hitbox"},
+            {"Horu Entrance",            "Hitbox"},
+            {"R4 Lasers",                "Hitbox"},
+            {"R4 Entrance",              "Hitbox"},
         };
 
         public class SplitEventArgs : EventArgs
@@ -144,11 +177,11 @@ namespace LiveSplit.OriAndTheBlindForest.State
 
         public void SplitEventHandler(string name, string value) {
             if ((currentSplit.name == name && currentSplit.value == value) ||
-                    (this.autoReset &&  !this.timerRunning && 
-                    sSplits.Length > 0 && 
+                    (this.autoReset && !this.timerRunning &&
+                    sSplits.Length > 0 &&
                     sSplits[0].name == name && sSplits[0].value == value)) {
                 LogWriter.WriteLine("Trigger Function Called.");
-                if (OnSplit != null) {
+                if (OnSplit != null && !currentSplit.dontSplit) {
                     SplitEventArgs e = new SplitEventArgs();
                     e.name = name;
                     e.value = value;
@@ -194,9 +227,12 @@ namespace LiveSplit.OriAndTheBlindForest.State
             }
         }
 
-        public void OnInGameChange(bool val) { }
+        public void OnInGameChange(bool val) {
+            TriggerEvent("In Game", val);
+            TriggerEvent("In Menu", !val);
+        }
 
-        public void OnPositionChange(Vector2 pos) { 
+        public void OnPositionChange(Vector2 pos) {
             if (!availableSplits.ContainsKey(currentSplit.name) || availableSplits[currentSplit.name] != "Hitbox") {
                 return;
             }
@@ -220,7 +256,6 @@ namespace LiveSplit.OriAndTheBlindForest.State
 
         public void OnMapCompletionChange(Area[] val, Decimal sMapCompletion) {
             mapCompletion = sMapCompletion;
-            LogWriter.WriteLine("Map: {0}%", sMapCompletion);
         }
 
         public void OnActiveScenesChange(Scene[] val, Scene[] old) {
@@ -338,6 +373,10 @@ namespace LiveSplit.OriAndTheBlindForest.State
                 case "Has Died":
                 case "Run State":
                     break;
+
+                case "Map %":
+                    SplitEventHandler("Map %", val.ToString());
+                    break;
             }
         }
 
@@ -377,7 +416,7 @@ namespace LiveSplit.OriAndTheBlindForest.State
 
         public bool WillTriggerEvent(string name, bool val) {
             return (!(events.ContainsKey(name) && events[name] == val) ||
-                    (this.autoReset &&  !this.timerRunning &&
+                    (this.autoReset && !this.timerRunning &&
                      sSplits.Length > 0 && sSplits[0].name == name));
         }
 

@@ -1,5 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <updates>
+  <update version="1.1.4">
+    <files>
+      <file path="Components/LiveSplit.OriAndTheBlindForest.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>
+        Added checkbox to include splits that don't actually split.
+      </change>
+      <change>
+        Added an "In Game" split to split when reentering the game. Combined with the above, a skill such as "Wall Jump" 
+        can be marked "Don't Split" followed by an "In Game" split to split when you re-enter the game after getting an 
+        ability rather than splitting immediately on pickup.
+      </change>
+      <change>
+        Updated the default splits for all categories to reflect route changes.
+      </change>
+      <change>
+        Added new All Skills category along with default splits.
+      </change>
+      <change>
+        Added Map% display for 100% runs.
+      </change>
+      <change>
+        Added "Start on 1st Split" to avoid needing "Start" split
+      </change>
+      <change>
+        Added "Reset on Start" to automatically reset your splits if you start a new run. Use at your own risk!
+      </change>
+    </changelog>
+  </update>
   <update version="1.1.3">
     <files>
       <file path="Components/LiveSplit.OriAndTheBlindForest.dll" status="changed"/>

@@ -29,6 +29,7 @@
             this.btnUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
+            this.chkDontSplit = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cboName
@@ -74,11 +75,21 @@
             this.btnRemove.TabIndex = 6;
             this.btnRemove.UseVisualStyleBackColor = true;
             // 
+            // chkDontSplit
+            // 
+            this.chkDontSplit.AutoSize = true;
+            this.chkDontSplit.Location = new System.Drawing.Point(303, 3);
+            this.chkDontSplit.Name = "chkDontSplit";
+            this.chkDontSplit.Size = new System.Drawing.Size(15, 14);
+            this.chkDontSplit.TabIndex = 7;
+            this.chkDontSplit.UseVisualStyleBackColor = true;
+            // 
             // SplitSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Controls.Add(this.chkDontSplit);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnDown);
             this.Controls.Add(this.btnUp);
@@ -86,7 +97,7 @@
             this.Controls.Add(this.cboName);
             this.Margin = new System.Windows.Forms.Padding(3, 1, 1, 1);
             this.Name = "SplitSettings";
-            this.Size = new System.Drawing.Size(429, 26);
+            this.Size = new System.Drawing.Size(324, 26);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,5 +110,6 @@
 		public System.Windows.Forms.Button btnUp;
 		public System.Windows.Forms.Button btnDown;
 		public System.Windows.Forms.Button btnRemove;
+        public System.Windows.Forms.CheckBox chkDontSplit;
 	}
 }

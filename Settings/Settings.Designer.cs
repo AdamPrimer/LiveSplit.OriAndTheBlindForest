@@ -32,11 +32,11 @@
             this.btnAddSplit = new System.Windows.Forms.Button();
             this.flowMain = new System.Windows.Forms.FlowLayoutPanel();
             this.flowDefaults = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnAnyPercentMisty = new System.Windows.Forms.Button();
-            this.btnLowPercent = new System.Windows.Forms.Button();
+            this.btnAllSkills = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
             this.chkAutoReset = new System.Windows.Forms.CheckBox();
+            this.chkShowMapDisplay = new System.Windows.Forms.CheckBox();
             this.flowMain.SuspendLayout();
             this.flowDefaults.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -46,7 +46,7 @@
             // 
             this.btn100Percent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn100Percent.Location = new System.Drawing.Point(265, 3);
+            this.btn100Percent.Location = new System.Drawing.Point(247, 3);
             this.btn100Percent.Name = "btn100Percent";
             this.btn100Percent.Size = new System.Drawing.Size(46, 21);
             this.btn100Percent.TabIndex = 2;
@@ -55,7 +55,7 @@
             // 
             // btnAllCells
             // 
-            this.btnAllCells.Location = new System.Drawing.Point(202, 3);
+            this.btnAllCells.Location = new System.Drawing.Point(184, 3);
             this.btnAllCells.Name = "btnAllCells";
             this.btnAllCells.Size = new System.Drawing.Size(57, 21);
             this.btnAllCells.TabIndex = 1;
@@ -101,7 +101,7 @@
             this.flowMain.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowMain.Location = new System.Drawing.Point(0, 0);
             this.flowMain.Name = "flowMain";
-            this.flowMain.Size = new System.Drawing.Size(373, 66);
+            this.flowMain.Size = new System.Drawing.Size(376, 66);
             this.flowMain.TabIndex = 1;
             this.flowMain.WrapContents = false;
             // 
@@ -110,33 +110,24 @@
             this.flowDefaults.AutoSize = true;
             this.flowDefaults.Controls.Add(this.lblDefaults);
             this.flowDefaults.Controls.Add(this.btnAnyPercent);
-            this.flowDefaults.Controls.Add(this.btnAnyPercentMisty);
+            this.flowDefaults.Controls.Add(this.btnAllSkills);
             this.flowDefaults.Controls.Add(this.btnAllCells);
             this.flowDefaults.Controls.Add(this.btn100Percent);
-            this.flowDefaults.Controls.Add(this.btnLowPercent);
             this.flowDefaults.Location = new System.Drawing.Point(3, 3);
             this.flowDefaults.Name = "flowDefaults";
-            this.flowDefaults.Size = new System.Drawing.Size(367, 27);
+            this.flowDefaults.Size = new System.Drawing.Size(296, 27);
             this.flowDefaults.TabIndex = 0;
             this.flowDefaults.WrapContents = false;
             // 
-            // btnAnyPercentMisty
+            // btnAllSkills
             // 
-            this.btnAnyPercentMisty.Location = new System.Drawing.Point(121, 3);
-            this.btnAnyPercentMisty.Name = "btnAnyPercentMisty";
-            this.btnAnyPercentMisty.Size = new System.Drawing.Size(75, 21);
-            this.btnAnyPercentMisty.TabIndex = 4;
-            this.btnAnyPercentMisty.Text = "Any% (Misty)";
-            this.btnAnyPercentMisty.UseVisualStyleBackColor = true;
-            // 
-            // btnLowPercent
-            // 
-            this.btnLowPercent.Location = new System.Drawing.Point(317, 3);
-            this.btnLowPercent.Name = "btnLowPercent";
-            this.btnLowPercent.Size = new System.Drawing.Size(47, 21);
-            this.btnLowPercent.TabIndex = 5;
-            this.btnLowPercent.Text = "Low%";
-            this.btnLowPercent.UseVisualStyleBackColor = true;
+            this.btnAllSkills.Location = new System.Drawing.Point(121, 3);
+            this.btnAllSkills.Name = "btnAllSkills";
+            this.btnAllSkills.Size = new System.Drawing.Size(57, 21);
+            this.btnAllSkills.TabIndex = 4;
+            this.btnAllSkills.Text = "All Skills";
+            this.btnAllSkills.UseVisualStyleBackColor = true;
+            this.btnAllSkills.Click += new System.EventHandler(this.btnAllSkills_Click_1);
             // 
             // flowLayoutPanel1
             // 
@@ -144,9 +135,10 @@
             this.flowLayoutPanel1.Controls.Add(this.btnAddSplit);
             this.flowLayoutPanel1.Controls.Add(this.chkAutoStart);
             this.flowLayoutPanel1.Controls.Add(this.chkAutoReset);
+            this.flowLayoutPanel1.Controls.Add(this.chkShowMapDisplay);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 36);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(300, 27);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(370, 27);
             this.flowLayoutPanel1.TabIndex = 7;
             // 
             // chkAutoStart
@@ -158,18 +150,29 @@
             this.chkAutoStart.TabIndex = 1;
             this.chkAutoStart.Text = "Start on 1st Split";
             this.chkAutoStart.UseVisualStyleBackColor = true;
-            this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkAutoStart_CheckedChanged);
+            this.chkAutoStart.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
             // 
             // chkAutoReset
             // 
             this.chkAutoReset.AutoSize = true;
             this.chkAutoReset.Location = new System.Drawing.Point(175, 3);
             this.chkAutoReset.Name = "chkAutoReset";
-            this.chkAutoReset.Size = new System.Drawing.Size(122, 17);
+            this.chkAutoReset.Size = new System.Drawing.Size(94, 17);
             this.chkAutoReset.TabIndex = 2;
-            this.chkAutoReset.Text = "Reset Splits on Start";
+            this.chkAutoReset.Text = "Reset on Start";
             this.chkAutoReset.UseVisualStyleBackColor = true;
-            this.chkAutoReset.CheckedChanged += new System.EventHandler(this.chkAutoReset_CheckedChanged);
+            this.chkAutoReset.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
+            // 
+            // chkShowMapDisplay
+            // 
+            this.chkShowMapDisplay.AutoSize = true;
+            this.chkShowMapDisplay.Location = new System.Drawing.Point(275, 3);
+            this.chkShowMapDisplay.Name = "chkShowMapDisplay";
+            this.chkShowMapDisplay.Size = new System.Drawing.Size(92, 17);
+            this.chkShowMapDisplay.TabIndex = 3;
+            this.chkShowMapDisplay.Text = "Map% Display";
+            this.chkShowMapDisplay.UseVisualStyleBackColor = true;
+            this.chkShowMapDisplay.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
             // 
             // OriAndTheBlindForestSettings
             // 
@@ -181,7 +184,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.flowMain);
             this.Name = "OriAndTheBlindForestSettings";
-            this.Size = new System.Drawing.Size(373, 66);
+            this.Size = new System.Drawing.Size(376, 66);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.flowMain.ResumeLayout(false);
             this.flowMain.PerformLayout();
@@ -203,11 +206,11 @@
         private System.Windows.Forms.Button btnAddSplit;
         private System.Windows.Forms.FlowLayoutPanel flowMain;
         private System.Windows.Forms.FlowLayoutPanel flowDefaults;
-        private System.Windows.Forms.Button btnAnyPercentMisty;
-        private System.Windows.Forms.Button btnLowPercent;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.CheckBox chkAutoStart;
         private System.Windows.Forms.CheckBox chkAutoReset;
+        private System.Windows.Forms.CheckBox chkShowMapDisplay;
+        private System.Windows.Forms.Button btnAllSkills;
 
     }
 }

@@ -116,10 +116,10 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
                         }
                     }
                 }
-            } 
-            
+            }
+
             // If we have a cached version for this function signature, then just find the current
-            // value of the address at the signature.
+                // value of the address at the signature.
             else {
                 string version = versionedFuncPatterns[name];
                 int[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
@@ -346,6 +346,8 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
 
         public Area[] GetMapCompletion() {
             int gameWorld = GetGameWorld();
+            int current = Memory.ReadValue<int>(proc, gameWorld, 0x1C);
+            Area currentArea = GetArea(current);
             int listHead = Memory.ReadValue<int>(proc, gameWorld, 0x18, 0x08);
             int listSize = Memory.ReadValue<int>(proc, gameWorld, 0x18, 0x0C);
 
@@ -353,23 +355,49 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
             for (var i = 0; i < listSize; i++) {
                 int gameWorldAreaHead = Memory.ReadValue<int>(proc, listHead, 0x10 + (i * 4));
 
-                float completionAmount = Memory.ReadValue<float>(proc, gameWorldAreaHead, 0x14); // RuntimeGameWorldArea.m_completionAmount 
-                bool completionIsDirty = Memory.ReadValue<bool>(proc, gameWorldAreaHead, 0x18);  // RuntimeGameWorldArea.m_dirtyCompletionAmount
-
-                int gameAreaNameHead = Memory.ReadValue<int>(proc, gameWorldAreaHead, 0x08, 0x1C);
-                int nameLength = Memory.ReadValue<int>(proc, gameAreaNameHead, 0x08);
-
-                string areaName = Encoding.Unicode.GetString(Memory.GetBytes(proc, gameAreaNameHead + 0x0C, 2 * nameLength)); // RuntimeGameWorldArea.AreaNameString
-
-                decimal completionRounded = Math.Round((decimal)completionAmount * 100, 2, MidpointRounding.AwayFromZero);
-
-                Area area = new Area();
-                area.name = areaName;
-                area.progress = completionRounded;
+                Area area = GetArea(gameWorldAreaHead);
+                if (area.name.Equals(currentArea.name, StringComparison.OrdinalIgnoreCase)) {
+                    area.current = true;
+                }
                 areas.Add(area);
             }
 
             return areas.ToArray();
+        }
+
+        public decimal GetTotalMapCompletion() {
+            int gameWorld = GetGameWorld();
+            int current = Memory.ReadValue<int>(proc, gameWorld, 0x1C);
+            int listHead = Memory.ReadValue<int>(proc, gameWorld, 0x18, 0x08);
+            int listSize = Memory.ReadValue<int>(proc, gameWorld, 0x18, 0x0C);
+
+            decimal total = 0;
+            for (var i = 0; i < listSize; i++) {
+                int gameWorldAreaHead = Memory.ReadValue<int>(proc, listHead, 0x10 + (i * 4));
+
+                Area area = GetArea(gameWorldAreaHead);
+                total += area.progress;
+            }
+
+            return total;
+        }
+
+        private Area GetArea(int areaAddress) {
+            float completionAmount = Memory.ReadValue<float>(proc, areaAddress, 0x14); // RuntimeGameWorldArea.m_completionAmount 
+            bool completionIsDirty = Memory.ReadValue<bool>(proc, areaAddress, 0x18);  // RuntimeGameWorldArea.m_dirtyCompletionAmount
+
+            int gameAreaNameHead = Memory.ReadValue<int>(proc, areaAddress, 0x08, 0x1C);
+            int nameLength = Memory.ReadValue<int>(proc, gameAreaNameHead, 0x08);
+
+            string areaName = Encoding.Unicode.GetString(Memory.GetBytes(proc, gameAreaNameHead + 0x0C, 2 * nameLength)); // RuntimeGameWorldArea.AreaNameString
+
+            decimal completionRounded = Math.Round((decimal)completionAmount * 100, 2, MidpointRounding.AwayFromZero);
+
+            Area area = new Area();
+            area.name = areaName;
+            area.progress = completionRounded;
+            area.current = false;
+            return area;
         }
 
         public Scene[] GetScenes() {

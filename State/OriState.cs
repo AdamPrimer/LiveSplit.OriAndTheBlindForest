@@ -46,9 +46,11 @@ namespace LiveSplit.OriAndTheBlindForest.State
     {
         public string name;
         public string value;
-        public Split(string name, string value) {
+        public bool dontSplit;
+        public Split(string name, string value, bool dontSplit = false) {
             this.name = name;
             this.value = value;
+            this.dontSplit = dontSplit;
         }
     }
 
@@ -57,12 +59,21 @@ namespace LiveSplit.OriAndTheBlindForest.State
         public string name { get; set; }
         public bool hasStartBeenCalled { get; set; }
         public int state { get; set; }
+
+        public override string ToString() {
+            return name + " - " + state;
+        }
     }
 
     public struct Area
     {
         public string name { get; set; }
-        public Decimal progress { get; set; }
+        public decimal progress { get; set; }
+        public bool current { get; set; }
+
+        public override string ToString() {
+            return (string.IsNullOrEmpty(name) ? "N/A" : name) + " - " + progress.ToString("0.00") + "%";
+        }
     }
 
     public class OriState
@@ -78,6 +89,8 @@ namespace LiveSplit.OriAndTheBlindForest.State
 
         public DateTime lostSein = DateTime.Now;
         public Decimal sMapCompletion = 0;
+        public List<Area> sAreas = new List<Area>();
+        public Area sCurrentArea;
         public Scene[] sActiveScenes = new Scene[0];
         public Dictionary<string, object> sState = new Dictionary<string, object>();
         public Dictionary<string, bool> sKeys = new Dictionary<string, bool>();
@@ -101,6 +114,7 @@ namespace LiveSplit.OriAndTheBlindForest.State
             this.posX = 0;
             this.posY = 0;
             this.sMapCompletion = 0;
+            sAreas.Clear();
             this.exceptionsCaught = 0;
             this.totalExceptionsCaught = 0;
 
@@ -135,7 +149,7 @@ namespace LiveSplit.OriAndTheBlindForest.State
         }
 
         public void Loop() {
-            try { 
+            try {
                 bool isNowOpen = (oriMemory.HookProcess() && !oriMemory.proc.HasExited);
 
                 if (isNowOpen != isOpen) {
@@ -220,6 +234,7 @@ namespace LiveSplit.OriAndTheBlindForest.State
             n["Deaths"] = oriMemory.GetDeathsCount();
             n["Level"] = oriMemory.GetSeinLevel("Current");
             n["Key Stones"] = oriMemory.GetSeinInventory("Keystones");
+            n["Map %"] = oriMemory.GetTotalMapCompletion();
 
             //n["Soul Flames Cast"]  = oriMemory.GetSeinSoulFlame<Int32>("Number of Soul Flames Cast");
 
@@ -283,10 +298,17 @@ namespace LiveSplit.OriAndTheBlindForest.State
             Area[] areas = oriMemory.GetMapCompletion();
             if (areas.Length == 0) return;
 
+            List<Area> newAreas = new List<Area>();
             decimal mapCompletion = 0;
             foreach (var area in areas) {
                 mapCompletion += area.progress;
+                newAreas.Add(area);
+                if (area.current) {
+                    sCurrentArea = area;
+                }
             }
+            sAreas = newAreas;
+
             mapCompletion = Math.Round((decimal)mapCompletion / areas.Length, 2, MidpointRounding.AwayFromZero);
 
             if (mapCompletion != sMapCompletion) {
@@ -321,8 +343,11 @@ namespace LiveSplit.OriAndTheBlindForest.State
         }
 
         public void UpdateStartGame(bool isStartingGame) {
-            if (isStartingGame == true) {
+            if (isStartingGame) {
                 oriTriggers.OnStartGame(isStartingGame);
+                sMapCompletion = 0;
+                sCurrentArea = default(Area);
+                sAreas.Clear();
             }
         }
 

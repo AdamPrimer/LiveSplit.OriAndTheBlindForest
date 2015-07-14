@@ -32,6 +32,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 btnDown.Left -= hitboxTextWidth;
                 btnRemove.Left -= hitboxTextWidth;
                 btnUp.Left -= hitboxTextWidth;
+                chkDontSplit.Left -= hitboxTextWidth;
             }
 
             this.ControlType = cboName.SelectedValue.ToString();
@@ -45,7 +46,8 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 btnDown.Left += hitboxTextWidth;
                 btnRemove.Left += hitboxTextWidth;
                 btnUp.Left += hitboxTextWidth;
-            } else { 
+                chkDontSplit.Left += hitboxTextWidth;
+            } else {
                 txtValue.Text = "True";
             }
 
