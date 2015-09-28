@@ -61,7 +61,7 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
 
         public Dictionary<string, string> versionedFuncPatterns = new Dictionary<string, string>();
 
-        public Dictionary<string, int> funcPointers = new Dictionary<string, int>() { };
+        public Dictionary<string, long> funcPointers = new Dictionary<string, long>() { };
         public Dictionary<string, int> pCache = new Dictionary<string, int>() { };
 
         public Process proc;
@@ -101,18 +101,19 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
             if (proc != null) this.proc.Dispose();
         }
 
-        public int GetVersionedFunctionPointer(string name) {
+        public long GetVersionedFunctionPointer(string name) {
             // If we haven't already worked out what version is needed for this function signature, 
             // then iterate the versions checking each until we get a positive result. Store the
             // version so we don't need to search again in the future, and return the address.
             if (!versionedFuncPatterns.ContainsKey(name)) {
                 foreach (string version in this.versions) {
                     if (funcPatterns[version].ContainsKey(name)) {
-                        int[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
+                        long[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
                         if (addrs[0] != 0) {
                             versionedFuncPatterns[name] = version;
                             LogWriter.WriteLine("{0} {1}", version, name);
                             return addrs[0];
+                        } else {
                         }
                     }
                 }
@@ -122,15 +123,17 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
                 // value of the address at the signature.
             else {
                 string version = versionedFuncPatterns[name];
-                int[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
+                long[] addrs = Memory.FindMemorySignatures(proc, funcPatterns[version][name]);
                 LogWriter.WriteLine("{0} {1}", version, name);
                 return addrs[0];
             }
 
+            LogWriter.WriteLine("Failed to get {0}", name);
+
             return 0;
         }
 
-        public int GetBasePointer(string name) {
+        public long GetBasePointer(string name) {
             if (!funcPointers.ContainsKey(name) || funcPointers[name] == 0) {
                 funcPointers[name] = GetVersionedFunctionPointer(name);
             }
@@ -147,7 +150,7 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
 
         public int GetCachedPointer(string name) {
             if (!pCache.ContainsKey(name) || pCache[name] == 0) {
-                int pointer = GetBasePointer(name);
+                long pointer = GetBasePointer(name);
                 int result = Memory.ReadValue<int>(proc, pointer, 0, 0);    // Pointer to Object -> Head of Object
                 pCache[name] = result;
                 return result;
@@ -279,7 +282,7 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
         }
 
         public Dictionary<string, bool> GetEvents(Dictionary<string, int> abilities) {
-            int pEvents = GetBasePointer("WorldEvents");
+            long pEvents = GetBasePointer("WorldEvents");
             int start = Memory.ReadValue<int>(proc, pEvents) - 0x2;
 
             Dictionary<string, bool> results = new Dictionary<string, bool>();
@@ -290,7 +293,7 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
         }
 
         public Dictionary<string, bool> GetKeys(Dictionary<string, int> abilities) {
-            int pEvents = GetBasePointer("WorldEvents");
+            long pEvents = GetBasePointer("WorldEvents");
             int start = Memory.ReadValue<int>(proc, pEvents) - 0x42;
 
             Dictionary<string, bool> results = new Dictionary<string, bool>();

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using LiveSplit.OriAndTheBlindForest;
 using LiveSplit.OriAndTheBlindForest.State;
+using LiveSplit.OriAndTheBlindForest.Debugging;
 
 namespace LiveSplit.OriAndTheBlindForest.Memory
 {
@@ -12,6 +13,33 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
         const int MEM_COMMIT = 0x00001000;
         const int MEM_PRIVATE = 0x00020000;
         const int PAGE_EXECUTE_READWRITE = 0x40;
+
+        public enum AllocationProtect : uint
+        {
+            PAGE_EXECUTE = 0x00000010,
+            PAGE_EXECUTE_READ = 0x00000020,
+            PAGE_EXECUTE_READWRITE = 0x00000040,
+            PAGE_EXECUTE_WRITECOPY = 0x00000080,
+            PAGE_NOACCESS = 0x00000001,
+            PAGE_READONLY = 0x00000002,
+            PAGE_READWRITE = 0x00000004,
+            PAGE_WRITECOPY = 0x00000008,
+            PAGE_GUARD = 0x00000100,
+            PAGE_NOCACHE = 0x00000200,
+            PAGE_WRITECOMBINE = 0x00000400
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MEMORY_BASIC_INFORMATION
+        {
+            public IntPtr BaseAddress;
+            public IntPtr AllocationBase;
+            public uint AllocationProtect;
+            public IntPtr RegionSize;
+            public uint State;
+            public uint Protect;
+            public uint Type;
+        }
 
         public static IntPtr GetForegroundWindow() {
             return SafeNativeMethods.GetForegroundWindow();
@@ -34,7 +62,7 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
             } catch { }
             return new Vector4(ptUL.X, ptUL.Y, ptLR.X - ptUL.X, ptLR.Y - ptUL.Y);
         }
-        public static T ReadValue<T>(Process targetProcess, int address, params int[] offsets) {
+        public static T ReadValue<T>(Process targetProcess, long address, params int[] offsets) {
             byte[] buffer = new byte[8];
             int bytesRead;
 
@@ -91,33 +119,31 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
             return buffer;
         }
 
-        public static int[] FindMemorySignatures(Process targetProcess, params string[] searchStrings) {
-            int[] returnAddresses = new int[searchStrings.Length];
+        public static long[] FindMemorySignatures(Process targetProcess, params string[] searchStrings) {
+            long[] returnAddresses = new long[searchStrings.Length];
             MemorySignature[] byteCodes = new MemorySignature[searchStrings.Length];
             for (int i = 0; i < searchStrings.Length; i++) {
                 byteCodes[i] = GetSignature(searchStrings[i]);
             }
 
             try {
-                SystemInfo sysInfo;
-                SafeNativeMethods.GetSystemInfo(out sysInfo);
-                int minAddress = (int)sysInfo.minimumApplicationAddress;
-                int maxAddress = (int)sysInfo.maximumApplicationAddress;
-                MemoryInfo memInfo;
+                long minAddress = 0;
+                long maxAddress = 0x7fffffff;
+
+                MEMORY_BASIC_INFORMATION memInfo;
 
                 int totalBytesRead = 0;
                 int foundAddresses = 0;
-
                 while (minAddress < maxAddress && foundAddresses < searchStrings.Length) {
-                    SafeNativeMethods.VirtualQueryEx(targetProcess.Handle, (IntPtr)minAddress, out memInfo, 28);
+                    SafeNativeMethods.VirtualQueryEx(targetProcess.Handle, (IntPtr)minAddress, out memInfo, (uint)Marshal.SizeOf(typeof(MEMORY_BASIC_INFORMATION)));
 
                     // if this memory chunk is accessible
-                    if ((memInfo.AllocationProtect & PAGE_EXECUTE_READWRITE) != 0 && memInfo.lType == MEM_PRIVATE && memInfo.State == MEM_COMMIT) {
-                        byte[] buffer = new byte[memInfo.RegionSize];
+                    if ((memInfo.AllocationProtect & PAGE_EXECUTE_READWRITE) != 0 && memInfo.Type == MEM_PRIVATE && memInfo.State == MEM_COMMIT) {
+                        byte[] buffer = new byte[memInfo.RegionSize.ToInt32()];
 
                         int bytesRead = 0;
                         // read everything in the buffer above
-                        if (SafeNativeMethods.ReadProcessMemory(targetProcess.Handle, (IntPtr)memInfo.BaseAddress, buffer, memInfo.RegionSize, out bytesRead)) {
+                        if (SafeNativeMethods.ReadProcessMemory(targetProcess.Handle, (IntPtr)memInfo.BaseAddress, buffer, memInfo.RegionSize.ToInt32(), out bytesRead)) {
                             totalBytesRead += bytesRead;
 
                             for (int i = 0; i < searchStrings.Length; i++) {
@@ -131,18 +157,19 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
                     }
 
                     // move to the next memory chunk
-                    minAddress += memInfo.RegionSize;
+                    minAddress += memInfo.RegionSize.ToInt32();
                 }
+
             } catch { }
 
             return returnAddresses;
         }
 
-        private static bool SearchMemory(byte[] buffer, MemorySignature byteCode, int currentAddress, ref int foundAddress) {
+        private static bool SearchMemory(byte[] buffer, MemorySignature byteCode, long currentAddress, ref long foundAddress) {
             byte[] bytes = byteCode.byteCode;
             byte[] wild = byteCode.wildCards;
-            for (int i = 0, j = 0; i <= buffer.Length - bytes.Length; i++) {
-                int k = i;
+            for (uint i = 0, j = 0; i <= buffer.Length - bytes.Length; i++) {
+                uint k = i;
                 while (j < bytes.Length && (wild[j] == 1 || buffer[k] == bytes[j])) {
                     k++; j++;
                 }
@@ -198,30 +225,6 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
             }
         }
 
-        private struct MemoryInfo
-        {
-            public int BaseAddress;
-            public int AllocationBase;
-            public int AllocationProtect;
-            public int RegionSize;
-            public int State;
-            public int Protect;
-            public int lType;
-        }
-        private struct SystemInfo
-        {
-            public ushort processorArchitecture;
-            ushort reserved;
-            public uint pageSize;
-            public IntPtr minimumApplicationAddress;
-            public IntPtr maximumApplicationAddress;
-            public IntPtr activeProcessorMask;
-            public uint numberOfProcessors;
-            public uint processorType;
-            public uint allocationGranularity;
-            public ushort processorLevel;
-            public ushort processorRevision;
-        }
         [StructLayout(LayoutKind.Sequential)]
         private struct Rect
         {
@@ -237,10 +240,8 @@ namespace LiveSplit.OriAndTheBlindForest.Memory
             public static extern IntPtr GetForegroundWindow();
             [DllImport("kernel32.dll", SetLastError = true)]
             public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, out int lpNumberOfBytesRead);
-            [DllImport("kernel32.dll")]
-            public static extern void GetSystemInfo(out SystemInfo lpSystemInfo);
             [DllImport("kernel32.dll", SetLastError = true)]
-            public static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MemoryInfo lpBuffer, uint dwLength);
+            public static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
             [DllImport("user32.dll")]
             public static extern IntPtr GetClientRect(IntPtr hWnd, ref Rect rect);
             [DllImport("user32.dll")]

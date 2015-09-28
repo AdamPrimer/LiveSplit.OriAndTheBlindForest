@@ -155,9 +155,9 @@ namespace LiveSplit.OriAndTheBlindForest.State
                 if (isNowOpen != isOpen) {
                     if (!isNowOpen) {
                         inGame = false;
-                        Console.WriteLine("ori.exe is unavailable.");
+                        LogWriter.WriteLine("ori.exe is unavailable.");
                     } else {
-                        Console.WriteLine("ori.exe is available.");
+                        LogWriter.WriteLine("ori.exe is available.");
                     }
                     isOpen = isNowOpen;
                 }
