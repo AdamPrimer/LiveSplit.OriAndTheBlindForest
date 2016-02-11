@@ -191,7 +191,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
             isLoading = true;
             this.flowMain.SuspendLayout();
 
-            for (int i = flowMain.Controls.Count - 1; i > 1; i--) {
+            for (int i = flowMain.Controls.Count - 1; i > 2; i--) {
                 flowMain.Controls.RemoveAt(i);
             }
 
