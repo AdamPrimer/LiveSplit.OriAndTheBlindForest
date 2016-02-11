@@ -105,7 +105,7 @@
             this.flowMain.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowMain.Location = new System.Drawing.Point(0, 0);
             this.flowMain.Name = "flowMain";
-            this.flowMain.Size = new System.Drawing.Size(396, 85);
+            this.flowMain.Size = new System.Drawing.Size(376, 85);
             this.flowMain.TabIndex = 1;
             this.flowMain.WrapContents = false;
             // 
@@ -142,7 +142,7 @@
             this.flowLayoutPanel1.Controls.Add(this.chkShowMapDisplay);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 36);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(390, 27);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(370, 27);
             this.flowLayoutPanel1.TabIndex = 7;
             // 
             // chkAutoStart
@@ -172,9 +172,9 @@
             this.chkShowMapDisplay.AutoSize = true;
             this.chkShowMapDisplay.Location = new System.Drawing.Point(275, 3);
             this.chkShowMapDisplay.Name = "chkShowMapDisplay";
-            this.chkShowMapDisplay.Size = new System.Drawing.Size(112, 17);
+            this.chkShowMapDisplay.Size = new System.Drawing.Size(92, 17);
             this.chkShowMapDisplay.TabIndex = 3;
-            this.chkShowMapDisplay.Text = "Map% Display test";
+            this.chkShowMapDisplay.Text = "Map% Display";
             this.chkShowMapDisplay.UseVisualStyleBackColor = true;
             this.chkShowMapDisplay.CheckedChanged += new System.EventHandler(this.chkBox_CheckedChanged);
             // 
@@ -183,7 +183,7 @@
             this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.Controls.Add(this.label1);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(218, 69);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(198, 69);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(175, 13);
             this.flowLayoutPanel2.TabIndex = 8;
@@ -207,7 +207,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.flowMain);
             this.Name = "OriAndTheBlindForestSettings";
-            this.Size = new System.Drawing.Size(396, 85);
+            this.Size = new System.Drawing.Size(376, 85);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.flowMain.ResumeLayout(false);
             this.flowMain.PerformLayout();
