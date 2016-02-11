@@ -183,9 +183,9 @@
             this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.Controls.Add(this.label1);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(198, 69);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(296, 69);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(175, 13);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(77, 13);
             this.flowLayoutPanel2.TabIndex = 8;
             // 
             // label1
@@ -193,9 +193,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(169, 13);
+            this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Check these boxes to NOT SPLIT";
+            this.label1.Text = "Check to split";
             // 
             // OriAndTheBlindForestSettings
             // 
