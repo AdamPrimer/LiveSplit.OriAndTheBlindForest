@@ -46,11 +46,11 @@ namespace LiveSplit.OriAndTheBlindForest.State
     {
         public string name;
         public string value;
-        public bool dontSplit;
-        public Split(string name, string value, bool dontSplit = false) {
+        public bool doSplit;
+        public Split(string name, string value, bool doSplit = true) {
             this.name = name;
             this.value = value;
-            this.dontSplit = dontSplit;
+            this.doSplit = doSplit;
         }
     }
 

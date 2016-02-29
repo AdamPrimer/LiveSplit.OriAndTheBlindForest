@@ -65,9 +65,9 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
             if (confirmResult == DialogResult.Yes) {
                 splitsState.Clear();
                 splitsState.Add(new Split("Start", "True"));
-                splitsState.Add(new Split("Wall Jump", "True", true));
+                splitsState.Add(new Split("Wall Jump", "True", false));
                 splitsState.Add(new Split("In Game", "True"));
-                splitsState.Add(new Split("Double Jump", "True", true));
+                splitsState.Add(new Split("Double Jump", "True", false));
                 splitsState.Add(new Split("In Game", "True"));
                 splitsState.Add(new Split("Ginso Tree Entered", "True"));
                 splitsState.Add(new Split("Bash", "True"));
@@ -84,9 +84,9 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
             if (confirmResult == DialogResult.Yes) {
                 splitsState.Clear();
                 splitsState.Add(new Split("Start", "True"));
-                splitsState.Add(new Split("Wall Jump", "True", true));
+                splitsState.Add(new Split("Wall Jump", "True", false));
                 splitsState.Add(new Split("In Game", "True"));
-                splitsState.Add(new Split("Double Jump", "True", true));
+                splitsState.Add(new Split("Double Jump", "True", false));
                 splitsState.Add(new Split("In Game", "True"));
                 splitsState.Add(new Split("Ginso Tree Entered", "True"));
                 splitsState.Add(new Split("Bash", "True"));
@@ -110,7 +110,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 splitsState.Add(new Split("Start", "True"));
                 splitsState.Add(new Split("Wall Jump", "True"));
                 splitsState.Add(new Split("Charge Flame", "True"));
-                splitsState.Add(new Split("Double Jump", "True", true));
+                splitsState.Add(new Split("Double Jump", "True", false));
                 splitsState.Add(new Split("In Game", "True"));
                 splitsState.Add(new Split("Ginso Tree Entered", "True"));
                 splitsState.Add(new Split("Bash", "True"));
@@ -118,7 +118,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 splitsState.Add(new Split("Stomp", "True"));
                 splitsState.Add(new Split("Glide", "True"));
                 splitsState.Add(new Split("Charge Jump", "True"));
-                splitsState.Add(new Split("Sunstone", "True", true));
+                splitsState.Add(new Split("Sunstone", "True", false));
                 splitsState.Add(new Split("In Game", "True"));
                 splitsState.Add(new Split("Climb", "True"));
                 splitsState.Add(new Split("Gumon Seal", "True"));
@@ -128,13 +128,13 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 splitsState.Add(new Split("Grotto 100%", OriTriggers.defaultSplits["Grotto 100%"]));
                 splitsState.Add(new Split("Swamp 100%", OriTriggers.defaultSplits["Swamp 100%"]));
                 splitsState.Add(new Split("Mount Horu Entered", "True"));
-                splitsState.Add(new Split("L1 Switch", OriTriggers.defaultSplits["L1 Switch"], true));
+                splitsState.Add(new Split("L1 Switch", OriTriggers.defaultSplits["L1 Switch"], false));
                 splitsState.Add(new Split("L1 Entrance", OriTriggers.defaultSplits["L1 Entrance"]));
-                splitsState.Add(new Split("L2 Rock", OriTriggers.defaultSplits["L2 Rock"], true));
+                splitsState.Add(new Split("L2 Rock", OriTriggers.defaultSplits["L2 Rock"], false));
                 splitsState.Add(new Split("L2 Entrance", OriTriggers.defaultSplits["L2 Entrance"]));
-                splitsState.Add(new Split("R3 Rock", OriTriggers.defaultSplits["R3 Rock"], true));
+                splitsState.Add(new Split("R3 Rock", OriTriggers.defaultSplits["R3 Rock"], false));
                 splitsState.Add(new Split("Horu Entrance", OriTriggers.defaultSplits["Horu Entrance"]));
-                splitsState.Add(new Split("R4 Lasers", OriTriggers.defaultSplits["R4 Lasers"], true));
+                splitsState.Add(new Split("R4 Lasers", OriTriggers.defaultSplits["R4 Lasers"], false));
                 splitsState.Add(new Split("R4 Entrance", OriTriggers.defaultSplits["R4 Entrance"]));
                 splitsState.Add(new Split("End", "True"));
                 LoadSettings();
@@ -149,7 +149,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 splitsState.Add(new Split("Start", "True"));
                 splitsState.Add(new Split("Wall Jump", "True"));
                 splitsState.Add(new Split("Charge Flame", "True"));
-                splitsState.Add(new Split("Double Jump", "True", true));
+                splitsState.Add(new Split("Double Jump", "True", false));
                 splitsState.Add(new Split("In Game", "True"));
                 splitsState.Add(new Split("Ginso Tree Entered", "True"));
                 splitsState.Add(new Split("Bash", "True"));
@@ -157,15 +157,15 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 splitsState.Add(new Split("Stomp", "True"));
                 splitsState.Add(new Split("Glide", "True"));
                 splitsState.Add(new Split("Charge Jump", "True"));
-                splitsState.Add(new Split("Sunstone", "True", true));
+                splitsState.Add(new Split("Sunstone", "True", false));
                 splitsState.Add(new Split("In Game", "True"));
                 splitsState.Add(new Split("Climb", "True"));
                 splitsState.Add(new Split("Gumon Seal", "True"));
                 splitsState.Add(new Split("Forlorn Ruins Entered", "True"));
-                splitsState.Add(new Split("Valley All Cells", OriTriggers.defaultSplits["Valley All Cells"]));
-                splitsState.Add(new Split("Glades All Cells", OriTriggers.defaultSplits["Glades All Cells"]));
-                splitsState.Add(new Split("Grotto All Cells", OriTriggers.defaultSplits["Grotto All Cells"]));
-                splitsState.Add(new Split("Swamp All Cells", OriTriggers.defaultSplits["Swamp All Cells"]));
+                splitsState.Add(new Split("Valley All Cells", OriTriggers.defaultSplits["Valley All Cells"], false));
+                splitsState.Add(new Split("Glades All Cells", OriTriggers.defaultSplits["Glades All Cells"], false));
+                splitsState.Add(new Split("Grotto All Cells", OriTriggers.defaultSplits["Grotto All Cells"], false));
+                splitsState.Add(new Split("Swamp All Cells", OriTriggers.defaultSplits["Swamp All Cells"], false));
                 splitsState.Add(new Split("Mount Horu Entered", "True"));
                 splitsState.Add(new Split("End", "True"));
                 LoadSettings();
@@ -180,7 +180,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
             setting.cboName.DataSource = SplitComboData();
             setting.cboName.Text = "Start";
             setting.txtValue.Text = "True";
-            setting.chkDontSplit.Checked = false;
+            setting.chkSplit.Checked = false;
             AddHandlers(setting);
 
             flowMain.Controls.Add(setting);
@@ -191,7 +191,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
             isLoading = true;
             this.flowMain.SuspendLayout();
 
-            for (int i = flowMain.Controls.Count - 1; i > 1; i--) {
+            for (int i = flowMain.Controls.Count - 1; i > 2; i--) {
                 flowMain.Controls.RemoveAt(i);
             }
 
@@ -202,7 +202,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 setting.cboName.DataSource = SplitComboData();
                 setting.cboName.Text = split.name;
                 setting.txtValue.Text = split.value;
-                setting.chkDontSplit.Checked = split.dontSplit;
+                setting.chkSplit.Checked = split.doSplit;
                 AddHandlers(setting);
 
                 flowMain.Controls.Add(setting);
@@ -224,7 +224,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
             setting.btnRemove.Click += btnRemove_Click;
             setting.btnUp.Click += btnUp_Click;
             setting.btnDown.Click += btnDown_Click;
-            setting.chkDontSplit.CheckedChanged += chkBox_CheckedChanged;
+            setting.chkSplit.CheckedChanged += chkBox_CheckedChanged;
         }
         private void RemoveHandlers(SplitSettings setting) {
             setting.txtValue.Enter -= txtHitbox_GotFocus;
@@ -282,7 +282,7 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                         Split split = new Split();
                         split.name = setting.cboName.Text;
                         split.value = setting.txtValue.Text;
-                        split.dontSplit = setting.chkDontSplit.Checked;
+                        split.doSplit = setting.chkSplit.Checked;
 
                         splitsState.Add(split);
                     }
@@ -324,8 +324,8 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
                 valueAttribute.Value = split.value;
                 splitNode.Attributes.Append(valueAttribute);
 
-                var splitAttribute = document.CreateAttribute("DontSplit");
-                splitAttribute.Value = split.dontSplit.ToString();
+                var splitAttribute = document.CreateAttribute("DoSplit");
+                splitAttribute.Value = split.doSplit.ToString();
                 splitNode.Attributes.Append(splitAttribute);
 
                 splitsNode.AppendChild(splitNode);
@@ -362,13 +362,18 @@ namespace LiveSplit.OriAndTheBlindForest.Settings
             foreach (XmlNode splitNode in splitNodes) {
                 string name = splitNode.InnerText;
                 string value = splitNode.Attributes["Value"].Value;
-                var splitItem = splitNode.Attributes["DontSplit"];
-                bool dontSplit = false;
+                var splitItem = splitNode.Attributes["DoSplit"];
+                var oldSplitItem = splitNode.Attributes["DontSplit"]; // Include to transfer data over to new format
+                bool doSplit = true;
+                if(oldSplitItem != null) {
+                    // Convert old data to new format
+                    doSplit = !bool.Parse(oldSplitItem.Value);
+                }
                 if (splitItem != null) {
-                    dontSplit = bool.Parse(splitItem.Value);
+                    doSplit = bool.Parse(splitItem.Value);
                 }
 
-                Split split = new Split(name, value, dontSplit);
+                Split split = new Split(name, value, doSplit);
 
                 splitsState.Add(split);
             }

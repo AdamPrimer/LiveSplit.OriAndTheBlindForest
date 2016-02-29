@@ -181,7 +181,7 @@ namespace LiveSplit.OriAndTheBlindForest.State
                     sSplits.Length > 0 &&
                     sSplits[0].name == name && sSplits[0].value == value)) {
                 LogWriter.WriteLine("Trigger Function Called.");
-                if (OnSplit != null && !currentSplit.dontSplit) {
+                if (OnSplit != null && currentSplit.doSplit) {
                     SplitEventArgs e = new SplitEventArgs();
                     e.name = name;
                     e.value = value;
